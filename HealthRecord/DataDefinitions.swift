@@ -10,19 +10,69 @@ import UIKit
 
 class HealthCondition {
 
-    var condition: Int?
-    var degree: Int?
-    var location: Int?
-    var description: String?
-    var image: UIImage?
+    var date: Date?
+//    var condition: Int?
+//    var degree: Int?
+//    var location: Int?
+//    var description: String?
+//    var image: UIImage?
+//
+//    init(condition: Int?, degree: Int?, location: Int?, description: String?) {
+//
+//        self.condition = condition
+//        self.degree = degree
+//        self.location = location
+//        self.description = description
+//    }
 
-    init(condition: Int?, degree: Int?, location: Int?, description: String?) {
+    init(timeOfCondition: Date) {
 
-        self.condition = condition
-        self.degree = degree
-        self.location = location
-        self.description = description
+        self.date = timeOfCondition
     }
+}
+
+class HeaderCell {
+
+    var isExpandable: Bool
+    var isExpanded: Bool
+    var isShown: Bool
+
+    init() {
+
+        self.isExpandable = true
+        self.isExpanded = false
+        self.isShown = false
+    }
+}
+
+class YearHeaderCell: HeaderCell {
+
+    var year: Int?
+
+    init(year: Int) {
+        super.init()
+
+        self.year = year
+        self.isShown = true
+    }
+}
+
+class DayHeaderCell: HeaderCell {
+
+    var day: Int?
+
+    init(day: Int) {
+        super.init()
+
+        self.day = day
+    }
+}
+
+enum DateComponent {
+
+    case day
+    case month
+    case year
 }
 
 class HealthImage {
@@ -60,4 +110,10 @@ enum LocationEnum {
     case Foot
 }
 
+class ExpandableCell {
+
+    var IsExpandable: Bool?
+    var IsExpanded: Bool?
+    var IsVisible: Bool?
+}
 

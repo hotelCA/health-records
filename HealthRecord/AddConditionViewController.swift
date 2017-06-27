@@ -20,12 +20,12 @@ class AddConditionViewController: UIViewController {
         // Nothing to do here so far
     }
 
-    func getCondition() -> HealthCondition {
-
-        let conditionAndLocation: HealthCondition = HealthCondition(condition: conditionSegment.selectedSegmentIndex, degree: degreeSegment.selectedSegmentIndex, location: locationSegment.selectedSegmentIndex, description: descriptionTextField.text)
-
-        return conditionAndLocation
-    }
+//    func getCondition() -> HealthCondition {
+//
+//        let conditionAndLocation: HealthCondition = HealthCondition(condition: conditionSegment.selectedSegmentIndex, degree: degreeSegment.selectedSegmentIndex, location: locationSegment.selectedSegmentIndex, description: descriptionTextField.text)
+//
+//        return conditionAndLocation
+//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

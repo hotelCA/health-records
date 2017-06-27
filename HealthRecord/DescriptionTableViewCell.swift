@@ -11,7 +11,7 @@ import UIKit
 class DescriptionTableViewCell: UITableViewCell {
 
     @IBOutlet var MedicalDescriptionLabel: UILabel!
-    @IBOutlet var ExpandLabel: UILabel!
+//    @IBOutlet var ExpandLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

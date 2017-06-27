@@ -8,16 +8,27 @@
 
 import UIKit
 
+let ONE_DAY = 3600 * 24
+let OneMonth = ONE_DAY * 30
+let OneYear = OneMonth * 12
+
 class TableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     var Expand: Bool = false
 
-    func loadCellDescriptors() {
-        if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
-            let cellDescriptors = NSDictionary(contentsOfFile: path)
-            print(cellDescriptors)
-        }
-    }
+    var healthRecords = [
+    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(4*OneMonth))),
+    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(8*OneMonth))),
+    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(12*OneMonth))),
+    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(16*OneMonth))),
+    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(20*OneMonth))),
+    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(24*OneMonth))),
+    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(28*OneMonth))),
+    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(32*OneMonth))),
+    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(36*OneMonth)))]
+
+    var shownCells = [Any]()
+    
 
     @IBAction func AddButtonPressed(_ sender: UIBarButtonItem) {
 
@@ -28,11 +39,11 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
         if let source = unwindSegue.source as? AddConditionViewController {
 
-            let healthCondition: HealthCondition = source.getCondition()
-            print("unwind condition: \(healthCondition.condition)")
-            print("unwind degree: \(healthCondition.degree)")
-            print("unwind location: \(healthCondition.location)")
-            print("unwind description: \(healthCondition.description)")
+//            let healthCondition: HealthCondition = source.getCondition()
+//            print("unwind condition: \(healthCondition.condition)")
+//            print("unwind degree: \(healthCondition.degree)")
+//            print("unwind location: \(healthCondition.location)")
+//            print("unwind description: \(healthCondition.description)")
         }
     }
 
@@ -118,6 +129,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
             }
         }
+
+        var newFloat: Float
     }
 
     override func viewDidLoad() {
@@ -128,7 +141,71 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        loadCellDescriptors()
+
+        for i in 0..<healthRecords.count {
+
+            print(healthRecords[i].date)
+        }
+
+        initShownCells()
+        printShownCells()
+    }
+
+    func initShownCells() {
+
+        let calendarComponentFlags: Set<Calendar.Component> = [.year]
+        var prevDateComponents: DateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: Date(timeIntervalSince1970: 0))
+
+        for healthRecord in healthRecords {
+
+            var dateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: healthRecord.date!)
+
+            if isANewDate(prevDate: prevDateComponents, currentDate: dateComponents, inTermsOf: DateComponent.year) {
+
+                shownCells.append(YearHeaderCell(year: dateComponents.year!))
+            }
+
+//            if isANewDate(prevDate: prevDateComponents, currentDate: dateComponents, inTermsOf: DateComponent.day) {
+//
+//                shownCells.append(DayHeaderCell(day: dateComponents.day!))
+//            }
+
+            prevDateComponents = dateComponents
+        }
+    }
+
+    // TODO: Write test case for this
+    func isANewDate(prevDate: DateComponents, currentDate: DateComponents, inTermsOf: DateComponent) -> Bool {
+
+        switch inTermsOf {
+
+        case .year:
+
+            if prevDate.year != currentDate.year {
+
+                return true
+            }
+
+        case .month:
+
+            if prevDate.year != currentDate.year ||
+               prevDate.month != currentDate.month {
+
+                return true
+            }
+
+        case .day:
+
+            if prevDate.year != currentDate.year ||
+               prevDate.month != currentDate.month ||
+               prevDate.day != currentDate.day {
+
+                return true
+            }
+
+        }
+
+        return false
     }
 
     override func didReceiveMemoryWarning() {
@@ -144,101 +221,213 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-        return 10
+        return shownCells.count
     }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-
-        if Expand == false {
-
-            if indexPath.row % 2 == 0 {
-
-                return 65.0
-
-            } else {
-
-                return 150.0
-            }
-
-        } else {
-
-            if indexPath.row < 4 {
-
-                return 65.0
-
-            } else {
-
-                if indexPath.row % 2 == 0 {
-
-                    return 65.0
-
-                } else {
-
-                    return 150.0
-                }
-            }
-        }
-    }
+//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//
+//        if Expand == false {
+//
+//            if indexPath.row % 2 == 0 {
+//
+//                return 65.0
+//
+//            } else {
+//
+//                return 150.0
+//            }
+//
+//        } else {
+//
+//            if indexPath.row < 4 {
+//
+//                return 65.0
+//
+//            } else {
+//
+//                if indexPath.row % 2 == 0 {
+//
+//                    return 65.0
+//
+//                } else {
+//
+//                    return 150.0
+//                }
+//            }
+//        }
+//    }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        if Expand == false {
+//        if Expand == false {
+//
+//            if indexPath.row % 2 == 0 {
+//
+//                let descriptionCell = tableView.dequeueReusableCell(withIdentifier: "descriptionCell", for: indexPath) as! DescriptionTableViewCell
+//
+//                descriptionCell.MedicalDescriptionLabel?.text = "Test"
+//                return descriptionCell
+//
+//            } else {
+//
+//                let imageCell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
+//
+//                imageCell.MedicalImage?.image = UIImage(named: "20160704_145508.jpg")
+//                return imageCell
+//            }
+//
+//        } else {
+//
+//            if indexPath.row < 4 {
+//                
+//                let descriptionCell = tableView.dequeueReusableCell(withIdentifier: "descriptionCell", for: indexPath) as! DescriptionTableViewCell
+//
+//                descriptionCell.MedicalDescriptionLabel?.text = "Test"
+//                return descriptionCell
+//
+//            } else {
+//
+//                if indexPath.row % 2 == 0 {
+//
+//                    let descriptionCell = tableView.dequeueReusableCell(withIdentifier: "descriptionCell", for: indexPath) as! DescriptionTableViewCell
+//
+//                    descriptionCell.MedicalDescriptionLabel?.text = "Test"
+//                    return descriptionCell
+//
+//                } else {
+//
+//                    let imageCell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
+//
+//                    imageCell.MedicalImage?.image = UIImage(named: "20160704_145508.jpg")
+//                    return imageCell
+//                }
+//            }
+//        }
 
-            if indexPath.row % 2 == 0 {
+        print("Cell for row at: \(indexPath.row)")
+        let descriptionCell = tableView.dequeueReusableCell(withIdentifier: "descriptionCell", for: indexPath) as! DescriptionTableViewCell
 
-                let descriptionCell = tableView.dequeueReusableCell(withIdentifier: "descriptionCell", for: indexPath) as! DescriptionTableViewCell
+        if let headerCell = shownCells[indexPath.row] as? YearHeaderCell {
 
-                descriptionCell.MedicalDescriptionLabel?.text = "Test"
-                return descriptionCell
+            descriptionCell.MedicalDescriptionLabel?.text = "Year: \(headerCell.year!)"
 
-            } else {
+        } else if let headerCell = shownCells[indexPath.row] as? DayHeaderCell {
 
-                let imageCell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
-
-                imageCell.MedicalImage?.image = UIImage(named: "20160704_145508.jpg")
-                return imageCell
-            }
-
-        } else {
-
-            if indexPath.row < 4 {
-                
-                let descriptionCell = tableView.dequeueReusableCell(withIdentifier: "descriptionCell", for: indexPath) as! DescriptionTableViewCell
-
-                descriptionCell.MedicalDescriptionLabel?.text = "Test"
-                return descriptionCell
-
-            } else {
-
-                if indexPath.row % 2 == 0 {
-
-                    let descriptionCell = tableView.dequeueReusableCell(withIdentifier: "descriptionCell", for: indexPath) as! DescriptionTableViewCell
-
-                    descriptionCell.MedicalDescriptionLabel?.text = "Test"
-                    return descriptionCell
-
-                } else {
-
-                    let imageCell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
-
-                    imageCell.MedicalImage?.image = UIImage(named: "20160704_145508.jpg")
-                    return imageCell
-                }
-            }
+            descriptionCell.MedicalDescriptionLabel?.text = "Day: \(headerCell.day!)"
         }
+
+        return descriptionCell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        if let descriptionCell = tableView.cellForRow(at: indexPath) as? DescriptionTableViewCell {
+        var addRows = false
+        var rowsToReload: [Int] = [Int]()
 
-            if descriptionCell.ExpandLabel?.text == "+" {
+        if let headerCell = shownCells[indexPath.row] as? YearHeaderCell {
 
-                descriptionCell.ExpandLabel.text = "-"
-                Expand = true
-                tableView.reloadSections([0], with: .bottom)
+            if !headerCell.isExpanded {
+
+                headerCell.isExpanded = true
+                rowsToReload = insertDayHeaders(forYear: headerCell.year!, atIndex: indexPath.row + 1)
+                addRows = true
+
+            } else {
+
+                headerCell.isExpanded = false
+                rowsToReload = removeDayHeaders(atIndex: indexPath.row + 1)
+            }
+
+            print(shownCells)
+
+        } else if let headerCell = shownCells[indexPath.row] as? DayHeaderCell {
+
+        }
+
+        var indexPathsToReload: [IndexPath] = [IndexPath]()
+
+        for i in rowsToReload {
+
+            print("index \(i)")
+            indexPathsToReload.append(IndexPath(row: i, section: 0))
+        }
+
+        print(indexPathsToReload)
+
+        tableView.beginUpdates()
+
+        // TODO: test for empty indexPathsToReload
+        if addRows {
+
+            tableView.insertRows(at: indexPathsToReload, with: .fade)
+
+        } else {
+
+            tableView.deleteRows(at: indexPathsToReload, with: .fade)
+        }
+
+        tableView.endUpdates()
+    }
+
+    func insertDayHeaders(forYear: Int, atIndex: Int) -> [Int] {
+
+        // atIndex will probably be out of bouds if called from last cell. But Swift will take care of that :))
+        var startIndex = atIndex
+        var rowsAdded: [Int] = [Int]()
+
+        let calendarComponentFlags: Set<Calendar.Component> = [.year, .day]
+        var prevDateComponents: DateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: Date(timeIntervalSince1970: 0))
+
+        for healthRecord in healthRecords {
+
+            var dateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: healthRecord.date!)
+
+            if isANewDate(prevDate: prevDateComponents, currentDate: dateComponents, inTermsOf: DateComponent.day) && dateComponents.year == forYear {
+
+                rowsAdded.append(startIndex)
+                shownCells.insert(DayHeaderCell(day: dateComponents.day!), at: atIndex)
+                startIndex += 1
+            }
+
+            prevDateComponents = dateComponents
+        }
+
+        return rowsAdded
+    }
+
+    func removeDayHeaders(atIndex startIndex: Int) -> [Int] {
+
+        var rowsToRemove: [Int] = [Int]()
+        var currentIndex = startIndex
+
+        // atIndex can stay the same because the array becomes smaller every time an item is removed so atIndex will always point to the next item to be potentially removed.
+
+        while currentIndex < shownCells.count && !(shownCells[currentIndex] is YearHeaderCell) {
+
+            rowsToRemove.append(currentIndex)
+            currentIndex += 1
+        }
+
+        shownCells.removeSubrange(startIndex..<currentIndex)
+        
+        return rowsToRemove
+    }
+}
+
+extension TableViewController {
+
+    func printShownCells() {
+
+        for i in 0..<shownCells.count {
+
+            if let yearHeaderCell = shownCells[i] as? YearHeaderCell {
+
+                print("Year: \(yearHeaderCell.year!)")
+
+            } else if let dayHeaderCell = shownCells[i] as? DayHeaderCell {
+
+                print("Day: \(dayHeaderCell.day!)")
             }
         }
     }
-    
 }
