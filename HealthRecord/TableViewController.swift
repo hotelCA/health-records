@@ -12,20 +12,10 @@ let ONE_DAY = 3600 * 24
 let OneMonth = ONE_DAY * 30
 let OneYear = OneMonth * 12
 
+
 class TableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
-    var Expand: Bool = false
-
-    var healthRecords = [
-    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(4*OneMonth))),
-    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(8*OneMonth))),
-    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(12*OneMonth))),
-    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(16*OneMonth))),
-    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(20*OneMonth))),
-    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(24*OneMonth))),
-    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(28*OneMonth))),
-    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(32*OneMonth))),
-    HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(36*OneMonth)))]
+    var healthRecords = [HealthCondition]()
 
     var shownCells = [Any]()
     
@@ -66,13 +56,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
         let uploadFileAction = UIAlertAction(title: "Upload a file", style: .default) { _ in
 
-            self.PickAPhoto()
+            self.pickAPhoto()
 
         }
 
         let addConditionAction = UIAlertAction(title: "Add a condition", style: .default) { _ in
 
-            self.AddNewCondition()
+            self.addNewCondition()
         }
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
@@ -86,7 +76,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         actionSheet.addAction(cancelAction)
     }
 
-    func PickAPhoto() {
+    func pickAPhoto() {
 
         let imagePickerController = UIImagePickerController()
 
@@ -109,7 +99,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         self.dismiss(animated: true, completion: nil)
     }
 
-    func AddNewCondition() {
+    func addNewCondition() {
 
         performSegue(withIdentifier: "toConditionPicker", sender: nil)
     }
@@ -142,6 +132,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
 
+        loadHealthRecord()
+
         for i in 0..<healthRecords.count {
 
             print(healthRecords[i].date)
@@ -151,30 +143,36 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         printShownCells()
     }
 
+    func loadHealthRecord() {
+
+        for i in 1..<80 {
+
+            var index = i / 4
+
+            healthRecords.append(HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(3*index*OneMonth + i)), condition: ConditionEnum.pain))
+        }
+    }
+
     func initShownCells() {
 
         let calendarComponentFlags: Set<Calendar.Component> = [.year]
         var prevDateComponents: DateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: Date(timeIntervalSince1970: 0))
 
-        for healthRecord in healthRecords {
+        for (index, healthRecord) in healthRecords.enumerated() {
 
-            var dateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: healthRecord.date!)
+            let dateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: healthRecord.date!)
 
             if isANewDate(prevDate: prevDateComponents, currentDate: dateComponents, inTermsOf: DateComponent.year) {
 
-                shownCells.append(YearHeaderCell(year: dateComponents.year!))
+                shownCells.append(YearHeaderCell(indexOfSource: index))
             }
-
-//            if isANewDate(prevDate: prevDateComponents, currentDate: dateComponents, inTermsOf: DateComponent.day) {
-//
-//                shownCells.append(DayHeaderCell(day: dateComponents.day!))
-//            }
 
             prevDateComponents = dateComponents
         }
     }
 
     // TODO: Write test case for this
+    // TODO: Rewrite this function to compare two dates instead
     func isANewDate(prevDate: DateComponents, currentDate: DateComponents, inTermsOf: DateComponent) -> Bool {
 
         switch inTermsOf {
@@ -304,55 +302,78 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //            }
 //        }
 
-        print("Cell for row at: \(indexPath.row)")
         let descriptionCell = tableView.dequeueReusableCell(withIdentifier: "descriptionCell", for: indexPath) as! DescriptionTableViewCell
 
-        if let headerCell = shownCells[indexPath.row] as? YearHeaderCell {
+        if let yearHeaderCell = shownCells[indexPath.row] as? YearHeaderCell {
 
-            descriptionCell.MedicalDescriptionLabel?.text = "Year: \(headerCell.year!)"
+            descriptionCell.MedicalDescriptionLabel?.text = "Year: \(healthRecords[yearHeaderCell.indexOfSource!].date!)"
 
-        } else if let headerCell = shownCells[indexPath.row] as? DayHeaderCell {
+        } else if let dayHeaderCell = shownCells[indexPath.row] as? DayHeaderCell {
 
-            descriptionCell.MedicalDescriptionLabel?.text = "Day: \(headerCell.day!)"
+            descriptionCell.MedicalDescriptionLabel?.text = "Day: \(healthRecords[dayHeaderCell.indexOfSource!].date!)"
+
+        } else if let contentCell = shownCells[indexPath.row] as? ContentCell {
+
+            descriptionCell.MedicalDescriptionLabel?.text = "Day: \(contentCell.healthCondition!.condition!)"
         }
 
         return descriptionCell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
 
         var addRows = false
-        var rowsToReload: [Int] = [Int]()
+        var rowsToModify = 0
 
-        if let headerCell = shownCells[indexPath.row] as? YearHeaderCell {
+        if let yearHeaderCell = shownCells[indexPath.row] as? YearHeaderCell {
 
-            if !headerCell.isExpanded {
+            if !yearHeaderCell.isExpanded {
 
-                headerCell.isExpanded = true
-                rowsToReload = insertDayHeaders(forYear: headerCell.year!, atIndex: indexPath.row + 1)
+                yearHeaderCell.isExpanded = true
+
+                yearHeaderCell.days = insertDayHeaders(atSourceIndex: yearHeaderCell.indexOfSource!, atIndex: indexPath.row + 1)
+
+                rowsToModify = yearHeaderCell.days!
                 addRows = true
 
             } else {
 
-                headerCell.isExpanded = false
-                rowsToReload = removeDayHeaders(atIndex: indexPath.row + 1)
+                yearHeaderCell.isExpanded = false
+
+                rowsToModify = yearHeaderCell.days! + numOfContentRows(startIndex: indexPath.row+1, numOfDayHeaders: yearHeaderCell.days!)
+
+                yearHeaderCell.days = 0
+                shownCells.removeSubrange(indexPath.row+1..<indexPath.row+1+rowsToModify)
             }
 
-            print(shownCells)
+        } else if let dayHeaderCell = shownCells[indexPath.row] as? DayHeaderCell {
 
-        } else if let headerCell = shownCells[indexPath.row] as? DayHeaderCell {
+            if !dayHeaderCell.isExpanded {
 
+                dayHeaderCell.isExpanded = true
+
+                dayHeaderCell.entries = insertContentCells(atSourceIndex: dayHeaderCell.indexOfSource!, atIndex: indexPath.row + 1)
+
+                rowsToModify = dayHeaderCell.entries!
+                addRows = true
+
+            } else {
+
+                dayHeaderCell.isExpanded = false
+                shownCells.removeSubrange(indexPath.row+1..<indexPath.row+1+dayHeaderCell.entries!)
+                rowsToModify = dayHeaderCell.entries!
+                dayHeaderCell.entries = 0
+            }
         }
 
         var indexPathsToReload: [IndexPath] = [IndexPath]()
 
-        for i in rowsToReload {
+        for i in indexPath.row+1..<indexPath.row+1+rowsToModify {
 
             print("index \(i)")
             indexPathsToReload.append(IndexPath(row: i, section: 0))
         }
-
-        print(indexPathsToReload)
 
         tableView.beginUpdates()
 
@@ -367,26 +388,31 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         }
 
         tableView.endUpdates()
+
     }
 
-    func insertDayHeaders(forYear: Int, atIndex: Int) -> [Int] {
+    func insertDayHeaders(atSourceIndex: Int, atIndex: Int) -> Int {
 
-        // atIndex will probably be out of bouds if called from last cell. But Swift will take care of that :))
-        var startIndex = atIndex
-        var rowsAdded: [Int] = [Int]()
+        // atIndex will probably be out of bounds if called from last cell. But Swift will take care of that :))
+        var rowsAdded = 0
+        let targetYear = Calendar.current.dateComponents([.year], from: healthRecords[atSourceIndex].date!)
 
         let calendarComponentFlags: Set<Calendar.Component> = [.year, .day]
         var prevDateComponents: DateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: Date(timeIntervalSince1970: 0))
 
-        for healthRecord in healthRecords {
+        for (i, healthRecord) in healthRecords.enumerated().dropFirst(atSourceIndex) {
 
-            var dateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: healthRecord.date!)
+            let dateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: healthRecord.date!)
 
-            if isANewDate(prevDate: prevDateComponents, currentDate: dateComponents, inTermsOf: DateComponent.day) && dateComponents.year == forYear {
+            guard (dateComponents.year == targetYear.year) else {
 
-                rowsAdded.append(startIndex)
-                shownCells.insert(DayHeaderCell(day: dateComponents.day!), at: atIndex)
-                startIndex += 1
+                break
+            }
+
+            if isANewDate(prevDate: prevDateComponents, currentDate: dateComponents, inTermsOf: DateComponent.day) {
+
+                shownCells.insert(DayHeaderCell(indexOfSource: i), at: atIndex + rowsAdded)
+                rowsAdded += 1
             }
 
             prevDateComponents = dateComponents
@@ -395,22 +421,47 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         return rowsAdded
     }
 
-    func removeDayHeaders(atIndex startIndex: Int) -> [Int] {
+    func numOfContentRows(startIndex: Int, numOfDayHeaders: Int) -> Int {
 
-        var rowsToRemove: [Int] = [Int]()
-        var currentIndex = startIndex
+        var rows = 0
 
-        // atIndex can stay the same because the array becomes smaller every time an item is removed so atIndex will always point to the next item to be potentially removed.
+        for i in startIndex..<startIndex + numOfDayHeaders {
 
-        while currentIndex < shownCells.count && !(shownCells[currentIndex] is YearHeaderCell) {
+            if let dayHeaderCell = shownCells[i + rows] as? DayHeaderCell {
 
-            rowsToRemove.append(currentIndex)
-            currentIndex += 1
+                rows += dayHeaderCell.entries!
+            }
         }
 
-        shownCells.removeSubrange(startIndex..<currentIndex)
+        return rows
+    }
+
+    func insertContentCells(atSourceIndex: Int, atIndex: Int) -> Int {
+
+        // atIndex will probably be out of bounds if called from last cell. But Swift will take care of that :))
+        print("atSource: \(atSourceIndex), atIndex: \(atIndex)")
+        var rowsAdded = 0
+
+        let calendarComponentFlags: Set<Calendar.Component> = [.year, .month, .day]
+        let targetDateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: healthRecords[atSourceIndex].date!)
+
+        for (i, healthRecord) in healthRecords.enumerated().dropFirst(atSourceIndex) {
+
+            let dateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: healthRecord.date!)
+
+            guard dateComponents.year == targetDateComponents.year,
+                  dateComponents.month == targetDateComponents.month,
+                  dateComponents.day == targetDateComponents.day else {
+
+                break
+            }
+
+            shownCells.insert(ContentCell(healthCondition: healthRecord,indexOfSource: i), at: atIndex + rowsAdded)
+
+            rowsAdded += 1
+        }
         
-        return rowsToRemove
+        return rowsAdded
     }
 }
 
@@ -422,11 +473,11 @@ extension TableViewController {
 
             if let yearHeaderCell = shownCells[i] as? YearHeaderCell {
 
-                print("Year: \(yearHeaderCell.year!)")
+                print("Year: \(healthRecords[yearHeaderCell.indexOfSource!].date)")
 
             } else if let dayHeaderCell = shownCells[i] as? DayHeaderCell {
 
-                print("Day: \(dayHeaderCell.day!)")
+                print("Day: \(healthRecords[dayHeaderCell.indexOfSource!].date!)")
             }
         }
     }

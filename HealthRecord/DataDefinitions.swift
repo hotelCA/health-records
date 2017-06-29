@@ -11,7 +11,7 @@ import UIKit
 class HealthCondition {
 
     var date: Date?
-//    var condition: Int?
+    var condition: ConditionEnum?
 //    var degree: Int?
 //    var location: Int?
 //    var description: String?
@@ -25,46 +25,57 @@ class HealthCondition {
 //        self.description = description
 //    }
 
-    init(timeOfCondition: Date) {
+    init(timeOfCondition: Date, condition: ConditionEnum) {
 
         self.date = timeOfCondition
+        self.condition = condition
     }
 }
 
-class HeaderCell {
+class VisibleCell {
 
-    var isExpandable: Bool
     var isExpanded: Bool
-    var isShown: Bool
+    var indexOfSource: Int?
 
     init() {
 
-        self.isExpandable = true
         self.isExpanded = false
-        self.isShown = false
     }
 }
 
-class YearHeaderCell: HeaderCell {
+class YearHeaderCell: VisibleCell {
 
-    var year: Int?
+    var days: Int?
 
-    init(year: Int) {
+    init(indexOfSource: Int) {
         super.init()
 
-        self.year = year
-        self.isShown = true
+        self.indexOfSource = indexOfSource
+        self.days = 0
     }
 }
 
-class DayHeaderCell: HeaderCell {
+class DayHeaderCell: VisibleCell {
 
-    var day: Int?
+    var entries: Int?
 
-    init(day: Int) {
+    init(indexOfSource: Int) {
         super.init()
 
-        self.day = day
+        self.indexOfSource = indexOfSource
+        self.entries = 0
+    }
+}
+
+class ContentCell: VisibleCell {
+
+    var healthCondition: HealthCondition?
+
+    init(healthCondition: HealthCondition, indexOfSource: Int) {
+        super.init()
+
+        self.indexOfSource = indexOfSource
+        self.healthCondition = healthCondition
     }
 }
 
@@ -87,33 +98,27 @@ class HealthImage {
 
 enum ConditionEnum {
 
-    case Pain
-    case Itch
-    case Tingling
-    case Numb
-    case Ache
+    case pain
+    case itch
+    case tingling
+    case numb
+    case ache
 }
 
 enum DegreeEnum {
 
-    case Mild
-    case Medium
-    case Severe
+    case mild
+    case medium
+    case severe
 }
 
 enum LocationEnum {
 
-    case Head
-    case Body
-    case Arm
-    case Leg
-    case Foot
+    case head
+    case body
+    case arm
+    case leg
+    case foot
 }
 
-class ExpandableCell {
-
-    var IsExpandable: Bool?
-    var IsExpanded: Bool?
-    var IsVisible: Bool?
-}
 
