@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -34,76 +35,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1902" y="1004"/>
-        </scene>
-        <!--Health-->
-        <scene sceneID="F56-kK-Wlq">
-            <objects>
-                <tableViewController id="R78-t4-m2Q" customClass="TableViewController" customModule="HealthRecord" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Mm7-Gr-z51">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="descriptionCell" rowHeight="63" id="II3-eq-Ss2" customClass="DescriptionTableViewCell" customModule="HealthRecord" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="63"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="II3-eq-Ss2" id="uoi-FN-Jab">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="62.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rci-g6-VbI">
-                                            <rect key="frame" x="8" y="8" width="359" height="46"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="MedicalDescriptionLabel" destination="Rci-g6-VbI" id="eqO-tl-gwe"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="imageCell" rowHeight="149" id="mJN-fp-n6j" customClass="ImageTableViewCell" customModule="HealthRecord" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="91" width="375" height="149"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mJN-fp-n6j" id="cd8-QQ-UwM">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="148.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="peW-7e-MWD">
-                                            <rect key="frame" x="67" y="10" width="240" height="128"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        </imageView>
-                                    </subviews>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="MedicalImage" destination="peW-7e-MWD" id="d0O-0g-VQy"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="R78-t4-m2Q" id="CNI-CE-NPc"/>
-                            <outlet property="delegate" destination="R78-t4-m2Q" id="ddZ-d4-i2h"/>
-                        </connections>
-                    </tableView>
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Health" id="eg9-Jh-fMM">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="VDf-Lv-jnO">
-                            <connections>
-                                <action selector="AddButtonPressed:" destination="R78-t4-m2Q" id="MHX-fP-8KJ"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <segue destination="BYZ-38-t0r" kind="show" identifier="imageViewSegue" id="C3U-Dz-4Ba"/>
-                        <segue destination="Ve7-SM-1QG" kind="show" identifier="toConditionPicker" id="BbP-4a-CCI"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="H38-EJ-EQa" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1901.5999999999999" y="136.28185907046478"/>
+            <point key="canvasLocation" x="1726" y="850"/>
         </scene>
         <!--Add Condition View Controller-->
         <scene sceneID="5ct-Rg-Jmj">
@@ -181,7 +113,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lBK-80-z10" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="aaj-uO-tyW" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2749.5999999999999" y="1002.5487256371815"/>
+            <point key="canvasLocation" x="2526" y="850"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8KZ-Kc-u4Z">
@@ -193,12 +125,102 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="R78-t4-m2Q" kind="relationship" relationship="rootViewController" id="ANz-gU-SDV"/>
+                        <segue destination="gii-dh-wj7" kind="relationship" relationship="rootViewController" id="bPR-FD-g37"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dti-hA-nRl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="951" y="137"/>
+        </scene>
+        <!--Healh Records-->
+        <scene sceneID="fY0-qB-3JU">
+            <objects>
+                <viewController id="gii-dh-wj7" customClass="TableViewController" customModule="HealthRecord" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kn7-Sk-Ikk"/>
+                        <viewControllerLayoutGuide type="bottom" id="jKp-bV-BXL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DgK-Bi-HvI">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="J3z-63-MfT">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="descriptionCell" rowHeight="63" id="II3-eq-Ss2" customClass="DescriptionTableViewCell" customModule="HealthRecord" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="63"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="II3-eq-Ss2" id="uoi-FN-Jab">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="62.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rci-g6-VbI">
+                                                    <rect key="frame" x="8" y="8" width="359" height="46"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Rci-g6-VbI" firstAttribute="top" secondItem="uoi-FN-Jab" secondAttribute="topMargin" id="P6B-Qb-xro"/>
+                                                <constraint firstItem="Rci-g6-VbI" firstAttribute="trailing" secondItem="uoi-FN-Jab" secondAttribute="trailingMargin" id="jCU-6N-5ax"/>
+                                                <constraint firstItem="Rci-g6-VbI" firstAttribute="centerY" secondItem="uoi-FN-Jab" secondAttribute="centerY" id="mqD-hs-3xi"/>
+                                                <constraint firstItem="Rci-g6-VbI" firstAttribute="leading" secondItem="uoi-FN-Jab" secondAttribute="leadingMargin" id="tW3-gU-29a"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="MedicalDescriptionLabel" destination="Rci-g6-VbI" id="eqO-tl-gwe"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="imageCell" rowHeight="149" id="mJN-fp-n6j" customClass="ImageTableViewCell" customModule="HealthRecord" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="91" width="375" height="149"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mJN-fp-n6j" id="cd8-QQ-UwM">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="148.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="peW-7e-MWD">
+                                                    <rect key="frame" x="67" y="10" width="240" height="128"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="peW-7e-MWD" firstAttribute="centerY" secondItem="cd8-QQ-UwM" secondAttribute="centerY" id="Hme-6K-6Mt"/>
+                                                <constraint firstItem="peW-7e-MWD" firstAttribute="centerX" secondItem="cd8-QQ-UwM" secondAttribute="centerX" id="eNp-fE-bpH"/>
+                                                <constraint firstItem="peW-7e-MWD" firstAttribute="leading" secondItem="cd8-QQ-UwM" secondAttribute="leadingMargin" constant="59" id="v6t-Wc-lfr"/>
+                                                <constraint firstItem="peW-7e-MWD" firstAttribute="top" secondItem="cd8-QQ-UwM" secondAttribute="topMargin" constant="2" id="zRm-tT-eye"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="MedicalImage" destination="peW-7e-MWD" id="d0O-0g-VQy"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="gii-dh-wj7" id="9Wp-Qe-kkI"/>
+                                    <outlet property="delegate" destination="gii-dh-wj7" id="lyT-A2-te1"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Healh Records" id="Rh9-yI-9CB">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="cVM-vo-Qlo">
+                            <connections>
+                                <action selector="AddButtonPressed:" destination="gii-dh-wj7" id="c40-ue-RUb"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="J3z-63-MfT" id="gJW-If-TDz"/>
+                        <segue destination="Ve7-SM-1QG" kind="presentation" identifier="toConditionPicker" id="UDd-Hr-zhX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rsK-31-wg9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1726" y="136"/>
         </scene>
     </scenes>
 </document>

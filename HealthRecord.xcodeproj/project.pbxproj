@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C02CFFF1F05DCBB00BC6ACB /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C02CFFE1F05DCBB00BC6ACB /* TableViewDataSource.swift */; };
+		3C02D0021F0625CF00BC6ACB /* StateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C02D0011F0625CF00BC6ACB /* StateController.swift */; };
 		3C4EB5231EF76BA800B64804 /* DataDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4EB5221EF76BA800B64804 /* DataDefinitions.swift */; };
 		3C4EB5251EF8BDD400B64804 /* 20160704_145508.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3C4EB5241EF8BDD400B64804 /* 20160704_145508.jpg */; };
 		3C4EB5271EF9766B00B64804 /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4EB5261EF9766B00B64804 /* ImageTableViewCell.swift */; };
@@ -33,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3C02CFFE1F05DCBB00BC6ACB /* TableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
+		3C02D0011F0625CF00BC6ACB /* StateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateController.swift; sourceTree = "<group>"; };
 		3C4EB5221EF76BA800B64804 /* DataDefinitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataDefinitions.swift; sourceTree = "<group>"; };
 		3C4EB5241EF8BDD400B64804 /* 20160704_145508.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 20160704_145508.jpg; path = ../../../../../../Dropbox/July4thTrip/20160704_145508.jpg; sourceTree = "<group>"; };
 		3C4EB5261EF9766B00B64804 /* ImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
@@ -70,6 +74,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3C02D0001F05DD1100BC6ACB /* Model Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				3C02CFFE1F05DCBB00BC6ACB /* TableViewDataSource.swift */,
+				3C02D0011F0625CF00BC6ACB /* StateController.swift */,
+			);
+			name = "Model Controllers";
+			sourceTree = "<group>";
+		};
 		3C4EB5201EF76B1F00B64804 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -110,6 +123,7 @@
 		3CDF606C1EF3189200E077E5 /* HealthRecord */ = {
 			isa = PBXGroup;
 			children = (
+				3C02D0001F05DD1100BC6ACB /* Model Controllers */,
 				3C4EB5211EF76B7A00B64804 /* Models */,
 				3C4EB5201EF76B1F00B64804 /* Controllers */,
 				3CDF60711EF3189200E077E5 /* Main.storyboard */,
@@ -237,6 +251,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C02CFFF1F05DCBB00BC6ACB /* TableViewDataSource.swift in Sources */,
 				3C4EB5291EF9769900B64804 /* DescriptionTableViewCell.swift in Sources */,
 				3C4EB5271EF9766B00B64804 /* ImageTableViewCell.swift in Sources */,
 				3C5C3DCF1EF70DA800ACDC5E /* AddConditionViewController.swift in Sources */,
@@ -245,6 +260,7 @@
 				3CDF60701EF3189200E077E5 /* ViewController.swift in Sources */,
 				3CDF606E1EF3189200E077E5 /* AppDelegate.swift in Sources */,
 				3CDF60911EF37D9600E077E5 /* TableViewController.swift in Sources */,
+				3C02D0021F0625CF00BC6ACB /* StateController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
