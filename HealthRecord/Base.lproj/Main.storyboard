@@ -31,6 +31,7 @@
                     </view>
                     <connections>
                         <outlet property="ImageView" destination="Jtc-tm-K9U" id="FDo-md-gwO"/>
+                        <outlet property="imageView" destination="Jtc-tm-K9U" id="DjV-D3-cg5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -216,6 +217,7 @@
                     <connections>
                         <outlet property="tableView" destination="J3z-63-MfT" id="gJW-If-TDz"/>
                         <segue destination="Ve7-SM-1QG" kind="presentation" identifier="toConditionPicker" id="UDd-Hr-zhX"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="toImageView" id="7K3-2d-eEK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rsK-31-wg9" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -18,6 +18,8 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
     @IBOutlet var tableView: UITableView!
     var tableViewDataSource: TableViewDataSource!
     var stateController: StateController!
+    var imageHandler: ImageHandler!
+    var conditionHandler: ConditionHandler!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,8 +31,10 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
         tableView.dataSource = tableViewDataSource
         tableView.delegate = tableViewDataSource
-
         tableView.reloadData()
+
+        imageHandler = ImageHandler(viewController: self)
+        conditionHandler = ConditionHandler(viewController: self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -61,7 +65,6 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
         }
     }
 
-
     func createAndPresentActionSheet() {
 
         let actionSheet = UIAlertController(title: nil, message: "Pick an action", preferredStyle: .actionSheet)
@@ -80,12 +83,12 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
         let uploadFileAction = UIAlertAction(title: "Upload a file", style: .default) { _ in
 
-            self.pickAPhoto()
+            self.imageHandler.pickAPhoto()
         }
 
         let addConditionAction = UIAlertAction(title: "Add a condition", style: .default) { _ in
 
-            self.addNewCondition()
+            self.conditionHandler.addNewCondition()
         }
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
@@ -99,41 +102,13 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
         actionSheet.addAction(cancelAction)
     }
 
-    func pickAPhoto() {
-
-        let imagePickerController = UIImagePickerController()
-
-        imagePickerController.sourceType = .photoLibrary
-        imagePickerController.allowsEditing = false
-        imagePickerController.delegate = self
-
-        self.present(imagePickerController, animated: true, completion: nil)
-    }
-
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-
-            let healthImage: HealthImage = HealthImage(image: image)
-
-            performSegue(withIdentifier: "imageViewSegue", sender: healthImage)
-        }
-
-        self.dismiss(animated: true, completion: nil)
-    }
-
-    func addNewCondition() {
-
-        performSegue(withIdentifier: "toConditionPicker", sender: nil)
-    }
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-        if segue.identifier == "imageViewSegue" {
+        if segue.identifier == "toImageView" {
 
             if let destination = segue.destination as? ViewController {
 
-                destination.HealthImage = sender as! HealthImage?
+                destination.healthImage = sender as! HealthImage?
             }
 
         } else if segue.identifier == "toConditionPicker" {
@@ -142,8 +117,6 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
             }
         }
-
-        var newFloat: Float
     }
 }
     
