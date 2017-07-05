@@ -215,30 +215,29 @@
                                             <outlet property="tagsHorizontalStack" destination="Wmg-0c-iPC" id="WPz-a7-qKr"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="imageCell" rowHeight="150" id="mJN-fp-n6j" customClass="ImageTableViewCell" customModule="HealthRecord" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="208" width="375" height="150"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="imageCell" rowHeight="200" id="mJN-fp-n6j" customClass="ImageTableViewCell" customModule="HealthRecord" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="208" width="375" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mJN-fp-n6j" id="cd8-QQ-UwM">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="199.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="peW-7e-MWD">
-                                                    <rect key="frame" x="8" y="8" width="84" height="132"/>
+                                                    <rect key="frame" x="145" y="79" width="84" height="112"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="132" id="BnU-uB-wVF"/>
+                                                        <constraint firstAttribute="height" constant="112" id="BnU-uB-wVF"/>
                                                         <constraint firstAttribute="width" constant="84" id="ImZ-A2-mdi"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" red="1" green="0.94073433669999995" blue="0.7550243163" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
-                                                <constraint firstItem="peW-7e-MWD" firstAttribute="leading" secondItem="cd8-QQ-UwM" secondAttribute="leadingMargin" id="4re-8C-Fmf"/>
-                                                <constraint firstItem="peW-7e-MWD" firstAttribute="top" secondItem="cd8-QQ-UwM" secondAttribute="topMargin" id="fft-dR-1rT"/>
+                                                <constraint firstItem="peW-7e-MWD" firstAttribute="leading" secondItem="cd8-QQ-UwM" secondAttribute="leadingMargin" constant="137" id="4re-8C-Fmf"/>
+                                                <constraint firstItem="peW-7e-MWD" firstAttribute="top" secondItem="cd8-QQ-UwM" secondAttribute="topMargin" constant="71" id="fft-dR-1rT"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="1" green="0.91290969715295023" blue="0.91979510563423594" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <outlet property="MedicalImage" destination="peW-7e-MWD" id="d0O-0g-VQy"/>
+                                            <outlet property="medicalImage" destination="peW-7e-MWD" id="d0O-0g-VQy"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

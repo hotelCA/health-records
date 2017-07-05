@@ -38,6 +38,50 @@ class TableViewDataSource: NSObject {
                 prevDateComponents = dateComponents
             }
         }
+
+        self.expandMostRecentDay()
+    }
+
+    func expandMostRecentYear() -> Bool {
+
+        guard shownCells.count > 0 else {
+
+            return false
+        }
+
+        if let yearHeader = shownCells[0] as? YearHeaderCell {
+
+            if !yearHeader.isExpanded {
+
+                yearHeader.days = self.insertDayHeaders(atSourceIndex: yearHeader.indexOfSource, atIndex: 1)
+
+                yearHeader.isExpanded = true
+            }
+
+            return true
+        }
+
+        return false
+    }
+
+    func expandMostRecentDay() -> Bool {
+
+        if self.expandMostRecentYear() {
+
+            if let dayHeader = shownCells[1] as? DayHeaderCell {
+
+                if !dayHeader.isExpanded {
+
+                    dayHeader.entries = self.insertContentCells(atSourceIndex: dayHeader.indexOfSource, atIndex: 2)
+
+                    dayHeader.isExpanded = true
+                }
+
+                return true
+            }
+        }
+
+        return false
     }
 
     // TODO: Write test case for this
@@ -256,7 +300,7 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
                 if contentCell.isExpanded {
 
-                    return 150
+                    return 220
 
                 } else {
 
@@ -321,7 +365,7 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
                 let imageCell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
 
-                imageCell.MedicalImage?.image = healthImage.image
+                imageCell.medicalImage?.image = healthImage.image
 
                 cell = imageCell
             }

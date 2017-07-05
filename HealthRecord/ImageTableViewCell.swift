@@ -10,12 +10,12 @@ import UIKit
 
 class ImageTableViewCell: UITableViewCell {
 
-    @IBOutlet var MedicalImage: UIImageView!
+    @IBOutlet var medicalImage: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        
+        medicalImage.isHidden = true
         // Initialization code
     }
 
@@ -25,4 +25,13 @@ class ImageTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+    override func showExtraContent() {
+
+        medicalImage.isHidden = false
+    }
+
+    override func hideExtraContent() {
+
+        medicalImage.isHidden = true
+    }
 }

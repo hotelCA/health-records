@@ -39,18 +39,17 @@ class DescriptionTableViewCell: UITableViewCell {
         tagsHorizontalStack.spacing = 5
         tagsHorizontalStack.distribution = .fillProportionally
         tagsHorizontalStack.alignment = .fill
-        tagsHorizontalStack.layer.isHidden = true
-
+        tagsHorizontalStack.isHidden = true
     }
 
     override func showExtraContent() {
 
-        tagsHorizontalStack.layer.isHidden = false
+        tagsHorizontalStack.isHidden = false
     }
 
     override func hideExtraContent() {
 
-        tagsHorizontalStack.layer.isHidden = true
+        tagsHorizontalStack.isHidden = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

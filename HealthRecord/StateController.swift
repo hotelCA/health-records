@@ -31,12 +31,12 @@ class StateController {
 
             if i % 2 == 0 {
 
-                newCondition = HealthDescription(timeOfDescription: Date(timeIntervalSinceNow: TimeInterval(3*index*OneMonth + i)), condition: ConditionEnum.pain)
+                newCondition = HealthDescription(timeOfDescription: Date(timeIntervalSince1970: TimeInterval(3*index*OneMonth + i)), condition: ConditionEnum.pain)
 
             } else {
 
                 let newImage = UIImage(named: "20160704_145508.jpg")
-                newCondition = HealthImage(timeOfImage: Date(timeIntervalSinceNow: TimeInterval(3*index*OneMonth + i)), image: newImage!)
+                newCondition = HealthImage(timeOfImage: Date(timeIntervalSince1970: TimeInterval(3*index*OneMonth + i)), image: newImage!)
             }
 
             healthRecords.append(newCondition)
