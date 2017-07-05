@@ -32,7 +32,7 @@ class ImageHandler: NSObject, UINavigationControllerDelegate, UIImagePickerContr
 
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
 
-            let healthImage: HealthImage = HealthImage(image: image)
+            let healthImage: HealthImage = HealthImage(timeOfImage: Date(), image: image)
 
             self.viewController.performSegue(withIdentifier: "toImageView", sender: healthImage)
         }

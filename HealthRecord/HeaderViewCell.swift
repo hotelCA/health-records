@@ -1,21 +1,19 @@
 //
-//  ImageTableViewCell.swift
+//  HeaderViewCell.swift
 //  HealthRecord
 //
-//  Created by Quoc Anh Tran on 6/20/17.
+//  Created by Quoc Anh Tran on 7/2/17.
 //  Copyright © 2017 hotelCA. All rights reserved.
 //
 
 import UIKit
 
-class ImageTableViewCell: UITableViewCell {
+class HeaderViewCell: UITableViewCell {
 
-    @IBOutlet var MedicalImage: UIImageView!
-
+    @IBOutlet var headerLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-
-        
         // Initialization code
     }
 

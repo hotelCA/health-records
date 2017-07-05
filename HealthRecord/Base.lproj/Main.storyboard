@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lpC-48-2kX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lpC-48-2kX">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,12 +22,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jtc-tm-K9U">
-                                <rect key="frame" x="67" y="69" width="240" height="282"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Jtc-tm-K9U">
+                                <rect key="frame" x="67.5" y="69" width="240" height="282"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="282" id="1dt-96-bpp"/>
+                                    <constraint firstAttribute="width" constant="240" id="g1O-j2-s1q"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Jtc-tm-K9U" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="87R-GP-x9s"/>
+                            <constraint firstItem="Jtc-tm-K9U" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="5" id="IFw-XO-h9r"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="ImageView" destination="Jtc-tm-K9U" id="FDo-md-gwO"/>
@@ -133,7 +140,7 @@
             </objects>
             <point key="canvasLocation" x="951" y="137"/>
         </scene>
-        <!--Healh Records-->
+        <!--Health Records-->
         <scene sceneID="fY0-qB-3JU">
             <objects>
                 <viewController id="gii-dh-wj7" customClass="TableViewController" customModule="HealthRecord" customModuleProvider="target" sceneMemberID="viewController">
@@ -145,54 +152,91 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="J3z-63-MfT">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="J3z-63-MfT">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="descriptionCell" rowHeight="63" id="II3-eq-Ss2" customClass="DescriptionTableViewCell" customModule="HealthRecord" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="63"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="headerCell" rowHeight="60" id="tQX-Sd-I5W" customClass="HeaderViewCell" customModule="HealthRecord" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="II3-eq-Ss2" id="uoi-FN-Jab">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="62.5"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tQX-Sd-I5W" id="DAX-L4-bT8">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rci-g6-VbI">
-                                                    <rect key="frame" x="8" y="8" width="359" height="46"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cHi-3d-xvO">
+                                                    <rect key="frame" x="8" y="8" width="359" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Rci-g6-VbI" firstAttribute="top" secondItem="uoi-FN-Jab" secondAttribute="topMargin" id="P6B-Qb-xro"/>
-                                                <constraint firstItem="Rci-g6-VbI" firstAttribute="trailing" secondItem="uoi-FN-Jab" secondAttribute="trailingMargin" id="jCU-6N-5ax"/>
-                                                <constraint firstItem="Rci-g6-VbI" firstAttribute="centerY" secondItem="uoi-FN-Jab" secondAttribute="centerY" id="mqD-hs-3xi"/>
-                                                <constraint firstItem="Rci-g6-VbI" firstAttribute="leading" secondItem="uoi-FN-Jab" secondAttribute="leadingMargin" id="tW3-gU-29a"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="MedicalDescriptionLabel" destination="Rci-g6-VbI" id="eqO-tl-gwe"/>
+                                            <outlet property="headerLabel" destination="cHi-3d-xvO" id="CRh-lU-pu6"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="imageCell" rowHeight="149" id="mJN-fp-n6j" customClass="ImageTableViewCell" customModule="HealthRecord" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="91" width="375" height="149"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="descriptionCell" rowHeight="120" id="II3-eq-Ss2" customClass="DescriptionTableViewCell" customModule="HealthRecord" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="88" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="II3-eq-Ss2" id="uoi-FN-Jab">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rci-g6-VbI">
+                                                    <rect key="frame" x="8" y="8" width="359" height="31"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="31" id="3qa-Ol-wIu"/>
+                                                        <constraint firstAttribute="width" constant="359" id="G7b-BR-1eP"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wmg-0c-iPC">
+                                                    <rect key="frame" x="8" y="73" width="359" height="38"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="359" id="FnY-UV-doU"/>
+                                                        <constraint firstAttribute="height" constant="38" id="pry-rV-oWX"/>
+                                                    </constraints>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Rci-g6-VbI" firstAttribute="leading" secondItem="uoi-FN-Jab" secondAttribute="leadingMargin" id="Bee-Tb-QNK"/>
+                                                <constraint firstItem="Rci-g6-VbI" firstAttribute="top" secondItem="uoi-FN-Jab" secondAttribute="topMargin" id="H89-xV-rEI"/>
+                                                <constraint firstItem="Wmg-0c-iPC" firstAttribute="leading" secondItem="uoi-FN-Jab" secondAttribute="leadingMargin" id="YWS-rj-qhc"/>
+                                                <constraint firstItem="Wmg-0c-iPC" firstAttribute="top" secondItem="Rci-g6-VbI" secondAttribute="bottom" constant="34" id="dQ3-lK-ypL"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.87536384633748843" green="1" blue="0.93864563087907116" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <outlet property="MedicalDescriptionLabel" destination="Rci-g6-VbI" id="eqO-tl-gwe"/>
+                                            <outlet property="stackViewWidth" destination="FnY-UV-doU" id="Md0-Uv-3MZ"/>
+                                            <outlet property="tagsHorizontalStack" destination="Wmg-0c-iPC" id="WPz-a7-qKr"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="imageCell" rowHeight="150" id="mJN-fp-n6j" customClass="ImageTableViewCell" customModule="HealthRecord" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="208" width="375" height="150"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mJN-fp-n6j" id="cd8-QQ-UwM">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="148.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="peW-7e-MWD">
-                                                    <rect key="frame" x="67" y="10" width="240" height="128"/>
+                                                    <rect key="frame" x="8" y="8" width="84" height="132"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="132" id="BnU-uB-wVF"/>
+                                                        <constraint firstAttribute="width" constant="84" id="ImZ-A2-mdi"/>
+                                                    </constraints>
                                                 </imageView>
                                             </subviews>
+                                            <color key="backgroundColor" red="1" green="0.94073433669999995" blue="0.7550243163" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
-                                                <constraint firstItem="peW-7e-MWD" firstAttribute="centerY" secondItem="cd8-QQ-UwM" secondAttribute="centerY" id="Hme-6K-6Mt"/>
-                                                <constraint firstItem="peW-7e-MWD" firstAttribute="centerX" secondItem="cd8-QQ-UwM" secondAttribute="centerX" id="eNp-fE-bpH"/>
-                                                <constraint firstItem="peW-7e-MWD" firstAttribute="leading" secondItem="cd8-QQ-UwM" secondAttribute="leadingMargin" constant="59" id="v6t-Wc-lfr"/>
-                                                <constraint firstItem="peW-7e-MWD" firstAttribute="top" secondItem="cd8-QQ-UwM" secondAttribute="topMargin" constant="2" id="zRm-tT-eye"/>
+                                                <constraint firstItem="peW-7e-MWD" firstAttribute="leading" secondItem="cd8-QQ-UwM" secondAttribute="leadingMargin" id="4re-8C-Fmf"/>
+                                                <constraint firstItem="peW-7e-MWD" firstAttribute="top" secondItem="cd8-QQ-UwM" secondAttribute="topMargin" id="fft-dR-1rT"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" red="1" green="0.91290969715295023" blue="0.91979510563423594" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <outlet property="MedicalImage" destination="peW-7e-MWD" id="d0O-0g-VQy"/>
                                         </connections>
@@ -205,9 +249,15 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="J3z-63-MfT" secondAttribute="bottom" id="IrC-fH-4T0"/>
+                            <constraint firstAttribute="trailing" secondItem="J3z-63-MfT" secondAttribute="trailing" id="UzC-an-amk"/>
+                            <constraint firstItem="J3z-63-MfT" firstAttribute="top" secondItem="DgK-Bi-HvI" secondAttribute="top" id="rQ4-ds-ePm"/>
+                            <constraint firstItem="J3z-63-MfT" firstAttribute="leading" secondItem="DgK-Bi-HvI" secondAttribute="leading" id="xIH-dy-nCA"/>
+                        </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Healh Records" id="Rh9-yI-9CB">
+                    <navigationItem key="navigationItem" title="Health Records" id="Rh9-yI-9CB">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="cVM-vo-Qlo">
                             <connections>
                                 <action selector="AddButtonPressed:" destination="gii-dh-wj7" id="c40-ue-RUb"/>
@@ -222,7 +272,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rsK-31-wg9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1726" y="136"/>
+            <point key="canvasLocation" x="1725.5999999999999" y="135.38230884557723"/>
         </scene>
     </scenes>
 </document>

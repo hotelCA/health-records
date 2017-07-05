@@ -6,7 +6,7 @@
 //  Copyright © 2017 hotelCA. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class StateController {
 
@@ -24,11 +24,22 @@ class StateController {
 
     func loadHealthRecord() {
 
-        for i in 1..<80 {
+        for i in 12..<80 {
 
             var index = i / 4
+            var newCondition: HealthCondition!
 
-            healthRecords.append(HealthCondition(timeOfCondition: Date(timeIntervalSinceNow: TimeInterval(3*index*OneMonth + i)), condition: ConditionEnum.pain))
+            if i % 2 == 0 {
+
+                newCondition = HealthDescription(timeOfDescription: Date(timeIntervalSinceNow: TimeInterval(3*index*OneMonth + i)), condition: ConditionEnum.pain)
+
+            } else {
+
+                let newImage = UIImage(named: "20160704_145508.jpg")
+                newCondition = HealthImage(timeOfImage: Date(timeIntervalSinceNow: TimeInterval(3*index*OneMonth + i)), image: newImage!)
+            }
+
+            healthRecords.append(newCondition)
         }
     }
 
