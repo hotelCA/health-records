@@ -10,14 +10,16 @@ import UIKit
 
 class TableViewDataSource: NSObject {
 
-    var healthRecords: [HealthCondition]!
+    var stateController: StateController!
 
     var shownCells = [Any]()
 
-    init(healthRecords: [HealthCondition]) {
+    var tableView: UITableView!
+
+    init(stateController: StateController) {
         super.init()
 
-        self.healthRecords = healthRecords
+        self.stateController = stateController
         initShownCells()
         printShownCells()
     }
@@ -27,7 +29,7 @@ class TableViewDataSource: NSObject {
         let calendarComponentFlags: Set<Calendar.Component> = [.year]
         var prevDateComponents: DateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: Date(timeIntervalSince1970: 0))
 
-        for (index, healthRecord) in healthRecords.enumerated().reversed() {
+        for (index, healthRecord) in stateController.healthRecords.enumerated().reversed() {
 
             let dateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: healthRecord.date!)
 
@@ -42,11 +44,11 @@ class TableViewDataSource: NSObject {
         self.expandMostRecentDay()
     }
 
-    func expandMostRecentYear() -> Bool {
+    func expandMostRecentYear() -> Int {
 
         guard shownCells.count > 0 else {
 
-            return false
+            return -1
         }
 
         if let yearHeader = shownCells[0] as? YearHeaderCell {
@@ -56,17 +58,22 @@ class TableViewDataSource: NSObject {
                 yearHeader.days = self.insertDayHeaders(atSourceIndex: yearHeader.indexOfSource, atIndex: 1)
 
                 yearHeader.isExpanded = true
+
+                return yearHeader.days
+
+            } else {
+
+                return 0
             }
 
-            return true
         }
 
-        return false
+        return -1
     }
 
-    func expandMostRecentDay() -> Bool {
+    func expandMostRecentDay() -> Int {
 
-        if self.expandMostRecentYear() {
+        if self.expandMostRecentYear() >= 0 {
 
             if let dayHeader = shownCells[1] as? DayHeaderCell {
 
@@ -75,13 +82,15 @@ class TableViewDataSource: NSObject {
                     dayHeader.entries = self.insertContentCells(atSourceIndex: dayHeader.indexOfSource, atIndex: 2)
 
                     dayHeader.isExpanded = true
+
+                    return dayHeader.entries
                 }
 
-                return true
+                return 0
             }
         }
 
-        return false
+        return -1
     }
 
     // TODO: Write test case for this
@@ -123,12 +132,12 @@ class TableViewDataSource: NSObject {
 
         // atIndex will probably be out of bounds if called from last cell. But Swift will take care of that :))
         var rowsAdded = 0
-        let targetYear = Calendar.current.dateComponents([.year], from: healthRecords[atSourceIndex].date!)
+        let targetYear = Calendar.current.dateComponents([.year], from: stateController.healthRecords[atSourceIndex].date!)
 
         let calendarComponentFlags: Set<Calendar.Component> = [.year, .day]
         var prevDateComponents: DateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: Date(timeIntervalSince1970: 0))
 
-        for (i, healthRecord) in healthRecords.enumerated().dropLast(healthRecords.count - atSourceIndex - 1).reversed() {
+        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - atSourceIndex - 1).reversed() {
 
             let dateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: healthRecord.date!)
 
@@ -171,9 +180,9 @@ class TableViewDataSource: NSObject {
         var rowsAdded = 0
 
         let calendarComponentFlags: Set<Calendar.Component> = [.year, .month, .day]
-        let targetDateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: healthRecords[atSourceIndex].date!)
+        let targetDateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: stateController.healthRecords[atSourceIndex].date!)
 
-        for (i, healthRecord) in healthRecords.enumerated().dropLast(healthRecords.count - atSourceIndex - 1).reversed() {
+        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - atSourceIndex - 1).reversed() {
 
             let dateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: healthRecord.date!)
 
@@ -181,7 +190,7 @@ class TableViewDataSource: NSObject {
                 dateComponents.month == targetDateComponents.month,
                 dateComponents.day == targetDateComponents.day else {
 
-                    break
+                break
             }
 
             shownCells.insert(ContentCell(healthCondition: healthRecord,indexOfSource: i), at: atIndex + rowsAdded)
@@ -228,7 +237,7 @@ class TableViewDataSource: NSObject {
 
     func removeHealthRecord(at index: Int) {
 
-        healthRecords.remove(at: index)
+        stateController.healthRecords.remove(at: index)
     }
 
     func decrementIndicesOfSource(endingAt endIndex: Int) {
@@ -277,6 +286,94 @@ class TableViewDataSource: NSObject {
         yearHeaderCell.days = yearHeaderCell.days - 1
         
         return indexOfYearHeader
+    }
+
+    func addNewEntry(newEntry: HealthCondition) {
+
+        // There should be three cases at this point:
+        //
+        // 1 - Health Record is empty, so this is the very first entry
+        //
+        // 2 - There is some old data, but this new entry is for a different date,
+        //     so new headers need to be created
+        //
+        // 3 - There is some old data, and this new entry is for the same day as the
+        //     most recent entry
+
+        var rowsAdded = 1
+        var addedAtIndex = 0
+
+        if shownCells.count == 0 {
+
+            self.initShownCells()
+
+        } else {
+
+            let calendarComponentFlags: Set<Calendar.Component> = [.year, .month, .day]
+            let newDateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: newEntry.date!)
+
+            let mostRecentEntry = shownCells[0] as! YearHeaderCell
+            let mostRecentDateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: stateController.healthRecords[mostRecentEntry.indexOfSource].date!)
+
+            let indexOfSource = stateController.healthRecords.count - 1
+
+            if isANewDate(prevDate: mostRecentDateComponents, currentDate: newDateComponents, inTermsOf: DateComponent.year) {
+
+                shownCells.insert(YearHeaderCell(indexOfSource: indexOfSource), at: 0)
+                shownCells.insert(DayHeaderCell(indexOfSource: indexOfSource), at: 1)
+                shownCells.insert(ContentCell(healthCondition: newEntry, indexOfSource: indexOfSource), at: 2)
+
+                let yearHeader = shownCells[0] as! YearHeaderCell
+                yearHeader.days = yearHeader.days + 1
+                yearHeader.isExpanded = true
+
+                rowsAdded += 2
+
+            } else if isANewDate(prevDate: mostRecentDateComponents, currentDate: newDateComponents, inTermsOf: DateComponent.day) {
+
+                rowsAdded += self.expandMostRecentYear()
+
+                shownCells.insert(DayHeaderCell(indexOfSource: indexOfSource), at: 1)
+                shownCells.insert(ContentCell(healthCondition: newEntry, indexOfSource: indexOfSource), at: 2)
+
+                let yearHeader = shownCells[0] as! YearHeaderCell
+                yearHeader.days = yearHeader.days + 1
+                yearHeader.isExpanded = true
+                yearHeader.indexOfSource = yearHeader.indexOfSource + 1
+
+                rowsAdded += 1
+
+            } else {
+
+                print("The same day")
+                rowsAdded += self.expandMostRecentDay()
+                print("rows added \(rowsAdded)")
+
+                shownCells.insert(ContentCell(healthCondition: newEntry, indexOfSource: indexOfSource), at: 2)
+
+                let yearHeader = shownCells[0] as! YearHeaderCell
+                yearHeader.indexOfSource = yearHeader.indexOfSource + 1
+
+                let dayHeader = shownCells[1] as! DayHeaderCell
+                dayHeader.indexOfSource = dayHeader.indexOfSource + 1
+
+                printShownCells()
+            }
+
+            let dayHeader = shownCells[1] as! DayHeaderCell
+            dayHeader.entries = dayHeader.entries + 1
+            dayHeader.isExpanded = true
+        }
+
+        var indexPaths = [IndexPath]()
+
+        for i in 0..<rowsAdded {
+
+            indexPaths.append(IndexPath(row: i, section: 0))
+        }
+
+        tableView.reloadData()
+
     }
 }
 
@@ -339,7 +436,7 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
             let yearCell = tableView.dequeueReusableCell(withIdentifier: "headerCell", for: indexPath) as! HeaderViewCell
 
-            yearCell.headerLabel?.text = "Year: \(healthRecords[yearHeaderCell.indexOfSource!].date!)"
+            yearCell.headerLabel?.text = "Year: \(stateController.healthRecords[yearHeaderCell.indexOfSource!].date!)"
 
             cell = yearCell
 
@@ -347,7 +444,7 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
             let dayCell = tableView.dequeueReusableCell(withIdentifier: "headerCell", for: indexPath) as! HeaderViewCell
 
-            dayCell.headerLabel?.text = "Day: \(healthRecords[dayHeaderCell.indexOfSource!].date!)"
+            dayCell.headerLabel?.text = "Day: \(stateController.healthRecords[dayHeaderCell.indexOfSource!].date!)"
 
             cell = dayCell
 
@@ -528,11 +625,15 @@ extension TableViewDataSource {
 
             if let yearHeaderCell = shownCells[i] as? YearHeaderCell {
 
-                print("Year: \(healthRecords[yearHeaderCell.indexOfSource!].date)")
+                print("Year: \(stateController.healthRecords[yearHeaderCell.indexOfSource!].date!)")
 
             } else if let dayHeaderCell = shownCells[i] as? DayHeaderCell {
 
-                print("Day: \(healthRecords[dayHeaderCell.indexOfSource!].date!)")
+                print("Day: \(stateController.healthRecords[dayHeaderCell.indexOfSource!].date!)")
+
+            } else if let contentCell = shownCells[i] as? ContentCell {
+
+                print("Content: \(stateController.healthRecords[contentCell.indexOfSource!].date!)")
             }
         }
     }

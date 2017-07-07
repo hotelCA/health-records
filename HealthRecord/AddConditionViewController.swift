@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol AddConditionViewControllerDelegate {
+
+    func createNewHealthDescription(healthDescription: HealthDescription)
+}
+
 class AddConditionViewController: UIViewController {
 
     @IBOutlet var conditionSegment: UISegmentedControl!
@@ -15,17 +20,18 @@ class AddConditionViewController: UIViewController {
     @IBOutlet var locationSegment: UISegmentedControl!
     @IBOutlet var descriptionTextField: UITextField!
 
+    var delegate: AddConditionViewControllerDelegate!
+
     @IBAction func submitConditionButtonPressed(_ sender: UIButton) {
 
+        
         // Nothing to do here so far
     }
 
-//    func getCondition() -> HealthCondition {
-//
-//        let conditionAndLocation: HealthCondition = HealthCondition(condition: conditionSegment.selectedSegmentIndex, degree: degreeSegment.selectedSegmentIndex, location: locationSegment.selectedSegmentIndex, description: descriptionTextField.text)
-//
-//        return conditionAndLocation
-//    }
+    func getNewCondition() -> HealthDescription {
+
+        return HealthDescription(timeOfDescription: Date(), condition: ConditionEnum(rawValue: conditionSegment.selectedSegmentIndex)!)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

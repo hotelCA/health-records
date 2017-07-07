@@ -27,10 +27,11 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
-        tableViewDataSource = TableViewDataSource(healthRecords: stateController.healthRecords)
+        tableViewDataSource = TableViewDataSource(stateController: stateController)
 
         tableView.dataSource = tableViewDataSource
         tableView.delegate = tableViewDataSource
+        tableViewDataSource.tableView = tableView
         tableView.reloadData()
 
         imageHandler = ImageHandler(viewController: self)
@@ -57,11 +58,11 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
         if let source = unwindSegue.source as? AddConditionViewController {
 
-//            let healthCondition: HealthCondition = source.getCondition()
-//            print("unwind condition: \(healthCondition.condition)")
-//            print("unwind degree: \(healthCondition.degree)")
-//            print("unwind location: \(healthCondition.location)")
-//            print("unwind description: \(healthCondition.description)")
+            let healthDescription = source.getNewCondition()
+
+            stateController.healthRecords.append(healthDescription)
+            print(stateController.healthRecords.last!.date!)
+            tableViewDataSource.addNewEntry(newEntry: healthDescription)
         }
     }
 
@@ -114,6 +115,7 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
         } else if segue.identifier == "toConditionPicker" {
 
             if let destination = segue.destination as? AddConditionViewController {
+
 
             }
         }

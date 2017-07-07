@@ -108,7 +108,7 @@ enum DateComponent {
     case year
 }
 
-enum ConditionEnum {
+enum ConditionEnum: Int {
 
     case pain
     case itch
