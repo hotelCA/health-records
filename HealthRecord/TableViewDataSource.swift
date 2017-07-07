@@ -52,7 +52,7 @@ class TableViewDataSource: NSObject {
 
             if !yearHeader.isExpanded {
 
-                yearHeader.days = insertDayHeaders(atSourceIndex: yearHeader.indexOfSource, atIndex: 1)
+                yearHeader.days = insertDayHeaders(forYearHeader: 0)
 
                 yearHeader.isExpanded = true
 
@@ -76,7 +76,7 @@ class TableViewDataSource: NSObject {
 
                 if !dayHeader.isExpanded {
 
-                    dayHeader.entries = insertContentCells(atSourceIndex: dayHeader.indexOfSource, atIndex: 2)
+                    dayHeader.entries = insertContentCells(forDayHeader: 1)
 
                     dayHeader.isExpanded = true
 
@@ -129,14 +129,15 @@ class TableViewDataSource: NSObject {
         return false
     }
 
-    func insertDayHeaders(atSourceIndex: Int, atIndex: Int) -> Int {
+    func insertDayHeaders(forYearHeader indexOfYearHeader: Int) -> Int {
 
         // atIndex will probably be out of bounds if called from last cell. But Swift will take care of that :))
+        let indexOfSource = (shownCells[indexOfYearHeader] as! YearHeaderCell).indexOfSource!
         var rowsAdded = 0
-        let targetDate = stateController.healthRecords[atSourceIndex].date!
+        let targetDate = stateController.healthRecords[indexOfSource].date!
         var prevDate = Date(timeIntervalSince1970: 0)
 
-        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - atSourceIndex - 1).reversed() {
+        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - indexOfSource - 1).reversed() {
 
             guard !areDatesDifferent(prevDate: targetDate, currentDate: healthRecord.date!, inTermsOf: .year) else {
 
@@ -145,7 +146,7 @@ class TableViewDataSource: NSObject {
 
             if areDatesDifferent(prevDate: prevDate, currentDate: healthRecord.date!, inTermsOf: .day) {
 
-                shownCells.insert(DayHeaderCell(indexOfSource: i), at: atIndex + rowsAdded)
+                shownCells.insert(DayHeaderCell(indexOfSource: i, indexOfYearHeader: indexOfYearHeader), at: indexOfYearHeader + 1 + rowsAdded)
                 rowsAdded += 1
             }
 
@@ -170,16 +171,16 @@ class TableViewDataSource: NSObject {
         return rows
     }
 
-    func insertContentCells(atSourceIndex: Int, atIndex: Int) -> Int {
+    func insertContentCells(forDayHeader indexOfDayHeader: Int) -> Int {
 
         // atIndex will probably be out of bounds if called from last cell. But Swift will take care of that :))
-//        print("atSource: \(atSourceIndex), atIndex: \(atIndex)")
+        let indexOfSource = (shownCells[indexOfDayHeader] as! DayHeaderCell).indexOfSource!
         var rowsAdded = 0
 
         let calendarComponentFlags: Set<Calendar.Component> = [.year, .month, .day]
-        let targetDateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: stateController.healthRecords[atSourceIndex].date!)
+        let targetDateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: stateController.healthRecords[indexOfSource].date!)
 
-        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - atSourceIndex - 1).reversed() {
+        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - indexOfSource - 1).reversed() {
 
             let dateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: healthRecord.date!)
 
@@ -190,9 +191,8 @@ class TableViewDataSource: NSObject {
                 break
             }
 
-            shownCells.insert(ContentCell(healthCondition: healthRecord,indexOfSource: i), at: atIndex + rowsAdded)
+            shownCells.insert(ContentCell(indexOfSource: i, indexOfDayHeader: indexOfDayHeader), at: indexOfDayHeader + 1 + rowsAdded)
 
-//            print("date of inserted cell: \(healthRecord.date!)")
             rowsAdded += 1
         }
         
@@ -311,8 +311,8 @@ class TableViewDataSource: NSObject {
             if areDatesDifferent(prevDate: mostRecentDate, currentDate: newEntry.date!, inTermsOf: DateComponent.year) {
 
                 shownCells.insert(YearHeaderCell(indexOfSource: indexOfSource), at: 0)
-                shownCells.insert(DayHeaderCell(indexOfSource: indexOfSource), at: 1)
-                shownCells.insert(ContentCell(healthCondition: newEntry, indexOfSource: indexOfSource), at: 2)
+                shownCells.insert(DayHeaderCell(indexOfSource: indexOfSource, indexOfYearHeader: 0), at: 1)
+                shownCells.insert(ContentCell(indexOfSource: indexOfSource, indexOfDayHeader: 1), at: 2)
 
                 let yearHeader = shownCells[0] as! YearHeaderCell
                 yearHeader.days = yearHeader.days + 1
@@ -324,8 +324,8 @@ class TableViewDataSource: NSObject {
 
                 rowsAdded += expandMostRecentYear()
 
-                shownCells.insert(DayHeaderCell(indexOfSource: indexOfSource), at: 1)
-                shownCells.insert(ContentCell(healthCondition: newEntry, indexOfSource: indexOfSource), at: 2)
+                shownCells.insert(DayHeaderCell(indexOfSource: indexOfSource, indexOfYearHeader: 0), at: 1)
+                shownCells.insert(ContentCell(indexOfSource: indexOfSource, indexOfDayHeader: 1), at: 2)
 
                 let yearHeader = shownCells[0] as! YearHeaderCell
                 yearHeader.days = yearHeader.days + 1
@@ -338,7 +338,7 @@ class TableViewDataSource: NSObject {
 
                 rowsAdded += expandMostRecentDay()
 
-                shownCells.insert(ContentCell(healthCondition: newEntry, indexOfSource: indexOfSource), at: 2)
+                shownCells.insert(ContentCell(indexOfSource: indexOfSource, indexOfDayHeader: 1), at: 2)
 
                 let yearHeader = shownCells[0] as! YearHeaderCell
                 yearHeader.indexOfSource = yearHeader.indexOfSource + 1
@@ -382,7 +382,7 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
         if let contentCell = shownCells[indexPath.row] as? ContentCell {
 
-            if let healthImageCell = contentCell.healthCondition as? HealthImage {
+            if stateController.healthRecords[contentCell.indexOfSource!] is HealthImage {
 
                 if contentCell.isExpanded {
 
@@ -393,7 +393,7 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
                     return 60
                 }
 
-            } else if let healthDescriptionCell = contentCell.healthCondition as? HealthDescription{
+            } else if stateController.healthRecords[contentCell.indexOfSource!] is HealthDescription {
 
                 if contentCell.isExpanded {
 
@@ -439,7 +439,9 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
         } else if let contentCell = shownCells[indexPath.row] as? ContentCell {
 
-            if let healthDescription = contentCell.healthCondition as? HealthDescription {
+            let healthCondition = stateController.healthRecords[contentCell.indexOfSource!]
+
+            if let healthDescription = healthCondition as? HealthDescription {
 
                 let descriptionCell = tableView.dequeueReusableCell(withIdentifier: "descriptionCell", for: indexPath) as! DescriptionTableViewCell
 
@@ -447,7 +449,7 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
                 cell = descriptionCell
 
-            } else if let healthImage = contentCell.healthCondition as? HealthImage {
+            } else if let healthImage = healthCondition as? HealthImage {
 
                 let imageCell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
 
@@ -474,7 +476,7 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
                 yearHeaderCell.isExpanded = true
 
-                yearHeaderCell.days = insertDayHeaders(atSourceIndex: yearHeaderCell.indexOfSource!, atIndex: indexPath.row + 1)
+                yearHeaderCell.days = insertDayHeaders(forYearHeader: indexPath.row)
 
                 rowsToAddOrRemove = yearHeaderCell.days!
                 addingRows = true
@@ -495,7 +497,7 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
                 dayHeaderCell.isExpanded = true
 
-                dayHeaderCell.entries = insertContentCells(atSourceIndex: dayHeaderCell.indexOfSource!, atIndex: indexPath.row + 1)
+                dayHeaderCell.entries = insertContentCells(forDayHeader: indexPath.row)
 
                 rowsToAddOrRemove = dayHeaderCell.entries!
                 addingRows = true

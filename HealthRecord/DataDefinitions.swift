@@ -49,9 +49,10 @@ class VisibleCell {
     var isExpanded: Bool
     var indexOfSource: Int!
 
-    init() {
+    init(indexOfSource: Int) {
 
         self.isExpanded = false
+        self.indexOfSource = indexOfSource
     }
 
     func showExtraContent() {
@@ -69,10 +70,9 @@ class YearHeaderCell: VisibleCell {
 
     var days: Int!
 
-    init(indexOfSource: Int) {
-        super.init()
+    override init(indexOfSource: Int) {
+        super.init(indexOfSource: indexOfSource)
 
-        self.indexOfSource = indexOfSource
         self.days = 0
     }
 }
@@ -80,24 +80,24 @@ class YearHeaderCell: VisibleCell {
 class DayHeaderCell: VisibleCell {
 
     var entries: Int!
+    var indexOfYearHeader: Int!
 
-    init(indexOfSource: Int) {
-        super.init()
+    init(indexOfSource: Int, indexOfYearHeader: Int) {
+        super.init(indexOfSource: indexOfSource)
 
-        self.indexOfSource = indexOfSource
+        self.indexOfYearHeader = indexOfYearHeader
         self.entries = 0
     }
 }
 
 class ContentCell: VisibleCell {
 
-    var healthCondition: HealthCondition!
+    var indexOfDayHeader: Int!
 
-    init(healthCondition: HealthCondition, indexOfSource: Int) {
-        super.init()
+    init(indexOfSource: Int, indexOfDayHeader: Int) {
+        super.init(indexOfSource: indexOfSource)
 
-        self.indexOfSource = indexOfSource
-        self.healthCondition = healthCondition
+        self.indexOfDayHeader = indexOfDayHeader
     }
 }
 
