@@ -205,26 +205,27 @@ class TableViewDataSource: NSObject {
 
         removeHealthRecord(at: removedItem.indexOfSource!)
         adjustIndicesOfSource(endingAt: row, by: -1)
-        var indexPathsToRemove = removeHeadersIfNeeded(forContentRow: row)
+        var indexPathsToRemove = removeHeadersIfNeeded(startAtDayHeader: removedItem.indexOfDayHeader!)
         indexPathsToRemove.append(IndexPath(row: row, section: 0))
 
         return indexPathsToRemove
     }
 
-    func removeHeadersIfNeeded(forContentRow indexOfContentRow: Int) -> [IndexPath] {
+    func removeHeadersIfNeeded(startAtDayHeader indexOfDayHeader: Int) -> [IndexPath] {
 
         var indexPathsToRemove = [IndexPath]()
 
-        let indexOfDayHeader = decrementContentCellCountInHeader(from: indexOfContentRow - 1)
         let dayHeaderCell = shownCells[indexOfDayHeader] as! DayHeaderCell
+        dayHeaderCell.entries = dayHeaderCell.entries - 1
 
         if dayHeaderCell.entries == 0 {
 
             shownCells.remove(at: indexOfDayHeader)
             indexPathsToRemove.append(IndexPath(row: indexOfDayHeader, section: 0))
 
-            let indexOfYearHeader = decrementDayHeaderCountInYearHeader(from: indexOfDayHeader - 1)
+            let indexOfYearHeader = (shownCells[indexOfDayHeader] as! DayHeaderCell).indexOfYearHeader!
             let yearHeaderCell = shownCells[indexOfYearHeader] as! YearHeaderCell
+            yearHeaderCell.days = yearHeaderCell.days - 1
 
             if yearHeaderCell.days == 0 {
 
@@ -249,38 +250,6 @@ class TableViewDataSource: NSObject {
 
             shownCell.indexOfSource = shownCell.indexOfSource + by
         }
-    }
-
-    func decrementContentCellCountInHeader(from index: Int) -> Int {
-
-        var indexOfDayHeader = index
-
-        while !(shownCells[indexOfDayHeader] is DayHeaderCell) {
-
-            indexOfDayHeader -= 1
-        }
-
-        let dayHeaderCell = shownCells[indexOfDayHeader] as! DayHeaderCell
-
-        dayHeaderCell.entries = dayHeaderCell.entries - 1
-
-        return indexOfDayHeader
-    }
-
-    func decrementDayHeaderCountInYearHeader(from index: Int) -> Int {
-
-        var indexOfYearHeader = index
-
-        while !(shownCells[indexOfYearHeader] is YearHeaderCell) {
-
-            indexOfYearHeader -= 1
-        }
-
-        let yearHeaderCell = shownCells[indexOfYearHeader] as! YearHeaderCell
-
-        yearHeaderCell.days = yearHeaderCell.days - 1
-        
-        return indexOfYearHeader
     }
 
     func addNewEntry(newEntry: HealthCondition) {
