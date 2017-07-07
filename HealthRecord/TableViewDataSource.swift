@@ -199,37 +199,41 @@ class TableViewDataSource: NSObject {
         return rowsAdded
     }
 
-    func deleteRowsForContentRow(atIndex index: Int) -> [IndexPath] {
+    func deleteContentRow(atIndex row: Int) -> [IndexPath] {
 
-        var indexPaths = [IndexPath(row: index, section: 0)]
-
-        let removedItem = shownCells.remove(at: index) as! ContentCell
+        let removedItem = shownCells.remove(at: row) as! ContentCell
 
         removeHealthRecord(at: removedItem.indexOfSource!)
-        decrementIndicesOfSource(endingAt: index)
+        adjustIndicesOfSource(endingAt: row, by: -1)
+        var indexPathsToRemove = removeHeadersIfNeeded(forContentRow: row)
+        indexPathsToRemove.append(IndexPath(row: row, section: 0))
 
-        let indexOfDayHeader = decrementContentCellCountInHeader(from: index - 1)
+        return indexPathsToRemove
+    }
+
+    func removeHeadersIfNeeded(forContentRow indexOfContentRow: Int) -> [IndexPath] {
+
+        var indexPathsToRemove = [IndexPath]()
+
+        let indexOfDayHeader = decrementContentCellCountInHeader(from: indexOfContentRow - 1)
         let dayHeaderCell = shownCells[indexOfDayHeader] as! DayHeaderCell
 
         if dayHeaderCell.entries == 0 {
 
-            removeHeader(at: indexOfDayHeader)
-            indexPaths.append(IndexPath(row: indexOfDayHeader, section: 0))
-            print("remove day header")
+            shownCells.remove(at: indexOfDayHeader)
+            indexPathsToRemove.append(IndexPath(row: indexOfDayHeader, section: 0))
 
             let indexOfYearHeader = decrementDayHeaderCountInYearHeader(from: indexOfDayHeader - 1)
-
             let yearHeaderCell = shownCells[indexOfYearHeader] as! YearHeaderCell
 
             if yearHeaderCell.days == 0 {
 
-                removeHeader(at: indexOfYearHeader)
-                indexPaths.append(IndexPath(row: indexOfYearHeader, section: 0))
-                print("remove year header")
+                shownCells.remove(at: indexOfYearHeader)
+                indexPathsToRemove.append(IndexPath(row: indexOfYearHeader, section: 0))
             }
         }
 
-        return indexPaths
+        return indexPathsToRemove
     }
 
     func removeHealthRecord(at index: Int) {
@@ -237,14 +241,13 @@ class TableViewDataSource: NSObject {
         stateController.healthRecords.remove(at: index)
     }
 
-    func decrementIndicesOfSource(endingAt endIndex: Int) {
+    func adjustIndicesOfSource(endingAt endRow: Int, by: Int) {
 
-        for i in 0..<endIndex {
+        for i in 0..<endRow {
 
-            if let contentCell = shownCells[i] as? VisibleCell {
+            let shownCell = shownCells[i] as! VisibleCell
 
-                contentCell.indexOfSource = contentCell.indexOfSource - 1
-            }
+            shownCell.indexOfSource = shownCell.indexOfSource + by
         }
     }
 
@@ -262,11 +265,6 @@ class TableViewDataSource: NSObject {
         dayHeaderCell.entries = dayHeaderCell.entries - 1
 
         return indexOfDayHeader
-    }
-
-    func removeHeader(at index: Int) {
-
-        shownCells.remove(at: index)
     }
 
     func decrementDayHeaderCountInYearHeader(from index: Int) -> Int {
@@ -595,7 +593,7 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { action, index in
 
-            let indexPaths = self.deleteRowsForContentRow(atIndex: indexPath.row)
+            let indexPaths = self.deleteContentRow(atIndex: indexPath.row)
 
             tableView.beginUpdates()
             tableView.deleteRows(at: indexPaths, with: .fade)
