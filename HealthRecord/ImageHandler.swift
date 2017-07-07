@@ -25,7 +25,7 @@ class ImageHandler: NSObject, UINavigationControllerDelegate, UIImagePickerContr
         imagePickerController.allowsEditing = false
         imagePickerController.delegate = self
 
-        self.viewController.present(imagePickerController, animated: true, completion: nil)
+        viewController.present(imagePickerController, animated: true, completion: nil)
     }
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
@@ -34,10 +34,10 @@ class ImageHandler: NSObject, UINavigationControllerDelegate, UIImagePickerContr
 
             let healthImage: HealthImage = HealthImage(timeOfImage: Date(), image: image)
 
-            self.viewController.performSegue(withIdentifier: "toImageView", sender: healthImage)
+            viewController.performSegue(withIdentifier: "toImageView", sender: healthImage)
         }
 
-        self.viewController.dismiss(animated: true, completion: nil)
+        viewController.dismiss(animated: true, completion: nil)
     }
 
 }

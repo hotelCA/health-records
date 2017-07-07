@@ -72,7 +72,7 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
         createAndAddActionsToActionSheet(actionSheet: actionSheet)
         
-        self.present(actionSheet, animated: true, completion: nil)
+        present(actionSheet, animated: true, completion: nil)
     }
 
     func createAndAddActionsToActionSheet (actionSheet: UIAlertController) {

@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.imageView.image = self.healthImage?.image
+        imageView.image = healthImage?.image
     }
 
     override func didReceiveMemoryWarning() {

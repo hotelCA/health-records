@@ -41,7 +41,7 @@ class TableViewDataSource: NSObject {
             }
         }
 
-        self.expandMostRecentDay()
+        expandMostRecentDay()
     }
 
     func expandMostRecentYear() -> Int {
@@ -55,7 +55,7 @@ class TableViewDataSource: NSObject {
 
             if !yearHeader.isExpanded {
 
-                yearHeader.days = self.insertDayHeaders(atSourceIndex: yearHeader.indexOfSource, atIndex: 1)
+                yearHeader.days = insertDayHeaders(atSourceIndex: yearHeader.indexOfSource, atIndex: 1)
 
                 yearHeader.isExpanded = true
 
@@ -73,13 +73,13 @@ class TableViewDataSource: NSObject {
 
     func expandMostRecentDay() -> Int {
 
-        if self.expandMostRecentYear() >= 0 {
+        if expandMostRecentYear() >= 0 {
 
             if let dayHeader = shownCells[1] as? DayHeaderCell {
 
                 if !dayHeader.isExpanded {
 
-                    dayHeader.entries = self.insertContentCells(atSourceIndex: dayHeader.indexOfSource, atIndex: 2)
+                    dayHeader.entries = insertContentCells(atSourceIndex: dayHeader.indexOfSource, atIndex: 2)
 
                     dayHeader.isExpanded = true
 
@@ -208,25 +208,25 @@ class TableViewDataSource: NSObject {
 
         let removedItem = shownCells.remove(at: index) as! ContentCell
 
-        self.removeHealthRecord(at: removedItem.indexOfSource!)
-        self.decrementIndicesOfSource(endingAt: index)
+        removeHealthRecord(at: removedItem.indexOfSource!)
+        decrementIndicesOfSource(endingAt: index)
 
-        let indexOfDayHeader = self.decrementContentCellCountInHeader(from: index - 1)
+        let indexOfDayHeader = decrementContentCellCountInHeader(from: index - 1)
         let dayHeaderCell = shownCells[indexOfDayHeader] as! DayHeaderCell
 
         if dayHeaderCell.entries == 0 {
 
-            self.removeHeader(at: indexOfDayHeader)
+            removeHeader(at: indexOfDayHeader)
             indexPaths.append(IndexPath(row: indexOfDayHeader, section: 0))
             print("remove day header")
 
-            let indexOfYearHeader = self.decrementDayHeaderCountInYearHeader(from: indexOfDayHeader - 1)
+            let indexOfYearHeader = decrementDayHeaderCountInYearHeader(from: indexOfDayHeader - 1)
 
             let yearHeaderCell = shownCells[indexOfYearHeader] as! YearHeaderCell
 
             if yearHeaderCell.days == 0 {
 
-                self.removeHeader(at: indexOfYearHeader)
+                removeHeader(at: indexOfYearHeader)
                 indexPaths.append(IndexPath(row: indexOfYearHeader, section: 0))
                 print("remove year header")
             }
@@ -305,7 +305,7 @@ class TableViewDataSource: NSObject {
 
         if shownCells.count == 0 {
 
-            self.initShownCells()
+            initShownCells()
 
         } else {
 
@@ -331,7 +331,7 @@ class TableViewDataSource: NSObject {
 
             } else if isANewDate(prevDate: mostRecentDateComponents, currentDate: newDateComponents, inTermsOf: DateComponent.day) {
 
-                rowsAdded += self.expandMostRecentYear()
+                rowsAdded += expandMostRecentYear()
 
                 shownCells.insert(DayHeaderCell(indexOfSource: indexOfSource), at: 1)
                 shownCells.insert(ContentCell(healthCondition: newEntry, indexOfSource: indexOfSource), at: 2)
@@ -345,9 +345,7 @@ class TableViewDataSource: NSObject {
 
             } else {
 
-                print("The same day")
-                rowsAdded += self.expandMostRecentDay()
-                print("rows added \(rowsAdded)")
+                rowsAdded += expandMostRecentDay()
 
                 shownCells.insert(ContentCell(healthCondition: newEntry, indexOfSource: indexOfSource), at: 2)
 
