@@ -26,18 +26,15 @@ class TableViewDataSource: NSObject {
 
     func initShownCells() {
 
-        let calendarComponentFlags: Set<Calendar.Component> = [.year]
-        var prevDateComponents: DateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: Date(timeIntervalSince1970: 0))
+        var prevDate = Date(timeIntervalSince1970: 0)
 
         for (index, healthRecord) in stateController.healthRecords.enumerated().reversed() {
 
-            let dateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: healthRecord.date!)
-
-            if isANewDate(prevDate: prevDateComponents, currentDate: dateComponents, inTermsOf: DateComponent.year) {
+            if areDatesDifferent(prevDate: prevDate, currentDate: healthRecord.date!, inTermsOf: .year) {
 
                 shownCells.append(YearHeaderCell(indexOfSource: index))
 //                print("append at : \(index), for year \(dateComponents.year)")
-                prevDateComponents = dateComponents
+                prevDate = healthRecord.date!
             }
         }
 
@@ -95,30 +92,34 @@ class TableViewDataSource: NSObject {
 
     // TODO: Write test case for this
     // TODO: Rewrite this function to compare two dates instead
-    func isANewDate(prevDate: DateComponents, currentDate: DateComponents, inTermsOf: DateComponent) -> Bool {
+    func areDatesDifferent(prevDate: Date, currentDate: Date, inTermsOf: DateComponent) -> Bool {
+
+        let calendarComponentFlags: Set<Calendar.Component> = [.year, .month, .day]
+        let prevDateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: prevDate)
+        let currentDateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: currentDate)
 
         switch inTermsOf {
 
         case .year:
 
-            if prevDate.year != currentDate.year {
+            if prevDateComponents.year != currentDateComponents.year {
 
                 return true
             }
 
         case .month:
 
-            if prevDate.year != currentDate.year ||
-                prevDate.month != currentDate.month {
+            if prevDateComponents.year != currentDateComponents.year ||
+               prevDateComponents.month != currentDateComponents.month {
 
                 return true
             }
 
         case .day:
 
-            if prevDate.year != currentDate.year ||
-                prevDate.month != currentDate.month ||
-                prevDate.day != currentDate.day {
+            if prevDateComponents.year != currentDateComponents.year ||
+               prevDateComponents.month != currentDateComponents.month ||
+               prevDateComponents.day != currentDateComponents.day {
                 
                 return true
             }
@@ -132,27 +133,23 @@ class TableViewDataSource: NSObject {
 
         // atIndex will probably be out of bounds if called from last cell. But Swift will take care of that :))
         var rowsAdded = 0
-        let targetYear = Calendar.current.dateComponents([.year], from: stateController.healthRecords[atSourceIndex].date!)
-
-        let calendarComponentFlags: Set<Calendar.Component> = [.year, .day]
-        var prevDateComponents: DateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: Date(timeIntervalSince1970: 0))
+        let targetDate = stateController.healthRecords[atSourceIndex].date!
+        var prevDate = Date(timeIntervalSince1970: 0)
 
         for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - atSourceIndex - 1).reversed() {
 
-            let dateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: healthRecord.date!)
-
-            guard (dateComponents.year == targetYear.year) else {
+            guard !areDatesDifferent(prevDate: targetDate, currentDate: healthRecord.date!, inTermsOf: .year) else {
 
                 break
             }
 
-            if isANewDate(prevDate: prevDateComponents, currentDate: dateComponents, inTermsOf: DateComponent.day) {
+            if areDatesDifferent(prevDate: prevDate, currentDate: healthRecord.date!, inTermsOf: .day) {
 
                 shownCells.insert(DayHeaderCell(indexOfSource: i), at: atIndex + rowsAdded)
                 rowsAdded += 1
             }
 
-            prevDateComponents = dateComponents
+            prevDate = healthRecord.date!
         }
 
         return rowsAdded
@@ -309,15 +306,11 @@ class TableViewDataSource: NSObject {
 
         } else {
 
-            let calendarComponentFlags: Set<Calendar.Component> = [.year, .month, .day]
-            let newDateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: newEntry.date!)
-
             let mostRecentEntry = shownCells[0] as! YearHeaderCell
-            let mostRecentDateComponents = Calendar.current.dateComponents(calendarComponentFlags, from: stateController.healthRecords[mostRecentEntry.indexOfSource].date!)
-
+            let mostRecentDate = stateController.healthRecords[mostRecentEntry.indexOfSource].date!
             let indexOfSource = stateController.healthRecords.count - 1
 
-            if isANewDate(prevDate: mostRecentDateComponents, currentDate: newDateComponents, inTermsOf: DateComponent.year) {
+            if areDatesDifferent(prevDate: mostRecentDate, currentDate: newEntry.date!, inTermsOf: DateComponent.year) {
 
                 shownCells.insert(YearHeaderCell(indexOfSource: indexOfSource), at: 0)
                 shownCells.insert(DayHeaderCell(indexOfSource: indexOfSource), at: 1)
@@ -329,7 +322,7 @@ class TableViewDataSource: NSObject {
 
                 rowsAdded += 2
 
-            } else if isANewDate(prevDate: mostRecentDateComponents, currentDate: newDateComponents, inTermsOf: DateComponent.day) {
+            } else if areDatesDifferent(prevDate: mostRecentDate, currentDate: newEntry.date!, inTermsOf: .day) {
 
                 rowsAdded += expandMostRecentYear()
 
