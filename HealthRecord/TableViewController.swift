@@ -41,17 +41,18 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        tableView.reloadData()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // Nothing yet
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-
-
-    @IBAction func AddButtonPressed(_ sender: UIBarButtonItem) {
-
-        createAndPresentActionSheet()
     }
 
     @IBAction func unwindToTableViewController(unwindSegue: UIStoryboardSegue) {
@@ -61,9 +62,13 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
             let healthDescription = source.getNewCondition()
 
             stateController.healthRecords.append(healthDescription)
-            print(stateController.healthRecords.last!.date!)
             tableViewDataSource.addNewEntry(newEntry: healthDescription)
         }
+    }
+
+    @IBAction func AddButtonPressed(_ sender: UIBarButtonItem) {
+
+        createAndPresentActionSheet()
     }
 
     func createAndPresentActionSheet() {
@@ -75,7 +80,7 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
         present(actionSheet, animated: true, completion: nil)
     }
 
-    func createAndAddActionsToActionSheet (actionSheet: UIAlertController) {
+    func createAndAddActionsToActionSheet(actionSheet: UIAlertController) {
 
         let takePhotoAction = UIAlertAction(title: "Take a photo", style: .default) { _ in
 
@@ -115,7 +120,6 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
         } else if segue.identifier == "toConditionPicker" {
 
             if let destination = segue.destination as? AddConditionViewController {
-
 
             }
         }

@@ -329,9 +329,73 @@ class TableViewDataSource: NSObject {
 
             indexPaths.append(IndexPath(row: i, section: 0))
         }
+    }
 
-        tableView.reloadData()
+    func expandOrCollapseYearHeader(yearHeaderIndex: Int) -> Int {
 
+        let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
+
+        if !yearHeader.isExpanded {
+
+            yearHeader.isExpanded = true
+            yearHeader.days = insertDayHeaders(forYearHeader: yearHeaderIndex)
+
+            return yearHeader.days!
+
+        } else {
+
+
+            let rowsToRemove = yearHeader.days! + numOfContentRows(startIndex: yearHeaderIndex+1, numOfDayHeaders: yearHeader.days!)
+
+            shownCells.removeSubrange(yearHeaderIndex+1..<yearHeaderIndex+1+rowsToRemove)
+
+            yearHeader.isExpanded = false
+            yearHeader.days = 0
+
+            return -rowsToRemove
+        }
+    }
+
+    func expandOrCollapseDayHeader(dayHeaderIndex: Int) -> Int {
+
+        let dayHeader = shownCells[dayHeaderIndex] as! DayHeaderCell
+
+        if !dayHeader.isExpanded {
+
+            dayHeader.isExpanded = true
+            dayHeader.entries = insertContentCells(forDayHeader: dayHeaderIndex)
+
+            return dayHeader.entries!
+
+        } else {
+
+            let rowsToRemove = dayHeader.entries!
+
+            shownCells.removeSubrange(dayHeaderIndex+1..<dayHeaderIndex+1+rowsToRemove)
+
+            dayHeader.isExpanded = false
+            dayHeader.entries = 0
+
+            return -rowsToRemove
+        }
+    }
+
+    func expandOrCollapseContent(contentIndex: Int) -> Bool {
+
+        let content = shownCells[contentIndex] as! ContentCell
+
+        if content.isExpanded == true {
+
+            content.isExpanded = false
+
+            return false
+
+        } else {
+
+            content.isExpanded = true
+
+            return true
+        }
     }
 }
 
@@ -436,58 +500,24 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
         CATransaction.begin()
 
-        var addingRows = false
         var rowsToAddOrRemove = 0
 
-        if let yearHeaderCell = shownCells[indexPath.row] as? YearHeaderCell {
+        if shownCells[indexPath.row] is YearHeaderCell {
 
-            if !yearHeaderCell.isExpanded {
+            rowsToAddOrRemove = expandOrCollapseYearHeader(yearHeaderIndex: indexPath.row)
 
-                yearHeaderCell.isExpanded = true
+        } else if shownCells[indexPath.row] is DayHeaderCell {
 
-                yearHeaderCell.days = insertDayHeaders(forYearHeader: indexPath.row)
+            rowsToAddOrRemove = expandOrCollapseDayHeader(dayHeaderIndex: indexPath.row)
 
-                rowsToAddOrRemove = yearHeaderCell.days!
-                addingRows = true
+        } else if shownCells[indexPath.row] is ContentCell {
 
-            } else {
+            let expandContent = expandOrCollapseContent(contentIndex: indexPath.row)
+            let visibleCell = tableView.cellForRow(at: indexPath)!
 
-                yearHeaderCell.isExpanded = false
+            if expandContent == false {
 
-                rowsToAddOrRemove = yearHeaderCell.days! + numOfContentRows(startIndex: indexPath.row+1, numOfDayHeaders: yearHeaderCell.days!)
-
-                yearHeaderCell.days = 0
-                shownCells.removeSubrange(indexPath.row+1..<indexPath.row+1+rowsToAddOrRemove)
-            }
-
-        } else if let dayHeaderCell = shownCells[indexPath.row] as? DayHeaderCell {
-
-            if !dayHeaderCell.isExpanded {
-
-                dayHeaderCell.isExpanded = true
-
-                dayHeaderCell.entries = insertContentCells(forDayHeader: indexPath.row)
-
-                rowsToAddOrRemove = dayHeaderCell.entries!
-                addingRows = true
-
-            } else {
-
-                dayHeaderCell.isExpanded = false
-                shownCells.removeSubrange(indexPath.row+1..<indexPath.row+1+dayHeaderCell.entries!)
-                rowsToAddOrRemove = dayHeaderCell.entries!
-                dayHeaderCell.entries = 0
-            }
-
-        } else if let contentCell = shownCells[indexPath.row] as? ContentCell {
-
-            let visibleCell = tableView.cellForRow(at: indexPath) as! UITableViewCell
-
-            if contentCell.isExpanded == true {
-
-                contentCell.isExpanded = false
-
-                // Hide the content only after animation has completed
+                // Hide the content AFTER animation has completed
                 CATransaction.setCompletionBlock({
 
                     visibleCell.hideExtraContent()
@@ -495,50 +525,31 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
             } else {
 
-                contentCell.isExpanded = true
-
-                // Show the content before the expansion of the cell reveals the content
+                // Show the content BEFORE the expansion of the cell reveals the content
                 visibleCell.showExtraContent()
             }
-
-            if let cell = tableView.cellForRow(at: indexPath) as? DescriptionTableViewCell {
-
-                print("description Cell selected")
-
-
-            }
-
-            rowsToAddOrRemove = 0
         }
 
         var indexPathsToReload: [IndexPath] = [IndexPath]()
 
-        if rowsToAddOrRemove > 0 {
+        if rowsToAddOrRemove != 0 {
 
-            for i in indexPath.row+1..<indexPath.row+1+rowsToAddOrRemove {
+            for i in indexPath.row+1..<indexPath.row+1+abs(rowsToAddOrRemove) {
 
                 print("index \(i)")
                 indexPathsToReload.append(IndexPath(row: i, section: 0))
             }
-
         }
 
         tableView.beginUpdates()
 
         if rowsToAddOrRemove > 0 {
 
-            if addingRows {
+            tableView.insertRows(at: indexPathsToReload, with: .fade)
 
-                tableView.insertRows(at: indexPathsToReload, with: .fade)
+        } else if rowsToAddOrRemove < 0 {
 
-            } else {
-
-                tableView.deleteRows(at: indexPathsToReload, with: .fade)
-            }
-        } else {
-
-//            tableView.reloadRows(at: [IndexPath(row: indexPath.row, section: 0)], with: .fade)
-//            print("reload rows at: \(indexPath.row)")
+            tableView.deleteRows(at: indexPathsToReload, with: .fade)
         }
 
         tableView.endUpdates()
