@@ -48,6 +48,134 @@ class TableViewDataSource: NSObject {
         }
     }
 
+    // TODO: throw error if argument not for year header
+    func expandYearHeader(atIndex yearHeaderIndex: Int) -> Int {
+
+        let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
+
+        guard !yearHeader.isExpanded else {
+
+            return 0
+        }
+
+        let targetDate = stateController.healthRecords[yearHeader.indexOfSource!].date!
+        var prevDate = Date(timeIntervalSince1970: 0)
+
+        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - yearHeader.indexOfSource! - 1).reversed() {
+
+            guard !areDatesDifferent(prevDate: targetDate, currentDate: healthRecord.date!, forComponents: [.year]) else {
+
+                break
+            }
+
+            if areDatesDifferent(prevDate: prevDate, currentDate: healthRecord.date!, forComponents: [.day]) {
+
+                shownCells.insert(DayHeaderCell(indexOfSource: i, indexOfYearHeader: yearHeaderIndex), at: yearHeaderIndex+1+yearHeader.days)
+
+                yearHeader.days = yearHeader.days + 1
+
+                prevDate = healthRecord.date!
+            }
+        }
+
+        yearHeader.isExpanded = true
+
+        return yearHeader.days
+    }
+
+    // TODO: throw error if argument not for year header
+    func collapseYearHeader(atIndex yearHeaderIndex: Int) -> Int {
+
+        let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
+
+        guard yearHeader.isExpanded else {
+
+            return 0
+        }
+
+        let rowsCollapsed = yearHeader.days! + collapseDayHeaders(forYearHeader: yearHeaderIndex)
+
+        let firstDayHeaderIndex = yearHeaderIndex + 1
+
+        shownCells.removeSubrange(firstDayHeaderIndex..<firstDayHeaderIndex+yearHeader.days!)
+
+        yearHeader.isExpanded = false
+        yearHeader.days = 0
+
+        return rowsCollapsed
+    }
+
+    // TODO: throw error if argument not for year header
+    func collapseDayHeaders(forYearHeader yearHeaderIndex: Int) -> Int {
+
+        let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
+
+        guard yearHeader.isExpanded else {
+
+            return 0
+        }
+
+        let firstDayHeaderIndex = yearHeaderIndex + 1
+        var rowsCollapsed = 0
+
+        for dayHeaderIndex in firstDayHeaderIndex..<firstDayHeaderIndex+yearHeader.days! {
+
+            rowsCollapsed += collapseDayHeader(atIndex: dayHeaderIndex)
+        }
+
+        print("rows collapsed 1: \(rowsCollapsed)")
+        return rowsCollapsed
+    }
+
+    // TODO: throw exception if argument not for day header
+    func expandDayHeader(atIndex dayHeaderIndex: Int) -> Int {
+
+        let dayHeader = shownCells[dayHeaderIndex] as! DayHeaderCell
+
+        guard !dayHeader.isExpanded else {
+
+            return 0
+        }
+
+        let targetDate = stateController.healthRecords[dayHeader.indexOfSource!].date!
+
+        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - dayHeader.indexOfSource! - 1).reversed() {
+
+            guard !areDatesDifferent(prevDate: targetDate, currentDate: healthRecord.date!, forComponents: [.year, .month, .day]) else {
+
+                break
+            }
+
+            shownCells.insert(ContentCell(indexOfSource: i, indexOfDayHeader: dayHeaderIndex), at: dayHeaderIndex+1+dayHeader.entries)
+
+            dayHeader.entries = dayHeader.entries + 1
+        }
+
+        dayHeader.isExpanded = true
+
+        return dayHeader.entries
+    }
+
+    // TODO: throw exception if argument not for day header
+    func collapseDayHeader(atIndex dayHeaderIndex: Int) -> Int {
+        
+        let dayHeader = shownCells[dayHeaderIndex] as! DayHeaderCell
+        
+        guard dayHeader.isExpanded else {
+            
+            return 0
+        }
+        
+        let rowsCollapsed = dayHeader.entries!
+        
+        shownCells.removeSubrange(dayHeaderIndex+1..<dayHeaderIndex+1+rowsCollapsed)
+        
+        dayHeader.isExpanded = false
+        dayHeader.entries = 0
+        
+        return rowsCollapsed
+    }
+
     func expandMostRecentYear() -> Int {
 
         guard shownCells.count > 0 else {
@@ -121,125 +249,6 @@ class TableViewDataSource: NSObject {
         }
 
         return false
-    }
-
-    // TODO: throw error if argument not for year header
-    func expandYearHeader(atIndex yearHeaderIndex: Int) -> Int {
-
-        let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
-
-        guard !yearHeader.isExpanded else {
-
-            return 0
-        }
-
-        let targetDate = stateController.healthRecords[yearHeader.indexOfSource!].date!
-        var prevDate = Date(timeIntervalSince1970: 0)
-
-        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - yearHeader.indexOfSource! - 1).reversed() {
-
-            guard !areDatesDifferent(prevDate: targetDate, currentDate: healthRecord.date!, forComponents: [.year]) else {
-
-                break
-            }
-
-            if areDatesDifferent(prevDate: prevDate, currentDate: healthRecord.date!, forComponents: [.day]) {
-
-                shownCells.insert(DayHeaderCell(indexOfSource: i, indexOfYearHeader: yearHeaderIndex), at: yearHeaderIndex+1+yearHeader.days)
-
-                yearHeader.days = yearHeader.days + 1
-
-                prevDate = healthRecord.date!
-            }
-        }
-
-        yearHeader.isExpanded = true
-
-        return yearHeader.days
-    }
-
-    // TODO: throw error if argument not for year header
-    func collapseYearHeader(atIndex yearHeaderIndex: Int) -> Int {
-
-        let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
-
-        guard yearHeader.isExpanded else {
-
-            return 0
-        }
-
-        let rowsCollapsed = yearHeader.days! + numOfContentRows(startIndex: yearHeaderIndex+1, numOfDayHeaders: yearHeader.days!)
-
-        shownCells.removeSubrange(yearHeaderIndex+1..<yearHeaderIndex+1+rowsCollapsed)
-
-        yearHeader.isExpanded = false
-        yearHeader.days = 0
-
-        return rowsCollapsed
-    }
-
-    func numOfContentRows(startIndex: Int, numOfDayHeaders: Int) -> Int {
-
-        var rows = 0
-
-        for i in startIndex..<startIndex + numOfDayHeaders {
-
-            if let dayHeaderCell = shownCells[i + rows] as? DayHeaderCell {
-
-                rows += dayHeaderCell.entries!
-            }
-        }
-
-        return rows
-    }
-
-    // TODO: throw exception if argument not for day header
-    func expandDayHeader(atIndex dayHeaderIndex: Int) -> Int {
-
-        let dayHeader = shownCells[dayHeaderIndex] as! DayHeaderCell
-
-        guard !dayHeader.isExpanded else {
-
-            return 0
-        }
-
-        let targetDate = stateController.healthRecords[dayHeader.indexOfSource!].date!
-
-        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - dayHeader.indexOfSource! - 1).reversed() {
-
-            guard !areDatesDifferent(prevDate: targetDate, currentDate: healthRecord.date!, forComponents: [.year, .month, .day]) else {
-
-                break
-            }
-
-            shownCells.insert(ContentCell(indexOfSource: i, indexOfDayHeader: dayHeaderIndex), at: dayHeaderIndex+1+dayHeader.entries)
-
-            dayHeader.entries = dayHeader.entries + 1
-        }
-
-        dayHeader.isExpanded = true
-
-        return dayHeader.entries
-    }
-
-    // TODO: throw exception if argument not for day header
-    func collapseDayHeader(atIndex dayHeaderIndex: Int) -> Int {
-
-        let dayHeader = shownCells[dayHeaderIndex] as! DayHeaderCell
-
-        guard dayHeader.isExpanded else {
-
-            return 0
-        }
-
-        let rowsCollapsed = dayHeader.entries!
-
-        shownCells.removeSubrange(dayHeaderIndex+1..<dayHeaderIndex+1+rowsCollapsed)
-
-        dayHeader.isExpanded = false
-        dayHeader.entries = 0
-
-        return rowsCollapsed
     }
 
     func deleteContentRow(atIndex row: Int) -> [IndexPath] {
