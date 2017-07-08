@@ -18,7 +18,7 @@ class StateController {
 
         for i in 0..<healthRecords.count {
 
-            print(healthRecords[i].date)
+            print(healthRecords[i].date!)
         }
     }
 
@@ -26,7 +26,7 @@ class StateController {
 
         for i in 12..<80 {
 
-            var index = i / 4
+            let index = i / 4
             var newCondition: HealthCondition!
 
             if i % 2 == 0 {

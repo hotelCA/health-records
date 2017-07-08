@@ -119,9 +119,9 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
         } else if segue.identifier == "toConditionPicker" {
 
-            if let destination = segue.destination as? AddConditionViewController {
-
-            }
+//            if let destination = segue.destination as? AddConditionViewController {
+//
+//            }
         }
     }
 }
