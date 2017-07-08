@@ -26,6 +26,16 @@ class TableViewDataSource: NSObject {
 
     func initShownCells() {
 
+        let indexOfLatestYearHeader = 0
+        let indexOfLatestDayHeader = 1
+
+        showYearHeaders()
+        expandYearHeader(atIndex: indexOfLatestYearHeader)
+        expandDayHeader(atIndex: indexOfLatestDayHeader)
+    }
+
+    func showYearHeaders() {
+
         var prevDate = Date(timeIntervalSince1970: 0)
 
         for (index, healthRecord) in stateController.healthRecords.enumerated().reversed() {
@@ -33,12 +43,9 @@ class TableViewDataSource: NSObject {
             if areDatesDifferent(prevDate: prevDate, currentDate: healthRecord.date!, forComponents: [.year]) {
 
                 shownCells.append(YearHeaderCell(indexOfSource: index))
-//                print("append at : \(index), for year \(dateComponents.year)")
                 prevDate = healthRecord.date!
             }
         }
-
-        expandMostRecentDay()
     }
 
     func expandMostRecentYear() -> Int {
@@ -52,17 +59,12 @@ class TableViewDataSource: NSObject {
 
             if !yearHeader.isExpanded {
 
-                yearHeader.days = insertDayHeaders(forYearHeader: 0)
-
-                yearHeader.isExpanded = true
-
-                return yearHeader.days
+                return expandYearHeader(atIndex: 0)
 
             } else {
 
                 return 0
             }
-
         }
 
         return -1
@@ -76,11 +78,7 @@ class TableViewDataSource: NSObject {
 
                 if !dayHeader.isExpanded {
 
-                    dayHeader.entries = insertContentCells(forDayHeader: 1)
-
-                    dayHeader.isExpanded = true
-
-                    return dayHeader.entries
+                    return expandDayHeader(atIndex: 1)
                 }
 
                 return 0
@@ -125,14 +123,20 @@ class TableViewDataSource: NSObject {
         return false
     }
 
-    func insertDayHeaders(forYearHeader indexOfYearHeader: Int) -> Int {
+    // TODO: throw error if argument not for year header
+    func expandYearHeader(atIndex yearHeaderIndex: Int) -> Int {
 
-        let indexOfSource = (shownCells[indexOfYearHeader] as! YearHeaderCell).indexOfSource!
-        var rowsAdded = 0
-        let targetDate = stateController.healthRecords[indexOfSource].date!
+        let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
+
+        guard !yearHeader.isExpanded else {
+
+            return 0
+        }
+
+        let targetDate = stateController.healthRecords[yearHeader.indexOfSource!].date!
         var prevDate = Date(timeIntervalSince1970: 0)
 
-        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - indexOfSource - 1).reversed() {
+        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - yearHeader.indexOfSource! - 1).reversed() {
 
             guard !areDatesDifferent(prevDate: targetDate, currentDate: healthRecord.date!, forComponents: [.year]) else {
 
@@ -141,15 +145,37 @@ class TableViewDataSource: NSObject {
 
             if areDatesDifferent(prevDate: prevDate, currentDate: healthRecord.date!, forComponents: [.day]) {
 
-                shownCells.insert(DayHeaderCell(indexOfSource: i, indexOfYearHeader: indexOfYearHeader), at: indexOfYearHeader+1+rowsAdded)
+                shownCells.insert(DayHeaderCell(indexOfSource: i, indexOfYearHeader: yearHeaderIndex), at: yearHeaderIndex+1+yearHeader.days)
 
-                rowsAdded += 1
+                yearHeader.days = yearHeader.days + 1
 
                 prevDate = healthRecord.date!
             }
         }
 
-        return rowsAdded
+        yearHeader.isExpanded = true
+
+        return yearHeader.days
+    }
+
+    // TODO: throw error if argument not for year header
+    func collapseYearHeader(atIndex yearHeaderIndex: Int) -> Int {
+
+        let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
+
+        guard yearHeader.isExpanded else {
+
+            return 0
+        }
+
+        let rowsCollapsed = yearHeader.days! + numOfContentRows(startIndex: yearHeaderIndex+1, numOfDayHeaders: yearHeader.days!)
+
+        shownCells.removeSubrange(yearHeaderIndex+1..<yearHeaderIndex+1+rowsCollapsed)
+
+        yearHeader.isExpanded = false
+        yearHeader.days = 0
+
+        return rowsCollapsed
     }
 
     func numOfContentRows(startIndex: Int, numOfDayHeaders: Int) -> Int {
@@ -167,26 +193,53 @@ class TableViewDataSource: NSObject {
         return rows
     }
 
-    func insertContentCells(forDayHeader indexOfDayHeader: Int) -> Int {
+    // TODO: throw exception if argument not for day header
+    func expandDayHeader(atIndex dayHeaderIndex: Int) -> Int {
 
-        let indexOfSource = (shownCells[indexOfDayHeader] as! DayHeaderCell).indexOfSource!
-        var rowsAdded = 0
-        let targetDate = stateController.healthRecords[indexOfSource].date!
+        let dayHeader = shownCells[dayHeaderIndex] as! DayHeaderCell
 
-        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - indexOfSource - 1).reversed() {
+        guard !dayHeader.isExpanded else {
 
-            print("prevDay = \(targetDate), currentDate = \(healthRecord.date!)")
+            return 0
+        }
+
+        let targetDate = stateController.healthRecords[dayHeader.indexOfSource!].date!
+
+        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - dayHeader.indexOfSource! - 1).reversed() {
+
             guard !areDatesDifferent(prevDate: targetDate, currentDate: healthRecord.date!, forComponents: [.year, .month, .day]) else {
 
                 break
             }
 
-            shownCells.insert(ContentCell(indexOfSource: i, indexOfDayHeader: indexOfDayHeader), at: indexOfDayHeader + 1 + rowsAdded)
+            shownCells.insert(ContentCell(indexOfSource: i, indexOfDayHeader: dayHeaderIndex), at: dayHeaderIndex+1+dayHeader.entries)
 
-            rowsAdded += 1
+            dayHeader.entries = dayHeader.entries + 1
         }
-        
-        return rowsAdded
+
+        dayHeader.isExpanded = true
+
+        return dayHeader.entries
+    }
+
+    // TODO: throw exception if argument not for day header
+    func collapseDayHeader(atIndex dayHeaderIndex: Int) -> Int {
+
+        let dayHeader = shownCells[dayHeaderIndex] as! DayHeaderCell
+
+        guard dayHeader.isExpanded else {
+
+            return 0
+        }
+
+        let rowsCollapsed = dayHeader.entries!
+
+        shownCells.removeSubrange(dayHeaderIndex+1..<dayHeaderIndex+1+rowsCollapsed)
+
+        dayHeader.isExpanded = false
+        dayHeader.entries = 0
+
+        return rowsCollapsed
     }
 
     func deleteContentRow(atIndex row: Int) -> [IndexPath] {
@@ -326,21 +379,11 @@ class TableViewDataSource: NSObject {
 
         if !yearHeader.isExpanded {
 
-            yearHeader.isExpanded = true
-            yearHeader.days = insertDayHeaders(forYearHeader: yearHeaderIndex)
-
-            return yearHeader.days!
+            return expandYearHeader(atIndex: yearHeaderIndex)
 
         } else {
 
-            let rowsToRemove = yearHeader.days! + numOfContentRows(startIndex: yearHeaderIndex+1, numOfDayHeaders: yearHeader.days!)
-
-            shownCells.removeSubrange(yearHeaderIndex+1..<yearHeaderIndex+1+rowsToRemove)
-
-            yearHeader.isExpanded = false
-            yearHeader.days = 0
-
-            return -rowsToRemove
+            return -collapseYearHeader(atIndex: yearHeaderIndex)
         }
     }
 
@@ -350,21 +393,11 @@ class TableViewDataSource: NSObject {
 
         if !dayHeader.isExpanded {
 
-            dayHeader.isExpanded = true
-            dayHeader.entries = insertContentCells(forDayHeader: dayHeaderIndex)
-
-            return dayHeader.entries!
+            return expandDayHeader(atIndex: dayHeaderIndex)
 
         } else {
 
-            let rowsToRemove = dayHeader.entries!
-
-            shownCells.removeSubrange(dayHeaderIndex+1..<dayHeaderIndex+1+rowsToRemove)
-
-            dayHeader.isExpanded = false
-            dayHeader.entries = 0
-
-            return -rowsToRemove
+            return -collapseDayHeader(atIndex: dayHeaderIndex)
         }
     }
 
@@ -518,14 +551,13 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
             }
         }
 
-        var indexPathsToReload: [IndexPath] = [IndexPath]()
+        var indexPaths: [IndexPath] = [IndexPath]()
 
         if rowsToAddOrRemove != 0 {
 
             for i in indexPath.row+1..<indexPath.row+1+abs(rowsToAddOrRemove) {
 
-                print("index \(i)")
-                indexPathsToReload.append(IndexPath(row: i, section: 0))
+                indexPaths.append(IndexPath(row: i, section: 0))
             }
         }
 
@@ -533,11 +565,11 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
         if rowsToAddOrRemove > 0 {
 
-            tableView.insertRows(at: indexPathsToReload, with: .fade)
+            tableView.insertRows(at: indexPaths, with: .fade)
 
         } else if rowsToAddOrRemove < 0 {
 
-            tableView.deleteRows(at: indexPathsToReload, with: .fade)
+            tableView.deleteRows(at: indexPaths, with: .fade)
         }
 
         tableView.endUpdates()
