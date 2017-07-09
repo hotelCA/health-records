@@ -176,46 +176,6 @@ class TableViewDataSource: NSObject {
         return rowsCollapsed
     }
 
-    func expandMostRecentYear() -> Int {
-
-        guard shownCells.count > 0 else {
-
-            return -1
-        }
-
-        if let yearHeader = shownCells[0] as? YearHeaderCell {
-
-            if !yearHeader.isExpanded {
-
-                return expandYearHeader(atIndex: 0)
-
-            } else {
-
-                return 0
-            }
-        }
-
-        return -1
-    }
-
-    func expandMostRecentDay() -> Int {
-
-        if expandMostRecentYear() >= 0 {
-
-            if let dayHeader = shownCells[1] as? DayHeaderCell {
-
-                if !dayHeader.isExpanded {
-
-                    return expandDayHeader(atIndex: 1)
-                }
-
-                return 0
-            }
-        }
-
-        return -1
-    }
-
     // TODO: Write test case for this
     // TODO: Rewrite this function to compare two dates instead
     func areDatesDifferent(prevDate: Date, currentDate: Date, forComponents targetComponents: [DateComponent]) -> Bool {
@@ -304,19 +264,7 @@ class TableViewDataSource: NSObject {
         }
     }
 
-    func addNewEntry(newEntry: HealthCondition) {
-
-        // There should be three cases at this point:
-        //
-        // 1 - Health Record is empty, so this is the very first entry
-        //
-        // 2 - There is some old data, but this new entry is for a different date,
-        //     so new headers need to be created
-        //
-        // 3 - There is some old data, and this new entry is for the same day as the
-        //     most recent entry
-
-        var rowsAdded = 1
+    func showNewCondition(newCondition: HealthCondition) {
 
         if shownCells.count == 0 {
 
@@ -324,61 +272,61 @@ class TableViewDataSource: NSObject {
 
         } else {
 
-            let mostRecentEntry = shownCells[0] as! YearHeaderCell
-            let mostRecentDate = stateController.healthRecords[mostRecentEntry.indexOfSource].date!
+            let mostRecentDate = stateController.healthRecords[(shownCells[0] as! YearHeaderCell).indexOfSource].date!
             let indexOfSource = stateController.healthRecords.count - 1
 
-            if areDatesDifferent(prevDate: mostRecentDate, currentDate: newEntry.date!, forComponents: [.year]) {
+            if areDatesDifferent(prevDate: mostRecentDate, currentDate: newCondition.date!, forComponents: [.year]) {
 
                 shownCells.insert(YearHeaderCell(indexOfSource: indexOfSource), at: 0)
-                shownCells.insert(DayHeaderCell(indexOfSource: indexOfSource, indexOfYearHeader: 0), at: 1)
-                shownCells.insert(ContentCell(indexOfSource: indexOfSource, indexOfDayHeader: 1), at: 2)
+                expandYearHeader(atIndex: 0)
+                expandDayHeader(atIndex: 1)
+
+            } else if areDatesDifferent(prevDate: mostRecentDate, currentDate: newCondition.date!, forComponents: [.year, .month, .day]) {
 
                 let yearHeader = shownCells[0] as! YearHeaderCell
-                yearHeader.days = yearHeader.days + 1
-                yearHeader.isExpanded = true
+                yearHeader.indexOfSource = indexOfSource
 
-                rowsAdded += 2
+                if expandYearHeader(atIndex: 0) > 0 {
 
-            } else if areDatesDifferent(prevDate: mostRecentDate, currentDate: newEntry.date!, forComponents: [.day]) {
+                    // year header wasn't expanded yet
 
-                rowsAdded += expandMostRecentYear()
+                    expandDayHeader(atIndex: 1)
 
-                shownCells.insert(DayHeaderCell(indexOfSource: indexOfSource, indexOfYearHeader: 0), at: 1)
-                shownCells.insert(ContentCell(indexOfSource: indexOfSource, indexOfDayHeader: 1), at: 2)
+                } else {
 
-                let yearHeader = shownCells[0] as! YearHeaderCell
-                yearHeader.days = yearHeader.days + 1
-                yearHeader.isExpanded = true
-                yearHeader.indexOfSource = yearHeader.indexOfSource + 1
-
-                rowsAdded += 1
+                    yearHeader.days = yearHeader.days + 1
+                    shownCells.insert(DayHeaderCell(indexOfSource: indexOfSource, indexOfYearHeader: 0), at: 1)
+                    expandDayHeader(atIndex: 1)
+                }
 
             } else {
 
-                rowsAdded += expandMostRecentDay()
-
-                shownCells.insert(ContentCell(indexOfSource: indexOfSource, indexOfDayHeader: 1), at: 2)
 
                 let yearHeader = shownCells[0] as! YearHeaderCell
-                yearHeader.indexOfSource = yearHeader.indexOfSource + 1
+                yearHeader.indexOfSource = indexOfSource
 
-                let dayHeader = shownCells[1] as! DayHeaderCell
-                dayHeader.indexOfSource = dayHeader.indexOfSource + 1
+                if expandYearHeader(atIndex: 0) > 0 {
+
+                    // year header wasn't expanded yet
+
+                    expandDayHeader(atIndex: 1)
+
+                } else {
+
+                    let dayHeader = shownCells[1] as! DayHeaderCell
+                    dayHeader.indexOfSource = indexOfSource
+
+                    if expandDayHeader(atIndex: 1) == 0 {
+
+                        // day header was already expanded
+
+                        dayHeader.entries = dayHeader.entries + 1
+                        shownCells.insert(ContentCell(indexOfSource: indexOfSource, indexOfDayHeader: 1), at: 2)
+                    }
+                }
 
                 printShownCells()
             }
-
-            let dayHeader = shownCells[1] as! DayHeaderCell
-            dayHeader.entries = dayHeader.entries + 1
-            dayHeader.isExpanded = true
-        }
-
-        var indexPaths = [IndexPath]()
-
-        for i in 0..<rowsAdded {
-
-            indexPaths.append(IndexPath(row: i, section: 0))
         }
     }
 
@@ -480,8 +428,6 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        print("cellForRowAt: \(indexPath.row)")
-        
         var cell: UITableViewCell!
 
         if let yearHeaderCell = shownCells[indexPath.row] as? YearHeaderCell {

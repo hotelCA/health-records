@@ -62,7 +62,7 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
             let healthDescription = source.getNewCondition()
 
             stateController.healthRecords.append(healthDescription)
-            tableViewDataSource.addNewEntry(newEntry: healthDescription)
+            tableViewDataSource.showNewCondition(newCondition: healthDescription)
         }
     }
 
