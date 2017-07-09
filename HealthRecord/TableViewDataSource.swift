@@ -105,28 +105,6 @@ class TableViewDataSource: NSObject {
         return rowsCollapsed
     }
 
-    // TODO: throw error if argument not for year header
-    func collapseDayHeaders(forYearHeader yearHeaderIndex: Int) -> Int {
-
-        let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
-
-        guard yearHeader.isExpanded else {
-
-            return 0
-        }
-
-        let firstDayHeaderIndex = yearHeaderIndex + 1
-        var rowsCollapsed = 0
-
-        for dayHeaderIndex in firstDayHeaderIndex..<firstDayHeaderIndex+yearHeader.days! {
-
-            rowsCollapsed += collapseDayHeader(atIndex: dayHeaderIndex)
-        }
-
-        print("rows collapsed 1: \(rowsCollapsed)")
-        return rowsCollapsed
-    }
-
     // TODO: throw exception if argument not for day header
     func expandDayHeader(atIndex dayHeaderIndex: Int) -> Int {
 
@@ -150,10 +128,31 @@ class TableViewDataSource: NSObject {
 
             dayHeader.entries = dayHeader.entries + 1
         }
-
+        
         dayHeader.isExpanded = true
-
+        
         return dayHeader.entries
+    }
+
+    // TODO: throw error if argument not for year header
+    func collapseDayHeaders(forYearHeader yearHeaderIndex: Int) -> Int {
+
+        let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
+
+        guard yearHeader.isExpanded else {
+
+            return 0
+        }
+
+        let firstDayHeaderIndex = yearHeaderIndex + 1
+        var rowsCollapsed = 0
+
+        for dayHeaderIndex in firstDayHeaderIndex..<firstDayHeaderIndex+yearHeader.days! {
+
+            rowsCollapsed += collapseDayHeader(atIndex: dayHeaderIndex)
+        }
+
+        return rowsCollapsed
     }
 
     // TODO: throw exception if argument not for day header
@@ -177,7 +176,6 @@ class TableViewDataSource: NSObject {
     }
 
     // TODO: Write test case for this
-    // TODO: Rewrite this function to compare two dates instead
     func areDatesDifferent(prevDate: Date, currentDate: Date, forComponents targetComponents: [DateComponent]) -> Bool {
 
         let components: Set<Calendar.Component> = [.year, .month, .day]
@@ -232,10 +230,10 @@ class TableViewDataSource: NSObject {
 
         if dayHeaderCell.entries == 0 {
 
-            shownCells.remove(at: indexOfDayHeader)
+            let removedDayHeader = shownCells.remove(at: indexOfDayHeader) as! DayHeaderCell
             indexPathsToRemove.append(IndexPath(row: indexOfDayHeader, section: 0))
 
-            let indexOfYearHeader = (shownCells[indexOfDayHeader] as! DayHeaderCell).indexOfYearHeader!
+            let indexOfYearHeader = removedDayHeader.indexOfYearHeader!
             let yearHeaderCell = shownCells[indexOfYearHeader] as! YearHeaderCell
             yearHeaderCell.days = yearHeaderCell.days - 1
 
@@ -324,8 +322,6 @@ class TableViewDataSource: NSObject {
                         shownCells.insert(ContentCell(indexOfSource: indexOfSource, indexOfDayHeader: 1), at: 2)
                     }
                 }
-
-                printShownCells()
             }
         }
     }
@@ -391,39 +387,27 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
+        var height = CGFloat(60)
+
         if let contentCell = shownCells[indexPath.row] as? ContentCell {
 
             if stateController.healthRecords[contentCell.indexOfSource!] is HealthImage {
 
                 if contentCell.isExpanded {
 
-                    return 220
-
-                } else {
-
-                    return 60
+                    height = 220
                 }
 
             } else if stateController.healthRecords[contentCell.indexOfSource!] is HealthDescription {
 
                 if contentCell.isExpanded {
 
-                    return 120
-
-                } else {
-
-                    return 60
+                    height = 120
                 }
-
-            } else {
-
-                return 60
             }
-
-        } else {
-
-            return 60
         }
+
+        return height
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

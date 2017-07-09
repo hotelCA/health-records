@@ -11,10 +11,24 @@ import UIKit
 class StateController {
 
     var healthRecords = [HealthCondition]()
+    var loaded: Bool!
 
     init() {
 
-        loadHealthRecord()
+        loaded = false
+
+        let environment = ProcessInfo.processInfo.environment
+
+        if environment["TEST"] == "true" {
+
+            loadHealthRecord()
+            print("Launch for UI TESTING")
+
+        } else {
+
+            loadHealthRecord()
+            print("Regular launch")
+        }
 
         for i in 0..<healthRecords.count {
 
@@ -24,23 +38,27 @@ class StateController {
 
     func loadHealthRecord() {
 
-        for i in 12..<80 {
+        if !loaded {
+            
+            loaded = true
 
-            let index = i / 4
-            var newCondition: HealthCondition!
+            for i in 12..<80 {
 
-            if i % 2 == 0 {
+                let index = i / 4
+                var newCondition: HealthCondition!
 
-                newCondition = HealthDescription(timeOfDescription: Date(timeIntervalSince1970: TimeInterval(3*index*OneMonth + i)), condition: ConditionEnum.pain)
+                if i % 2 == 0 {
 
-            } else {
+                    newCondition = HealthDescription(timeOfDescription: Date(timeIntervalSince1970: TimeInterval(3*index*OneMonth + i)), condition: ConditionEnum.pain)
 
-                let newImage = UIImage(named: "20160704_145508.jpg")
-                newCondition = HealthImage(timeOfImage: Date(timeIntervalSince1970: TimeInterval(3*index*OneMonth + i)), image: newImage!)
+                } else {
+
+                    let newImage = UIImage(named: "20160704_145508.jpg")
+                    newCondition = HealthImage(timeOfImage: Date(timeIntervalSince1970: TimeInterval(3*index*OneMonth + i)), image: newImage!)
+                }
+
+                healthRecords.append(newCondition)
             }
-
-            healthRecords.append(newCondition)
         }
     }
-
 }

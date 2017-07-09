@@ -133,4 +133,3 @@ enum LocationEnum {
     case foot
 }
 
-

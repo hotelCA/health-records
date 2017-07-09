@@ -38,6 +38,16 @@
                ReferencedContainer = "container:HealthRecord.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3C1579801F12AB3C0051F092"
+               BuildableName = "HealthRecordUITests.xctest"
+               BlueprintName = "HealthRecordUITests"
+               ReferencedContainer = "container:HealthRecord.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
