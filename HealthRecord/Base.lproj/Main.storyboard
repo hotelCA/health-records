@@ -230,12 +230,12 @@
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="0.94073433669999995" blue="0.7550243163" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstItem="peW-7e-MWD" firstAttribute="leading" secondItem="cd8-QQ-UwM" secondAttribute="leadingMargin" constant="137" id="4re-8C-Fmf"/>
                                                 <constraint firstItem="peW-7e-MWD" firstAttribute="top" secondItem="cd8-QQ-UwM" secondAttribute="topMargin" constant="71" id="fft-dR-1rT"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" red="1" green="0.94073433669999995" blue="0.7550243163" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <outlet property="medicalImage" destination="peW-7e-MWD" id="d0O-0g-VQy"/>
                                         </connections>

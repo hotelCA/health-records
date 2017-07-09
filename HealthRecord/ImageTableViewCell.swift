@@ -15,8 +15,12 @@ class ImageTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        medicalImage.isHidden = true
-        // Initialization code
+        hideExtraContent()
+    }
+
+    override func prepareForReuse() {
+
+        hideExtraContent()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

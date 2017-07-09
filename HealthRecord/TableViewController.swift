@@ -61,9 +61,14 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
             let healthDescription = source.getNewCondition()
 
-            stateController.healthRecords.append(healthDescription)
-            tableViewDataSource.showNewCondition(newCondition: healthDescription)
+            updateStateAndDataSource(healthCondition: healthDescription)
         }
+    }
+
+    func updateStateAndDataSource(healthCondition: HealthCondition) {
+
+        stateController.healthRecords.append(healthCondition)
+        tableViewDataSource.showNewCondition(newCondition: healthCondition)
     }
 
     @IBAction func AddButtonPressed(_ sender: UIBarButtonItem) {
@@ -82,14 +87,14 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
     func createAndAddActionsToActionSheet(actionSheet: UIAlertController) {
 
-        let takePhotoAction = UIAlertAction(title: "Take a photo", style: .default) { _ in
+        let takePhotoAction = UIAlertAction(title: "Camera", style: .default) { _ in
 
-            print("Take a photo action triggered.")
+            self.imageHandler.pickAPhotoFromCamera()
         }
 
         let uploadFileAction = UIAlertAction(title: "Upload a file", style: .default) { _ in
 
-            self.imageHandler.pickAPhoto()
+            self.imageHandler.pickAPhotoFromGallery()
         }
 
         let addConditionAction = UIAlertAction(title: "Add a condition", style: .default) { _ in
@@ -97,10 +102,7 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
             self.conditionHandler.addNewCondition()
         }
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
-
-            print("Cancel action trigerred.")
-        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
 
         actionSheet.addAction(takePhotoAction)
         actionSheet.addAction(uploadFileAction)

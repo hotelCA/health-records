@@ -30,8 +30,8 @@ class TableViewDataSource: NSObject {
         let indexOfLatestDayHeader = 1
 
         showYearHeaders()
-        expandYearHeader(atIndex: indexOfLatestYearHeader)
-        expandDayHeader(atIndex: indexOfLatestDayHeader)
+        _ = expandYearHeader(atIndex: indexOfLatestYearHeader)
+        _ = expandDayHeader(atIndex: indexOfLatestDayHeader)
     }
 
     func showYearHeaders() {
@@ -48,7 +48,6 @@ class TableViewDataSource: NSObject {
         }
     }
 
-    // TODO: throw error if argument not for year header
     func expandYearHeader(atIndex yearHeaderIndex: Int) -> Int {
 
         let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
@@ -83,7 +82,6 @@ class TableViewDataSource: NSObject {
         return yearHeader.days
     }
 
-    // TODO: throw error if argument not for year header
     func collapseYearHeader(atIndex yearHeaderIndex: Int) -> Int {
 
         let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
@@ -105,7 +103,6 @@ class TableViewDataSource: NSObject {
         return rowsCollapsed
     }
 
-    // TODO: throw exception if argument not for day header
     func expandDayHeader(atIndex dayHeaderIndex: Int) -> Int {
 
         let dayHeader = shownCells[dayHeaderIndex] as! DayHeaderCell
@@ -134,7 +131,6 @@ class TableViewDataSource: NSObject {
         return dayHeader.entries
     }
 
-    // TODO: throw error if argument not for year header
     func collapseDayHeaders(forYearHeader yearHeaderIndex: Int) -> Int {
 
         let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
@@ -155,7 +151,6 @@ class TableViewDataSource: NSObject {
         return rowsCollapsed
     }
 
-    // TODO: throw exception if argument not for day header
     func collapseDayHeader(atIndex dayHeaderIndex: Int) -> Int {
         
         let dayHeader = shownCells[dayHeaderIndex] as! DayHeaderCell
@@ -173,6 +168,52 @@ class TableViewDataSource: NSObject {
         dayHeader.entries = 0
         
         return rowsCollapsed
+    }
+
+    func expandOrCollapseYearHeader(yearHeaderIndex: Int) -> Int {
+
+        let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
+
+        if !yearHeader.isExpanded {
+
+            return expandYearHeader(atIndex: yearHeaderIndex)
+
+        } else {
+
+            return -collapseYearHeader(atIndex: yearHeaderIndex)
+        }
+    }
+
+    func expandOrCollapseDayHeader(dayHeaderIndex: Int) -> Int {
+
+        let dayHeader = shownCells[dayHeaderIndex] as! DayHeaderCell
+
+        if !dayHeader.isExpanded {
+
+            return expandDayHeader(atIndex: dayHeaderIndex)
+
+        } else {
+
+            return -collapseDayHeader(atIndex: dayHeaderIndex)
+        }
+    }
+
+    func expandOrCollapseContent(contentIndex: Int) -> Bool {
+
+        let content = shownCells[contentIndex] as! ContentCell
+
+        if content.isExpanded == true {
+
+            content.isExpanded = false
+            
+            return false
+            
+        } else {
+            
+            content.isExpanded = true
+            
+            return true
+        }
     }
 
     // TODO: Write test case for this
@@ -264,113 +305,74 @@ class TableViewDataSource: NSObject {
 
     func showNewCondition(newCondition: HealthCondition) {
 
+        let latestYearHeader = 0
+        let latestDayHeader = 1
+        let latestContent = 2
+
         if shownCells.count == 0 {
 
             initShownCells()
 
         } else {
 
-            let mostRecentDate = stateController.healthRecords[(shownCells[0] as! YearHeaderCell).indexOfSource].date!
+            let mostRecentDate = stateController.healthRecords[(shownCells[latestYearHeader] as! YearHeaderCell).indexOfSource].date!
             let indexOfSource = stateController.healthRecords.count - 1
 
             if areDatesDifferent(prevDate: mostRecentDate, currentDate: newCondition.date!, forComponents: [.year]) {
 
-                shownCells.insert(YearHeaderCell(indexOfSource: indexOfSource), at: 0)
-                expandYearHeader(atIndex: 0)
-                expandDayHeader(atIndex: 1)
+                shownCells.insert(YearHeaderCell(indexOfSource: indexOfSource), at: latestYearHeader)
+                _ = expandYearHeader(atIndex: latestYearHeader)
+                _ = expandDayHeader(atIndex: latestDayHeader)
 
             } else if areDatesDifferent(prevDate: mostRecentDate, currentDate: newCondition.date!, forComponents: [.year, .month, .day]) {
 
-                let yearHeader = shownCells[0] as! YearHeaderCell
+                let yearHeader = shownCells[latestYearHeader] as! YearHeaderCell
                 yearHeader.indexOfSource = indexOfSource
 
-                if expandYearHeader(atIndex: 0) > 0 {
+                if expandYearHeader(atIndex: latestYearHeader) > 0 {
 
                     // year header wasn't expanded yet
 
-                    expandDayHeader(atIndex: 1)
+                    _ = expandDayHeader(atIndex: latestDayHeader)
 
                 } else {
 
                     yearHeader.days = yearHeader.days + 1
-                    shownCells.insert(DayHeaderCell(indexOfSource: indexOfSource, indexOfYearHeader: 0), at: 1)
-                    expandDayHeader(atIndex: 1)
+                    shownCells.insert(DayHeaderCell(indexOfSource: indexOfSource, indexOfYearHeader: latestYearHeader), at: latestDayHeader)
+                    _ = expandDayHeader(atIndex: latestDayHeader)
                 }
 
             } else {
 
 
-                let yearHeader = shownCells[0] as! YearHeaderCell
+                let yearHeader = shownCells[latestYearHeader] as! YearHeaderCell
                 yearHeader.indexOfSource = indexOfSource
 
-                if expandYearHeader(atIndex: 0) > 0 {
+                if expandYearHeader(atIndex: latestYearHeader) > 0 {
 
                     // year header wasn't expanded yet
 
-                    expandDayHeader(atIndex: 1)
+                    _ = expandDayHeader(atIndex: latestDayHeader)
 
                 } else {
 
-                    let dayHeader = shownCells[1] as! DayHeaderCell
+                    let dayHeader = shownCells[latestDayHeader] as! DayHeaderCell
                     dayHeader.indexOfSource = indexOfSource
 
-                    if expandDayHeader(atIndex: 1) == 0 {
+                    if expandDayHeader(atIndex: latestDayHeader) == 0 {
 
                         // day header was already expanded
 
                         dayHeader.entries = dayHeader.entries + 1
-                        shownCells.insert(ContentCell(indexOfSource: indexOfSource, indexOfDayHeader: 1), at: 2)
+                        shownCells.insert(ContentCell(indexOfSource: indexOfSource, indexOfDayHeader: latestDayHeader), at: latestContent)
                     }
                 }
             }
         }
+
+        _ = expandOrCollapseContent(contentIndex: latestContent)
     }
 
-    func expandOrCollapseYearHeader(yearHeaderIndex: Int) -> Int {
-
-        let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
-
-        if !yearHeader.isExpanded {
-
-            return expandYearHeader(atIndex: yearHeaderIndex)
-
-        } else {
-
-            return -collapseYearHeader(atIndex: yearHeaderIndex)
-        }
-    }
-
-    func expandOrCollapseDayHeader(dayHeaderIndex: Int) -> Int {
-
-        let dayHeader = shownCells[dayHeaderIndex] as! DayHeaderCell
-
-        if !dayHeader.isExpanded {
-
-            return expandDayHeader(atIndex: dayHeaderIndex)
-
-        } else {
-
-            return -collapseDayHeader(atIndex: dayHeaderIndex)
-        }
-    }
-
-    func expandOrCollapseContent(contentIndex: Int) -> Bool {
-
-        let content = shownCells[contentIndex] as! ContentCell
-
-        if content.isExpanded == true {
-
-            content.isExpanded = false
-
-            return false
-
-        } else {
-
-            content.isExpanded = true
-
-            return true
-        }
-    }
 }
 
 extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
@@ -450,6 +452,8 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
                 cell = imageCell
             }
+
+            contentCell.isExpanded ? cell.showExtraContent() : cell.hideExtraContent()
         }
 
         return cell
@@ -485,6 +489,7 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
             } else {
 
+                print("showExtra Content")
                 // Show the content BEFORE the expansion of the cell reveals the content
                 visibleCell.showExtraContent()
             }

@@ -17,11 +17,22 @@ class ImageHandler: NSObject, UINavigationControllerDelegate, UIImagePickerContr
         self.viewController = viewController
     }
 
-    func pickAPhoto() {
+    func pickAPhotoFromGallery() {
 
         let imagePickerController = UIImagePickerController()
 
         imagePickerController.sourceType = .photoLibrary
+        imagePickerController.allowsEditing = false
+        imagePickerController.delegate = self
+
+        viewController.present(imagePickerController, animated: true, completion: nil)
+    }
+
+    func pickAPhotoFromCamera() {
+
+        let imagePickerController = UIImagePickerController()
+
+        imagePickerController.sourceType = .camera
         imagePickerController.allowsEditing = false
         imagePickerController.delegate = self
 
@@ -34,7 +45,8 @@ class ImageHandler: NSObject, UINavigationControllerDelegate, UIImagePickerContr
 
             let healthImage: HealthImage = HealthImage(timeOfImage: Date(), image: image)
 
-            viewController.performSegue(withIdentifier: "toImageView", sender: healthImage)
+            viewController.updateStateAndDataSource(healthCondition: healthImage)
+//            viewController.performSegue(withIdentifier: "toImageView", sender: healthImage)
         }
 
         viewController.dismiss(animated: true, completion: nil)

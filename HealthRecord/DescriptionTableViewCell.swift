@@ -39,7 +39,13 @@ class DescriptionTableViewCell: UITableViewCell {
         tagsHorizontalStack.spacing = 5
         tagsHorizontalStack.distribution = .fillProportionally
         tagsHorizontalStack.alignment = .fill
-        tagsHorizontalStack.isHidden = true
+
+        hideExtraContent()
+    }
+
+    override func prepareForReuse() {
+
+        hideExtraContent()
     }
 
     override func showExtraContent() {
