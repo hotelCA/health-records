@@ -67,7 +67,7 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
     func updateStateAndDataSource(healthCondition: HealthCondition) {
 
-        stateController.healthRecords.append(healthCondition)
+        stateController.saveARecord(healthCondition: healthCondition)
         tableViewDataSource.showNewCondition(newCondition: healthCondition)
     }
 

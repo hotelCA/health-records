@@ -50,9 +50,9 @@ class TableViewDataSource: NSObject {
 
     func expandYearHeader(atIndex yearHeaderIndex: Int) -> Int {
 
-        let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
-
-        guard !yearHeader.isExpanded else {
+        guard yearHeaderIndex < shownCells.count,
+                let yearHeader = shownCells[yearHeaderIndex] as? YearHeaderCell,
+                !yearHeader.isExpanded else {
 
             return 0
         }
@@ -105,9 +105,9 @@ class TableViewDataSource: NSObject {
 
     func expandDayHeader(atIndex dayHeaderIndex: Int) -> Int {
 
-        let dayHeader = shownCells[dayHeaderIndex] as! DayHeaderCell
-
-        guard !dayHeader.isExpanded else {
+        guard   dayHeaderIndex < shownCells.count,
+                let dayHeader = shownCells[dayHeaderIndex] as? DayHeaderCell,
+                !dayHeader.isExpanded else {
 
             return 0
         }
@@ -254,7 +254,7 @@ class TableViewDataSource: NSObject {
 
         let removedItem = shownCells.remove(at: row) as! ContentCell
 
-        removeHealthRecord(at: removedItem.indexOfSource!)
+        stateController.deleteARecord(atIndex: removedItem.indexOfSource!)
         adjustIndicesOfSource(endingAt: row, by: -1)
         var indexPathsToRemove = removeHeadersIfNeeded(startAtDayHeader: removedItem.indexOfDayHeader!)
         indexPathsToRemove.append(IndexPath(row: row, section: 0))
@@ -286,11 +286,6 @@ class TableViewDataSource: NSObject {
         }
 
         return indexPathsToRemove
-    }
-
-    func removeHealthRecord(at index: Int) {
-
-        stateController.healthRecords.remove(at: index)
     }
 
     func adjustIndicesOfSource(endingAt endRow: Int, by: Int) {
@@ -489,7 +484,6 @@ extension TableViewDataSource: UITableViewDataSource, UITableViewDelegate {
 
             } else {
 
-                print("showExtra Content")
                 // Show the content BEFORE the expansion of the cell reveals the content
                 visibleCell.showExtraContent()
             }
