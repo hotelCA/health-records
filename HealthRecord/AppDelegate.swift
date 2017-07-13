@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         let initialController = window?.rootViewController as! UINavigationController
         let healthRecordsController = initialController.viewControllers.first as! TableViewController
-        healthRecordsController.stateController = StateController()
+        healthRecordsController.stateController = StateController(storageController: StorageController())
 
         return true
     }
