@@ -29,6 +29,7 @@
 		3CDF607B1EF3189200E077E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CDF60791EF3189200E077E5 /* LaunchScreen.storyboard */; };
 		3CDF60861EF3189200E077E5 /* HealthRecordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDF60851EF3189200E077E5 /* HealthRecordTests.swift */; };
 		3CDF60911EF37D9600E077E5 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDF60901EF37D9600E077E5 /* TableViewController.swift */; };
+		3CFAC19A1F1918780045FE76 /* PrintTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 3CFAC1991F1918780045FE76 /* PrintTemplate.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		3CDF60851EF3189200E077E5 /* HealthRecordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthRecordTests.swift; sourceTree = "<group>"; };
 		3CDF60871EF3189200E077E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CDF60901EF37D9600E077E5 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		3CFAC1991F1918780045FE76 /* PrintTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PrintTemplate.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +191,7 @@
 				3CDF60791EF3189200E077E5 /* LaunchScreen.storyboard */,
 				3CDF607C1EF3189200E077E5 /* Info.plist */,
 				3CDF60741EF3189200E077E5 /* HealthRecord.xcdatamodeld */,
+				3CFAC1991F1918780045FE76 /* PrintTemplate.html */,
 			);
 			path = HealthRecord;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 				3C4EB5251EF8BDD400B64804 /* 20160704_145508.jpg in Resources */,
 				3CDF607B1EF3189200E077E5 /* LaunchScreen.storyboard in Resources */,
 				3CDF60781EF3189200E077E5 /* Assets.xcassets in Resources */,
+				3CFAC19A1F1918780045FE76 /* PrintTemplate.html in Resources */,
 				3CDF60731EF3189200E077E5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -593,6 +597,7 @@
 				3C1579891F12AB3C0051F092 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3CDF60651EF3189200E077E5 /* Build configuration list for PBXProject "HealthRecord" */ = {
 			isa = XCConfigurationList;

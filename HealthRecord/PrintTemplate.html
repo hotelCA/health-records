@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+            <title>Your personal health records</title>
+
+        <style>
+                .health-record-box{
+                    max-width:800px;
+                    margin:auto;
+                    padding:30px;
+                    border:1px solid #eee;
+                    font-size:16px;
+                    line-height:24px;
+                    font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+                    color:#555;
+                }
+
+            .health-record-box table {
+                width:100%;
+                line-height:inherit;
+                text-align:left;
+            }
+
+            .health-record-box table td {
+                padding:5px;
+                vertical-align:top;
+            }
+
+            .health-record-box table tr td:nth-child(2) {
+                text-align:right;
+            }
+
+            .health-record-box table tr.year.header td {
+                background:#ddd;
+                border-bottom:1px solid #ddd;
+                font-weight:bold;
+            }
+
+            .health-record-box table tr.day.header td {
+                background:#eee;
+                border-bottom:1px solid #ddd;
+                font-weight:bold;
+            }
+
+            .health-record-box table tr.condition td {
+                border-bottom:1px solid #eee;
+            }
+
+            .health-record-box table tr.condition td.image {
+                border:1px solid #eee;
+            }
+
+            .health-record-box table tr.condition.last td {
+                border-bottom:none;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="health-record-box">
+            <table cellpadding="0" cellspacing="0">
+                <tr class="year header">
+                    <td colspan="2">
+                        Year header
+                    </td>
+                </tr>
+
+                <tr class="day header">
+                    <td colspan="2">
+                        Day header
+                    </td>
+                </tr>
+
+                <tr class="condition">
+                    <td>
+                        Condition
+                    </td>
+
+                    <td>
+                        Pain
+                    </td>
+                </tr>
+                <tr class="condition">
+                    <td>
+                        image
+                    </td>
+                    <td class="image">
+                        <img src="https://www.brandsoftheworld.com/sites/default/files/styles/logo-thumbnail/public/0011/5120/brand.gif" style="width:100%; max-width:300px;">
+                            </td>
+                </tr>      
+                <tr class="condition">
+                    <td>
+                        Condition
+                    </td>
+                    
+                    <td>
+                        Itching
+                    </td>
+                </tr>
+                
+                <tr class="condition last">
+                    <td>
+                        Condition
+                    </td>
+                    
+                    <td>
+                        Sore
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>
