@@ -28,13 +28,14 @@ class HtmlController: NSObject {
 //        }
 
         do {
-            // Load the invoice HTML template code into a String variable.
-            let htmlContent = try String(contentsOfFile: pathToHTMLTemplate!)
+
+            htmlContent = try String(contentsOfFile: pathToHTMLTemplate!)
             let content = generateContent()
 
-            self.htmlContent = htmlContent.replacingOccurrences(of: "#CONTENT#", with: content)
+            htmlContent = htmlContent.replacingOccurrences(of: "#CONTENT#", with: content)
+            htmlContent = htmlContent.replacingOccurrences(of: "#IMAGE#", with: imageFileName)
 
-            return self.htmlContent
+            return htmlContent
             
         } catch {
 
