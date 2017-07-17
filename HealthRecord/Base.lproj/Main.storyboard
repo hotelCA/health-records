@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Image View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="HealthRecord" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" userLabel="Image View Controller" customClass="ViewController" customModule="HealthRecord" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -122,6 +122,39 @@
                 <exit id="aaj-uO-tyW" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2526" y="850"/>
+        </scene>
+        <!--Web View Controller-->
+        <scene sceneID="ZSF-iD-utI">
+            <objects>
+                <viewController id="grA-ej-JAn" userLabel="Web View Controller" customClass="WebViewController" customModule="HealthRecord" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VEq-Nm-Cgp"/>
+                        <viewControllerLayoutGuide type="bottom" id="YEC-Zz-547"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Be5-Ay-B5j">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KiA-ri-Pog">
+                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="KiA-ri-Pog" secondAttribute="trailing" id="SBe-cC-Snd"/>
+                            <constraint firstItem="YEC-Zz-547" firstAttribute="top" secondItem="KiA-ri-Pog" secondAttribute="bottom" id="ULL-gl-ouI"/>
+                            <constraint firstItem="KiA-ri-Pog" firstAttribute="top" secondItem="VEq-Nm-Cgp" secondAttribute="bottom" id="e11-hf-jSP"/>
+                            <constraint firstItem="KiA-ri-Pog" firstAttribute="leading" secondItem="Be5-Ay-B5j" secondAttribute="leading" id="hPh-Tx-t4w"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="KiA-ri-Pog" id="OsP-FB-bCq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lqR-rZ-XVa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3245.5999999999999" y="846.9265367316342"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8KZ-Kc-u4Z">
@@ -257,6 +290,11 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Health Records" id="Rh9-yI-9CB">
+                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="TUp-8K-R7m">
+                            <connections>
+                                <segue destination="grA-ej-JAn" kind="show" identifier="toWebView" id="Qcb-3A-qe4"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="cVM-vo-Qlo">
                             <connections>
                                 <action selector="AddButtonPressed:" destination="gii-dh-wj7" id="c40-ue-RUb"/>

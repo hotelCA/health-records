@@ -67,7 +67,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate 
 
             let yearCell = tableView.dequeueReusableCell(withIdentifier: "headerCell", for: indexPath) as! HeaderViewCell
 
-            yearCell.headerLabel?.text = "Year: \(stateController.healthRecords[yearHeaderCell.indexOfSource!].dateAsStringInLocalTimezone)"
+            yearCell.headerLabel?.text = "Year: \(HealthCondition.generateStringFromDateInLocalTimezone(date: stateController.healthRecords[yearHeaderCell.indexOfSource!].date))"
 
             cell = yearCell
 
@@ -75,7 +75,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate 
 
             let dayCell = tableView.dequeueReusableCell(withIdentifier: "headerCell", for: indexPath) as! HeaderViewCell
 
-            dayCell.headerLabel?.text = "Day: \(stateController.healthRecords[dayHeaderCell.indexOfSource!].dateAsStringInLocalTimezone)"
+            dayCell.headerLabel?.text = "Day: \(HealthCondition.generateStringFromDateInLocalTimezone(date: stateController.healthRecords[dayHeaderCell.indexOfSource!].date))"
 
             cell = dayCell
 
@@ -559,15 +559,15 @@ extension TableViewDataSource {
 
             if let yearHeaderCell = shownCells[i] as? YearHeaderCell {
 
-                print("Year: \(stateController.healthRecords[yearHeaderCell.indexOfSource!].dateAsStringInLocalTimezone)")
+                print("Year: \(HealthCondition.generateStringFromDateInLocalTimezone(date: stateController.healthRecords[yearHeaderCell.indexOfSource!].date))")
 
             } else if let dayHeaderCell = shownCells[i] as? DayHeaderCell {
 
-                print("Day: \(stateController.healthRecords[dayHeaderCell.indexOfSource!].dateAsStringInLocalTimezone)")
+                print("Day: \(HealthCondition.generateStringFromDateInLocalTimezone(date: stateController.healthRecords[dayHeaderCell.indexOfSource!].date))")
 
             } else if let contentCell = shownCells[i] as? ContentCell {
 
-                print("Content: \(stateController.healthRecords[contentCell.indexOfSource!].dateAsStringInLocalTimezone)")
+                print("Content: \(HealthCondition.generateStringFromDateInLocalTimezone(date: stateController.healthRecords[contentCell.indexOfSource!].date))")
             }
         }
     }

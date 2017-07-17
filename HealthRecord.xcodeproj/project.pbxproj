@@ -30,6 +30,10 @@
 		3CDF60861EF3189200E077E5 /* HealthRecordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDF60851EF3189200E077E5 /* HealthRecordTests.swift */; };
 		3CDF60911EF37D9600E077E5 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDF60901EF37D9600E077E5 /* TableViewController.swift */; };
 		3CFAC19A1F1918780045FE76 /* PrintTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 3CFAC1991F1918780045FE76 /* PrintTemplate.html */; };
+		3CFAC19C1F1922170045FE76 /* PrintTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFAC19B1F1922170045FE76 /* PrintTemplate.swift */; };
+		3CFAC19E1F1952740045FE76 /* HtmlController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFAC19D1F1952740045FE76 /* HtmlController.swift */; };
+		3CFAC1A01F19A9390045FE76 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFAC19F1F19A9390045FE76 /* WebViewController.swift */; };
+		3CFAC1A21F1AA6B10045FE76 /* PdfController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFAC1A11F1AA6B10045FE76 /* PdfController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +83,10 @@
 		3CDF60871EF3189200E077E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CDF60901EF37D9600E077E5 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		3CFAC1991F1918780045FE76 /* PrintTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PrintTemplate.html; sourceTree = "<group>"; };
+		3CFAC19B1F1922170045FE76 /* PrintTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrintTemplate.swift; sourceTree = "<group>"; };
+		3CFAC19D1F1952740045FE76 /* HtmlController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlController.swift; sourceTree = "<group>"; };
+		3CFAC19F1F19A9390045FE76 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		3CFAC1A11F1AA6B10045FE76 /* PdfController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PdfController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +117,8 @@
 		3C02D0001F05DD1100BC6ACB /* Model Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				3CFAC19D1F1952740045FE76 /* HtmlController.swift */,
+				3CFAC1A11F1AA6B10045FE76 /* PdfController.swift */,
 				3C15798F1F17108D0051F092 /* StorageController.swift */,
 				3C02D0011F0625CF00BC6ACB /* StateController.swift */,
 			);
@@ -145,6 +155,7 @@
 				3C02CFFE1F05DCBB00BC6ACB /* TableViewDataSource.swift */,
 				3C02D0031F0746D900BC6ACB /* ImageHandler.swift */,
 				3C02D0051F07520A00BC6ACB /* ConditionHandler.swift */,
+				3CFAC19F1F19A9390045FE76 /* WebViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -154,6 +165,7 @@
 			children = (
 				3C4EB5221EF76BA800B64804 /* ViewDataDefinitions.swift */,
 				3C1579911F172C8C0051F092 /* ModelDataDefinitions.swift */,
+				3CFAC19B1F1922170045FE76 /* PrintTemplate.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -350,10 +362,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CFAC1A01F19A9390045FE76 /* WebViewController.swift in Sources */,
 				3C02CFFF1F05DCBB00BC6ACB /* TableViewDataSource.swift in Sources */,
 				3C4EB5291EF9769900B64804 /* DescriptionTableViewCell.swift in Sources */,
 				3C02D0061F07520A00BC6ACB /* ConditionHandler.swift in Sources */,
 				3C4EB5271EF9766B00B64804 /* ImageTableViewCell.swift in Sources */,
+				3CFAC19E1F1952740045FE76 /* HtmlController.swift in Sources */,
 				3C5C3DCF1EF70DA800ACDC5E /* AddConditionViewController.swift in Sources */,
 				3C4EB5231EF76BA800B64804 /* ViewDataDefinitions.swift in Sources */,
 				3C02D0091F09ACB100BC6ACB /* HeaderViewCell.swift in Sources */,
@@ -362,7 +376,9 @@
 				3CDF60701EF3189200E077E5 /* ImageViewController.swift in Sources */,
 				3CDF606E1EF3189200E077E5 /* AppDelegate.swift in Sources */,
 				3CDF60911EF37D9600E077E5 /* TableViewController.swift in Sources */,
+				3CFAC19C1F1922170045FE76 /* PrintTemplate.swift in Sources */,
 				3C1579921F172C8C0051F092 /* ModelDataDefinitions.swift in Sources */,
+				3CFAC1A21F1AA6B10045FE76 /* PdfController.swift in Sources */,
 				3C02D0021F0625CF00BC6ACB /* StateController.swift in Sources */,
 				3C72A9161F0D522800E5E0D3 /* TableViewCellExtension.swift in Sources */,
 				3C1579901F17108D0051F092 /* StorageController.swift in Sources */,

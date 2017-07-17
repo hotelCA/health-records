@@ -18,6 +18,8 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
     @IBOutlet var tableView: UITableView!
     var tableViewDataSource: TableViewDataSource!
     var stateController: StateController!
+    var htmlController: HtmlController!
+    var pdfController: PdfController!
     var imageHandler: ImageHandler!
     var conditionHandler: ConditionHandler!
     
@@ -114,16 +116,19 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
         if segue.identifier == "toImageView" {
 
-            if let destination = segue.destination as? ViewController {
+            if let destination = segue.destination as? ImageViewController {
 
                 destination.healthImage = sender as! HealthImage?
             }
 
-        } else if segue.identifier == "toConditionPicker" {
+        } else if segue.identifier == "toWebView" {
 
-//            if let destination = segue.destination as? AddConditionViewController {
-//
-//            }
+            if let destination = segue.destination as? WebViewController {
+
+                destination.url = URL(string: htmlController.pathToHTMLTemplate!)
+                destination.webContent = htmlController.renderHealthRecord(healthRecords: stateController.healthRecords)
+                pdfController.exportHTMLContentToPDF(htmlContent: destination.webContent)
+            }
         }
     }
 }

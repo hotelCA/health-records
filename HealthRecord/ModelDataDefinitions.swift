@@ -13,7 +13,12 @@ class HealthCondition {
 
     var date: Date!
 
-    var dateAsStringInLocalTimezone: String {
+    init(timeOfCondition: Date) {
+
+        self.date = timeOfCondition
+    }
+
+    class func generateStringFromDateInLocalTimezone(date: Date) -> String {
 
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = NSTimeZone.local
@@ -21,10 +26,14 @@ class HealthCondition {
         return dateFormatter.string(from: date)
     }
 
-    init(timeOfCondition: Date) {
+    class func generateStringFromDateInUTC(date: Date) -> String {
 
-        self.date = timeOfCondition
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC") as! TimeZone
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
+        return dateFormatter.string(from: date)
     }
+
 }
 
 class HealthDescription: HealthCondition {
@@ -50,6 +59,15 @@ class HealthImage: HealthCondition {
         super.init(timeOfCondition: timeOfImage)
         
         self.image = image
+    }
+
+    class func generateFileNameFrom(date: Date) -> String {
+
+        var localPath = HealthCondition.generateStringFromDateInUTC(date: date)
+
+        localPath = localPath.replacingOccurrences(of: "[ +:-]", with: "", options: String.CompareOptions.regularExpression, range: nil)
+
+        return localPath
     }
 }
 

@@ -3,9 +3,9 @@
     <entity name="HealthRecord" representedClassName="HealthRecord" syncable="YES" codeGenerationType="class">
         <attribute name="condition" optional="YES" attributeType="Integer 16" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="image" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="imagePath" optional="YES" attributeType="String" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="HealthRecord" positionX="-63" positionY="-18" width="128" height="88"/>
+        <element name="HealthRecord" positionX="-63" positionY="-18" width="128" height="90"/>
     </elements>
 </model>

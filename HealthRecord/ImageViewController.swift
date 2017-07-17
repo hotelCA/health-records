@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ImageViewController: UIViewController {
 
     @IBOutlet var imageView: UIImageView!
     var healthImage: HealthImage?
