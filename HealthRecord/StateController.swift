@@ -7,28 +7,29 @@
 //
 
 import UIKit
-import CoreData
 
 class StateController {
 
+    let storageController: StorageController
     var healthRecords = [HealthCondition]()
-    var loaded: Bool!
+    var testDataLoaded: Bool!
 
-    init() {
+    init(storageController: StorageController) {
 
-        self.loaded = false
+        self.storageController = storageController
+
+        self.testDataLoaded = false
 
         let environment = ProcessInfo.processInfo.environment
 
         if environment["TEST"] == "true" {
 
             self.loadTestHealthRecord()
-            print("Launch for UI TESTING")
 
         } else {
 
-            loadHealthRecords()
-            print("Regular launch")
+            healthRecords = storageController.fetchHealthRecords()
+//            storageController.deleteAllData()
         }
 
         for i in 0..<healthRecords.count {
@@ -40,126 +41,20 @@ class StateController {
     func saveARecord(healthCondition: HealthCondition) {
 
         healthRecords.append(healthCondition)
-
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let newHealthCondition = NSEntityDescription.insertNewObject(forEntityName: "HealthRecord", into: context)
-
-        newHealthCondition.setValue(healthCondition.date, forKey: "date")
-
-        if let healthDescription = healthCondition as? HealthDescription {
-
-            newHealthCondition.setValue(healthDescription.condition.rawValue, forKey: "condition")
-
-        } else if let healthImage = healthCondition as? HealthImage {
-
-            newHealthCondition.setValue(UIImagePNGRepresentation(healthImage.image), forKey: "image")
-
-            // Use this value to disqualify this as a HealthDescription when fetching request
-            newHealthCondition.setValue(-1, forKey: "condition")
-        }
-
-        do {
-
-            try context.save()
-
-            print("saved")
-            
-        } catch {
-
-            print("error during saving core data")
-        }
+        storageController.add(healthCondition)
     }
 
     func deleteARecord(atIndex index: Int) {
 
         let removedRecord = healthRecords.remove(at: index)
-
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "HealthRecord")
-        request.returnsObjectsAsFaults = false
-
-        request.predicate = NSPredicate(format: "date = %@", argumentArray: [removedRecord.date!])
-
-        do {
-
-            let results = try context.fetch(request)
-
-            if results.count > 0 {
-
-                print("found \(results.count) items")
-
-                context.delete(results[0] as! NSManagedObject)
-
-                do {
-
-                    try context.save()
-
-                } catch {
-
-                    print("Deleting a record failed!")
-                }
-
-            } else {
-
-                print("Didn't find any results to delete")
-            }
-
-        } catch {
-
-            print("Couldn't fetch results from deleteARecord")
-        }
-    }
-
-    func loadHealthRecords() {
-
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "HealthRecord")
-        request.returnsObjectsAsFaults = false
-
-        do {
-
-            let results = try context.fetch(request)
-
-            if results.count > 0 {
-
-                for result in results as! [NSManagedObject] {
-
-                    if let condition = ConditionEnum(rawValue: result.value(forKey: "condition") as! ConditionEnum.RawValue) {
-
-                        print("loaded description")
-
-                        let healthDescription = HealthDescription(timeOfDescription: result.value(forKey: "date") as! Date, condition: condition)
-
-                        healthRecords.append(healthDescription)
-
-                    } else if let imageData = result.value(forKey: "image") as? Data {
-
-                        print("loaded image")
-
-                        let healthImage = HealthImage(timeOfImage: result.value(forKey: "date") as! Date, image: UIImage(data: imageData)!)
-
-                        healthRecords.append(healthImage)
-                    }
-                }
-
-            } else {
-
-                print("there are no saved health records")
-            }
-
-        } catch {
-
-            print("Couldn't fetch results")
-        }
+        storageController.remove(removedRecord)
     }
 
     func loadTestHealthRecord() {
 
-        if !loaded {
+        if !testDataLoaded {
 
-            loaded = true
+            testDataLoaded = true
 
             for i in 12..<80 {
 

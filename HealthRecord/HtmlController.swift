@@ -35,6 +35,8 @@ class HtmlController: NSObject {
             htmlContent = htmlContent.replacingOccurrences(of: "#CONTENT#", with: content)
             htmlContent = htmlContent.replacingOccurrences(of: "#IMAGE#", with: imageFileName)
 
+            print(htmlContent)
+
             return htmlContent
             
         } catch {
