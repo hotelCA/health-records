@@ -85,6 +85,18 @@ enum ConditionEnum: Int {
     case tingling
     case numb
     case ache
+
+    var description : String {
+
+        switch self {
+
+            case .pain: return "Pain"
+            case .itch: return "Itch"
+            case .tingling: return "Tingling"
+            case .numb: return "Numb"
+            case .ache: return "Ache"
+        }
+    }
 }
 
 enum DegreeEnum {

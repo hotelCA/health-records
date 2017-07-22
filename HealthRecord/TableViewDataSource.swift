@@ -289,15 +289,16 @@ extension TableViewDataSource {
                 return 0
         }
 
-        let targetDate = stateController.healthRecords[dayHeader.indexOfSource!].date!
+        let targetDate = stateController.healthRecords[dayHeader.indexOfSource].date!
 
-        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - dayHeader.indexOfSource! - 1).reversed() {
+        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - dayHeader.indexOfSource - 1).reversed() {
 
             guard !areDatesDifferent(prevDate: targetDate, currentDate: healthRecord.date!, forComponents: [.year, .month, .day]) else {
 
                 break
             }
 
+            // TODO: Should insert on top of the day section instead
             shownCells.insert(ContentCell(indexOfSource: i, indexOfDayHeader: dayHeaderIndex), at: dayHeaderIndex+1+dayHeader.entries)
 
             dayHeader.entries = dayHeader.entries + 1
@@ -436,6 +437,9 @@ extension TableViewDataSource {
         var indexPathsToRemove = removeHeadersIfNeeded(startAtDayHeader: removedItem.indexOfDayHeader!)
         indexPathsToRemove.append(IndexPath(row: row, section: 0))
 
+        let indexOfRowAfterDeletedRow = row + 1 - indexPathsToRemove.count
+        adjustIndicesOfHeaders(startingAt: indexOfRowAfterDeletedRow, by: -indexPathsToRemove.count)
+
         return indexPathsToRemove
     }
 
@@ -465,13 +469,43 @@ extension TableViewDataSource {
         return indexPathsToRemove
     }
     
-    fileprivate func adjustIndicesOfSource(endingAt endRow: Int, by: Int) {
+    fileprivate func adjustIndicesOfSource(endingAt endRow: Int, by amount: Int) {
         
         for i in 0..<endRow {
             
             let shownCell = shownCells[i] as! VisibleCell
             
-            shownCell.indexOfSource = shownCell.indexOfSource + by
+            shownCell.indexOfSource = shownCell.indexOfSource + amount
+        }
+    }
+
+    fileprivate func adjustIndicesOfHeaders(startingAt startRow: Int, by amount: Int) {
+
+        var yearHeaderFound = false
+        var dayHeaderFound = false
+
+        for shownCell in shownCells.dropFirst(startRow) {
+
+            if let contentCell = shownCell as? ContentCell {
+
+                if yearHeaderFound || dayHeaderFound {
+
+                    contentCell.indexOfDayHeader = contentCell.indexOfDayHeader + amount
+                }
+
+            } else if let dayHeaderCell = shownCell as? DayHeaderCell {
+
+                if yearHeaderFound {
+
+                    dayHeaderCell.indexOfYearHeader = dayHeaderCell.indexOfYearHeader + amount
+                }
+
+                dayHeaderFound = true
+
+            } else if shownCell is YearHeaderCell {
+
+                yearHeaderFound = true
+            }
         }
     }
 }
@@ -483,6 +517,7 @@ extension TableViewDataSource {
         let latestYearHeader = 0
         let latestDayHeader = 1
         let latestContent = 2
+        var cellsAdded = 0
 
         if shownCells.count == 0 {
 
@@ -496,45 +531,59 @@ extension TableViewDataSource {
             if areDatesDifferent(prevDate: mostRecentDate, currentDate: newCondition.date!, forComponents: [.year]) {
 
                 shownCells.insert(YearHeaderCell(indexOfSource: indexOfSource), at: latestYearHeader)
+
                 _ = expandYearHeader(atIndex: latestYearHeader)
                 _ = expandDayHeader(atIndex: latestDayHeader)
 
+                // 1 year header + 1 day header + 1 content cell
+                cellsAdded = 3
+                
             } else if areDatesDifferent(prevDate: mostRecentDate, currentDate: newCondition.date!, forComponents: [.year, .month, .day]) {
 
                 let yearHeader = shownCells[latestYearHeader] as! YearHeaderCell
                 yearHeader.indexOfSource = indexOfSource
 
-                if expandYearHeader(atIndex: latestYearHeader) > 0 {
+                // num of day headers + 1 content cell
+                cellsAdded = expandYearHeader(atIndex: latestYearHeader) + 1
 
-                    // year header wasn't expanded yet
+                if cellsAdded <= 1 {
 
-                    _ = expandDayHeader(atIndex: latestDayHeader)
-
-                } else {
+                    // year header was already expanded
 
                     yearHeader.days = yearHeader.days + 1
                     shownCells.insert(DayHeaderCell(indexOfSource: indexOfSource, indexOfYearHeader: latestYearHeader), at: latestDayHeader)
                     _ = expandDayHeader(atIndex: latestDayHeader)
+
+                    // 1 day header + 1 content cell
+                    cellsAdded = 2
                 }
+
+                _ = expandDayHeader(atIndex: latestDayHeader)
 
             } else {
 
+                (shownCells[latestYearHeader] as! YearHeaderCell).indexOfSource = indexOfSource
 
-                let yearHeader = shownCells[latestYearHeader] as! YearHeaderCell
-                yearHeader.indexOfSource = indexOfSource
+                // num of day headers + 1 content cell
+                cellsAdded = expandYearHeader(atIndex: latestYearHeader) + 1
 
-                if expandYearHeader(atIndex: latestYearHeader) > 0 {
+                if cellsAdded > 1 {
 
                     // year header wasn't expanded yet
 
-                    _ = expandDayHeader(atIndex: latestDayHeader)
+                    cellsAdded += expandDayHeader(atIndex: latestDayHeader)
 
                 } else {
 
                     let dayHeader = shownCells[latestDayHeader] as! DayHeaderCell
                     dayHeader.indexOfSource = indexOfSource
 
-                    if expandDayHeader(atIndex: latestDayHeader) == 0 {
+                    let contentCellsAdded = expandDayHeader(atIndex: latestDayHeader)
+
+                    // add num of content cells
+                    cellsAdded += contentCellsAdded
+
+                    if contentCellsAdded == 0 {
 
                         // day header was already expanded
                         
@@ -546,6 +595,13 @@ extension TableViewDataSource {
         }
         
         _ = expandOrCollapseContent(contentIndex: latestContent)
+
+        if cellsAdded > 0 {
+
+            let indexOfNewContentCell = latestYearHeader + cellsAdded - 1
+
+            adjustIndicesOfHeaders(startingAt: indexOfNewContentCell + 1, by: cellsAdded)
+        }
     }
 }
 

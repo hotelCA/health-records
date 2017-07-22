@@ -20,8 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let initialController = window?.rootViewController as! UINavigationController
         let healthRecordsController = initialController.viewControllers.first as! TableViewController
         healthRecordsController.stateController = StateController(storageController: StorageController())
-        healthRecordsController.htmlController = HtmlController()
-        healthRecordsController.pdfController = PdfController()
 
         return true
     }

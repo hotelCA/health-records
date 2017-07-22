@@ -18,11 +18,12 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
     @IBOutlet var tableView: UITableView!
     var tableViewDataSource: TableViewDataSource!
     var stateController: StateController!
-    var htmlController: HtmlController!
-    var pdfController: PdfController!
     var imageHandler: ImageHandler!
-    var conditionHandler: ConditionHandler!
-    
+
+    @IBAction func testButtonPressed(_ sender: Any) {
+
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -35,9 +36,7 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
         tableView.delegate = tableViewDataSource
         tableViewDataSource.tableView = tableView
         tableView.reloadData()
-
         imageHandler = ImageHandler(viewController: self)
-        conditionHandler = ConditionHandler(viewController: self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -48,7 +47,6 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
         // Nothing yet
     }
 
@@ -91,17 +89,17 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
         let takePhotoAction = UIAlertAction(title: "Camera", style: .default) { _ in
 
-            self.imageHandler.pickAPhotoFromCamera()
+            self.takeAPhoto()
         }
 
         let uploadFileAction = UIAlertAction(title: "Upload a file", style: .default) { _ in
 
-            self.imageHandler.pickAPhotoFromGallery()
+            self.loadAnImage()
         }
 
         let addConditionAction = UIAlertAction(title: "Add a condition", style: .default) { _ in
 
-            self.conditionHandler.addNewCondition()
+            self.addADescription()
         }
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
@@ -110,6 +108,22 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
         actionSheet.addAction(uploadFileAction)
         actionSheet.addAction(addConditionAction)
         actionSheet.addAction(cancelAction)
+    }
+
+    private func takeAPhoto() {
+
+        imageHandler.pickAPhotoFromCamera()
+    }
+
+    private func loadAnImage() {
+
+        imageHandler.pickAPhotoFromGallery()
+    }
+
+    private func addADescription() {
+
+        let descriptionHandler = DescriptionHandler(viewController: self)
+        descriptionHandler.addNewCondition()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -125,8 +139,12 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
             if let destination = segue.destination as? WebViewController {
 
+                let htmlController = HtmlController()
+                let pdfController = PdfController()
+
                 destination.url = URL(string: htmlController.pathToHTMLTemplate!)
-                destination.webContent = htmlController.renderHealthRecord(healthRecords: stateController.healthRecords)
+                destination.webContent = htmlController.renderHealthRecord(tableViewDataSource.shownCells as! [VisibleCell], stateController.healthRecords)
+                
                 pdfController.exportHTMLContentToPDF(htmlContent: destination.webContent)
             }
         }

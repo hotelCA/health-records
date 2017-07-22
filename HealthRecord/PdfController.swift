@@ -14,7 +14,7 @@ class PdfController: UIPrintPageRenderer {
 
     let A4PageHeight: CGFloat = 841.8
 
-    var pdfFilename: String!
+    let healthRecordsFilename = "health_records.pdf"
 
     override init() {
         super.init()
@@ -29,19 +29,25 @@ class PdfController: UIPrintPageRenderer {
     func exportHTMLContentToPDF(htmlContent: String) {
 
         let printFormatter = UIMarkupTextPrintFormatter(markupText: htmlContent)
-        addPrintFormatter(printFormatter, startingAtPageAt: 0)
 
-        let pdfData = drawPDFUsingPrintPageRenderer(pdfController: self)
+        DispatchQueue.main.asyncAfter(deadline: .now() + DispatchTimeInterval.microseconds(1000000)) {
 
-        let documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            self.addPrintFormatter(printFormatter, startingAtPageAt: 0)
 
-        let pdfFilename = documentDirectory.appendingPathComponent("health_records.pdf")
-        pdfData!.write(to: pdfFilename, atomically: true)
-        
-        print(pdfFilename)
+            let pdfData = self.drawPDFUsingPrintPageRenderer(pdfController: self)
+
+            let fileManager = FileManager.default
+            let documentDirectory = try! fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            let pdfFilename = documentDirectory.appendingPathComponent(self.healthRecordsFilename)
+
+            print("\(htmlContent)")
+            print("\(pdfFilename)")
+
+            pdfData!.write(to: pdfFilename, atomically: true)
+        }
     }
 
-    func drawPDFUsingPrintPageRenderer(pdfController: PdfController) -> NSData! {
+    func drawPDFUsingPrintPageRenderer(pdfController: UIPrintPageRenderer) -> NSData! {
 
         let data = NSMutableData()
 

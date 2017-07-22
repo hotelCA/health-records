@@ -43,7 +43,12 @@ class ImageHandler: NSObject, UINavigationControllerDelegate, UIImagePickerContr
 
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
 
-            let healthImage: HealthImage = HealthImage(timeOfImage: Date(), image: image)
+            UIGraphicsBeginImageContext(CGSize(width: 200, height: 200))
+            image.draw(in: CGRect(x: 0, y: 0, width: 200, height: 200))
+            let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+
+            let healthImage: HealthImage = HealthImage(timeOfImage: Date(), image: resizedImage!)
 
             viewController.updateStateAndDataSource(healthCondition: healthImage)
 //            viewController.performSegue(withIdentifier: "toImageView", sender: healthImage)

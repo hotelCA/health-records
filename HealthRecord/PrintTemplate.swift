@@ -68,3 +68,26 @@ class ConditionDescriptionTemplate {
         self.content = content
     }
 }
+
+class ConditionImageTemplate {
+
+    let content: (key: String, value: String)
+
+    let opening = "<tr class=\"condition\">" + "\n"
+    let closing = "</tr>" + "\n"
+    let openingSection = "\t" + "<td>" + "\n"
+    let closingSection = "\t" + "</td>" + "\n"
+    let imageSection = "\t" + "<td class=\"image\">" + "\n"
+    let imgTagBegin = "<img src=\""
+    let imgTagEnd = "\" style=\"width:100%; max-width:300px;\">"
+
+    var image: String {
+
+        return opening + openingSection + "\t\t" + content.key + "\n" + closingSection + imageSection + "\t\t" + imgTagBegin + content.value + imgTagEnd + "\n" + closingSection + closing
+    }
+
+    init(content: (String, String)) {
+
+        self.content = content
+    }
+}

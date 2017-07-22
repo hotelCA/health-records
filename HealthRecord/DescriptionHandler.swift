@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ConditionHandler {
+class DescriptionHandler {
 
     var viewController: TableViewController!
 
@@ -21,5 +21,4 @@ class ConditionHandler {
 
         viewController.performSegue(withIdentifier: "toConditionPicker", sender: nil)
     }
-
 }

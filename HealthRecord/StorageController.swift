@@ -9,11 +9,11 @@ import UIKit
 import CoreData
 
 var imageFileName: String!
+var documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
 
 class StorageController {
 
     let imageFlag: Int = -1
-    var documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
 
     func add(_ healthCondition: HealthCondition) {
 
@@ -190,13 +190,7 @@ class StorageController {
 
     private func saveImageToFile(fileName: String, image: UIImage) {
 
-//        UIGraphicsBeginImageContext(CGSize(width: 200, height: 200))
-//        image.draw(in: CGRect(x: 0, y: 0, width: 200, height: 200))
-//
-//        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-//        UIGraphicsEndImageContext()
-
-        let imageData = UIImageJPEGRepresentation(image, 1.0)
+        let imageData = UIImageJPEGRepresentation(image, 0.5)
 
         do {
 
@@ -211,9 +205,6 @@ class StorageController {
     private func generateImageFrom(fileName: String) -> UIImage? {
 
         let newFileName = documentDirectory.appendingPathComponent(fileName)
-
-        // TODO: Remove this
-        imageFileName = newFileName.absoluteString
 
         let image = UIImage(contentsOfFile: newFileName.path)
 
