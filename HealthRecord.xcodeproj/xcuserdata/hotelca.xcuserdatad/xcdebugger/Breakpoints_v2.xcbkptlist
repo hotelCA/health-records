@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewController.swift"
-            timestampString = "522386463.88526"
+            timestampString = "522462617.376538"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
             landmarkName = "viewDidAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewDataSource.swift"
-            timestampString = "522261079.146386"
+            timestampString = "522478963.782921"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "568"
-            endingLineNumber = "568"
+            startingLineNumber = "588"
+            endingLineNumber = "588"
             landmarkName = "showNewCondition(newCondition:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewDataSource.swift"
-            timestampString = "522341642.2434"
+            timestampString = "522478963.782921"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "442"
-            endingLineNumber = "442"
+            startingLineNumber = "462"
+            endingLineNumber = "462"
             landmarkName = "deleteContentRow(atIndex:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewDataSource.swift"
-            timestampString = "522341684.350315"
+            timestampString = "522478963.782921"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "603"
-            endingLineNumber = "603"
+            startingLineNumber = "623"
+            endingLineNumber = "623"
             landmarkName = "showNewCondition(newCondition:)"
             landmarkType = "7">
          </BreakpointContent>

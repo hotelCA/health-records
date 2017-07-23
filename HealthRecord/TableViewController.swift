@@ -22,6 +22,16 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
     @IBAction func testButtonPressed(_ sender: Any) {
 
+        if stateController.mode == .normal {
+
+            stateController.mode = .printing
+
+        } else {
+
+            stateController.mode = .normal
+        }
+
+        tableView.reloadData()
     }
 
     override func viewDidLoad() {

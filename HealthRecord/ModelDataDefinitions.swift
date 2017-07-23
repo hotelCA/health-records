@@ -114,3 +114,9 @@ enum LocationEnum {
     case leg
     case foot
 }
+
+enum ModeEnum {
+
+    case normal
+    case printing
+}

@@ -8,18 +8,22 @@
 
 import UIKit
 
-class ImageTableViewCell: UITableViewCell {
+class ImageTableViewCell: CustomTableViewCell {
 
     @IBOutlet var medicalImage: UIImageView!
+    @IBOutlet var testLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
+        adjustLeadingConstraint(constant: 0.0)
 
         hideExtraContent()
     }
 
     override func prepareForReuse() {
-
+        super.prepareForReuse()
+        
         hideExtraContent()
     }
 
@@ -37,5 +41,28 @@ class ImageTableViewCell: UITableViewCell {
     override func hideExtraContent() {
 
         medicalImage.isHidden = true
+    }
+
+    override func loadPrintMode() {
+        super.loadPrintMode()
+
+        adjustLeadingConstraint(constant: 50.0)
+    }
+
+    override func loadDefaultMode() {
+        super.loadDefaultMode()
+
+        adjustLeadingConstraint(constant: 0.0)
+    }
+
+    func adjustLeadingConstraint(constant: CGFloat) {
+
+        if labelLeadingConstr != nil {
+
+            self.removeConstraint(labelLeadingConstr)
+        }
+
+        labelLeadingConstr = testLabel.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor, constant: constant)
+        labelLeadingConstr.isActive = true
     }
 }

@@ -36,7 +36,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate 
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-        var height = CGFloat(60)
+        var height = CGFloat(50)
 
         if let contentCell = shownCells[indexPath.row] as? ContentCell {
 
@@ -69,6 +69,11 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate 
 
             yearCell.headerLabel?.text = "Year: \(HealthCondition.generateStringFromDateInLocalTimezone(date: stateController.healthRecords[yearHeaderCell.indexOfSource!].date))"
 
+            if stateController.mode == .printing {
+
+                yearCell.loadPrintMode()
+            }
+
             cell = yearCell
 
         } else if let dayHeaderCell = shownCells[indexPath.row] as? DayHeaderCell {
@@ -76,6 +81,11 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate 
             let dayCell = tableView.dequeueReusableCell(withIdentifier: "headerCell", for: indexPath) as! HeaderViewCell
 
             dayCell.headerLabel?.text = "Day: \(HealthCondition.generateStringFromDateInLocalTimezone(date: stateController.healthRecords[dayHeaderCell.indexOfSource!].date))"
+
+            if stateController.mode == .printing {
+
+                dayCell.loadPrintMode()
+            }
 
             cell = dayCell
 
@@ -89,6 +99,11 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate 
 
                 descriptionCell.MedicalDescriptionLabel?.text = "Day: \(healthDescription.condition!)"
 
+                if stateController.mode == .printing {
+
+                    descriptionCell.loadPrintMode()
+                }
+
                 cell = descriptionCell
 
             } else if let healthImage = healthCondition as? HealthImage {
@@ -96,6 +111,11 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate 
                 let imageCell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
 
                 imageCell.medicalImage?.image = healthImage.image
+                
+                if stateController.mode == .printing {
+
+                    imageCell.loadPrintMode()
+                }
 
                 cell = imageCell
             }

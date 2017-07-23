@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DescriptionTableViewCell: UITableViewCell {
+class DescriptionTableViewCell: CustomTableViewCell {
 
     @IBOutlet var MedicalDescriptionLabel: UILabel!
 
@@ -40,14 +40,22 @@ class DescriptionTableViewCell: UITableViewCell {
         tagsHorizontalStack.distribution = .fillProportionally
         tagsHorizontalStack.alignment = .fill
 
+        adjustLeadingConstraint(constant: 0.0)
         hideExtraContent()
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
 
         hideExtraContent()
     }
 
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    
     override func showExtraContent() {
 
         tagsHorizontalStack.isHidden = false
@@ -58,10 +66,26 @@ class DescriptionTableViewCell: UITableViewCell {
         tagsHorizontalStack.isHidden = true
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+    override func loadPrintMode() {
+        super.loadPrintMode()
 
-        // Configure the view for the selected state
+        adjustLeadingConstraint(constant: 50.0)
     }
 
+    override func loadDefaultMode() {
+        super.loadDefaultMode()
+
+        adjustLeadingConstraint(constant: 0.0)
+    }
+
+    func adjustLeadingConstraint(constant: CGFloat) {
+
+        if labelLeadingConstr != nil {
+
+            self.removeConstraint(labelLeadingConstr)
+        }
+
+        labelLeadingConstr = MedicalDescriptionLabel.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor, constant: constant)
+        labelLeadingConstr.isActive = true
+    }
 }

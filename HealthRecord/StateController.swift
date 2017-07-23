@@ -10,11 +10,14 @@ import UIKit
 
 class StateController {
 
+    var mode: ModeEnum
     let storageController: StorageController
     var healthRecords = [HealthCondition]()
     var testDataLoaded: Bool!
 
     init(storageController: StorageController) {
+
+        mode = .normal
 
         self.storageController = storageController
 
