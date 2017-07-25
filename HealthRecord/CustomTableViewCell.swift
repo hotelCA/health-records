@@ -8,10 +8,16 @@
 
 import UIKit
 
+protocol CustomTableViewCellProtocol {
+
+    func checkButtonPressed(selected: Bool, tag: Int)
+}
+
 class CustomTableViewCell: UITableViewCell {
 
     var labelLeadingConstr: NSLayoutConstraint!
     var checkButton: UIButton!
+    var delegate: TableViewDataSource!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,9 +29,11 @@ class CustomTableViewCell: UITableViewCell {
         loadDefaultMode()
     }
 
-    func loadPrintMode() {
+    func loadPrintMode(row: Int, delegate: TableViewDataSource) {
 
         createCheckButton()
+        checkButton.tag = row
+        self.delegate = delegate
     }
 
     func loadDefaultMode() {
@@ -56,6 +64,8 @@ class CustomTableViewCell: UITableViewCell {
 
             checkButton.isSelected = true
         }
+
+        delegate.checkButtonPressed(selected: checkButton.isSelected, tag: checkButton.tag)
     }
 
     func removeCheckButton() {

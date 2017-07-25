@@ -12,11 +12,13 @@ import UIKit
 class VisibleCell {
 
     var isExpanded: Bool
+    var isSelected: Bool
     var indexOfSource: Int!
 
     init(indexOfSource: Int) {
 
         self.isExpanded = false
+        self.isSelected = false
         self.indexOfSource = indexOfSource
     }
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
+class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate, CustomTableViewCellProtocol {
 
     var stateController: StateController!
 
@@ -61,8 +61,6 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate 
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        var cell: UITableViewCell!
-
         if let yearHeaderCell = shownCells[indexPath.row] as? YearHeaderCell {
 
             let yearCell = tableView.dequeueReusableCell(withIdentifier: "headerCell", for: indexPath) as! HeaderViewCell
@@ -71,10 +69,10 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate 
 
             if stateController.mode == .printing {
 
-                yearCell.loadPrintMode()
+                yearCell.loadPrintMode(row: indexPath.row, delegate: self)
             }
 
-            cell = yearCell
+            return yearCell
 
         } else if let dayHeaderCell = shownCells[indexPath.row] as? DayHeaderCell {
 
@@ -84,10 +82,10 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate 
 
             if stateController.mode == .printing {
 
-                dayCell.loadPrintMode()
+                dayCell.loadPrintMode(row: indexPath.row, delegate: self)
             }
 
-            cell = dayCell
+            return dayCell
 
         } else if let contentCell = shownCells[indexPath.row] as? ContentCell {
 
@@ -101,10 +99,12 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate 
 
                 if stateController.mode == .printing {
 
-                    descriptionCell.loadPrintMode()
+                    descriptionCell.loadPrintMode(row: indexPath.row, delegate: self)
                 }
 
-                cell = descriptionCell
+                contentCell.isExpanded ? descriptionCell.showExtraContent() : descriptionCell.hideExtraContent()
+
+                return descriptionCell
 
             } else if let healthImage = healthCondition as? HealthImage {
 
@@ -114,16 +114,17 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate 
                 
                 if stateController.mode == .printing {
 
-                    imageCell.loadPrintMode()
+                    imageCell.loadPrintMode(row: indexPath.row, delegate: self)
                 }
 
-                cell = imageCell
-            }
+                contentCell.isExpanded ? imageCell.showExtraContent() : imageCell.hideExtraContent()
 
-            contentCell.isExpanded ? cell.showExtraContent() : cell.hideExtraContent()
+                return imageCell
+            }
         }
 
-        return cell
+        // It should never get here
+        return UITableViewCell()
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -191,8 +192,8 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate 
 
         if let content = shownCells[indexPath.row] as? ContentCell {
             
-            if !content.isExpanded {
-                
+            if !content.isExpanded && stateController.mode == .normal {
+
                 return true
             }
         }
@@ -649,3 +650,10 @@ extension TableViewDataSource {
     }
 }
 
+extension TableViewDataSource {
+
+    func checkButtonPressed(selected: Bool, tag: Int) {
+
+        print("Button \(tag), Pressed: \(selected)")
+    }
+}
