@@ -682,19 +682,16 @@ extension TableViewDataSource {
 
     func checkButtonPressed(selected: Bool, tag: Int) {
 
-        if let yearHeader = shownCells[tag] as? YearHeaderCell {
+        (shownCells[tag] as! VisibleCell).isSelected = selected
 
-            yearHeader.isSelected = selected
+        if shownCells[tag] is YearHeaderCell {
+
             changeCheckButtonStates(atIndex: tag + 1, for: [.dayHeader, .content], selected)
 
-        } else if let dayHeader = shownCells[tag] as? DayHeaderCell {
+        } else if shownCells[tag] is DayHeaderCell {
 
-            dayHeader.isSelected = selected
             changeCheckButtonStates(atIndex: tag + 1, for: [.content], selected)
 
-        } else if let contentCell = shownCells[tag] as? ContentCell {
-
-            contentCell.isSelected = selected
         }
 
         correctCheckButtonStates()
@@ -710,17 +707,22 @@ extension TableViewDataSource {
 
                 contentCell.isSelected = isSelected
 
-                let customCell = tableView.cellForRow(at: IndexPath(row: i, section: 0)) as! CustomTableViewCell
+                // Cells might not be in the view, so the function might return nil
+                if let customCell = tableView.cellForRow(at: IndexPath(row: i, section: 0)) as? CustomTableViewCell {
 
-                customCell.setSelected(selected: isSelected)
+                    customCell.setSelected(selected: isSelected)
+                }
 
             } else if cellTypes.contains(.dayHeader), let dayHeader = shownCell as? DayHeaderCell {
 
                 dayHeader.isSelected = isSelected
 
-                let customCell = tableView.cellForRow(at: IndexPath(row: i, section: 0)) as! CustomTableViewCell
+                // Cells might not be in the view, so the function might return nil
 
-                customCell.setSelected(selected: isSelected)
+                if let customCell = tableView.cellForRow(at: IndexPath(row: i, section: 0)) as? CustomTableViewCell {
+
+                    customCell.setSelected(selected: isSelected)
+                }
 
             } else {
 
@@ -733,7 +735,6 @@ extension TableViewDataSource {
 
         for i in (0..<shownCells.count).reversed() {
 
-            print("i: \(i)")
             let parentCell = shownCells[i] as! VisibleCell
             let previousSelectedState = parentCell.isSelected
             var noChildCellShown = true
@@ -744,7 +745,6 @@ extension TableViewDataSource {
 
                 for j in (i+1)..<shownCells.count {
 
-                    print("j: \(j)")
                     guard !(shownCells[j] is YearHeaderCell) else {
 
                         break
@@ -765,7 +765,10 @@ extension TableViewDataSource {
 
                 } else {
 
-                    (tableView.cellForRow(at: IndexPath(row: i, section: 0)) as! CustomTableViewCell).setSelected(selected: parentCell.isSelected)
+                    if let customCell = tableView.cellForRow(at: IndexPath(row: i, section: 0)) as? CustomTableViewCell {
+
+                        customCell.setSelected(selected: parentCell.isSelected)
+                    }
                 }
 
             } else if shownCells[i] is DayHeaderCell {
@@ -795,7 +798,10 @@ extension TableViewDataSource {
 
                 } else {
 
-                    (tableView.cellForRow(at: IndexPath(row: i, section: 0)) as! CustomTableViewCell).setSelected(selected: parentCell.isSelected)
+                    if let customCell = tableView.cellForRow(at: IndexPath(row: i, section: 0)) as? CustomTableViewCell {
+
+                        customCell.setSelected(selected: parentCell.isSelected)
+                    }
                 }
             }
         }
