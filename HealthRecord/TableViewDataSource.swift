@@ -69,7 +69,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
             if stateController.mode == .printing {
 
-                yearCell.loadPrintMode(row: indexPath.row, delegate: self)
+                yearCell.loadPrintMode(row: indexPath.row, delegate: self, selected: yearHeaderCell.isSelected)
             }
 
             return yearCell
@@ -82,7 +82,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
             if stateController.mode == .printing {
 
-                dayCell.loadPrintMode(row: indexPath.row, delegate: self)
+                dayCell.loadPrintMode(row: indexPath.row, delegate: self, selected: dayHeaderCell.isSelected)
             }
 
             return dayCell
@@ -99,7 +99,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
                 if stateController.mode == .printing {
 
-                    descriptionCell.loadPrintMode(row: indexPath.row, delegate: self)
+                    descriptionCell.loadPrintMode(row: indexPath.row, delegate: self, selected: contentCell.isSelected)
                 }
 
                 contentCell.isExpanded ? descriptionCell.showExtraContent() : descriptionCell.hideExtraContent()
@@ -114,7 +114,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
                 
                 if stateController.mode == .printing {
 
-                    imageCell.loadPrintMode(row: indexPath.row, delegate: self)
+                    imageCell.loadPrintMode(row: indexPath.row, delegate: self, selected: contentCell.isSelected)
                 }
 
                 contentCell.isExpanded ? imageCell.showExtraContent() : imageCell.hideExtraContent()
@@ -166,9 +166,16 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
         if rowsToAddOrRemove != 0 {
 
-            for i in indexPath.row+1..<indexPath.row+1+abs(rowsToAddOrRemove) {
+            let lastModifiedRow = indexPath.row + 1 + abs(rowsToAddOrRemove)
+
+            for i in indexPath.row+1..<lastModifiedRow {
 
                 indexPaths.append(IndexPath(row: i, section: 0))
+            }
+
+            if stateController.mode == .printing {
+
+                adjustButtonTagsFrom(row: lastModifiedRow, by: rowsToAddOrRemove)
             }
         }
 
@@ -267,7 +274,11 @@ extension TableViewDataSource {
 
             if areDatesDifferent(prevDate: prevDate, currentDate: healthRecord.date!, forComponents: [.day]) {
 
-                shownCells.insert(DayHeaderCell(indexOfSource: i, indexOfYearHeader: yearHeaderIndex), at: yearHeaderIndex+1+yearHeader.days)
+                let index = yearHeaderIndex + 1 + yearHeader.days
+
+                shownCells.insert(DayHeaderCell(indexOfSource: i, indexOfYearHeader: yearHeaderIndex), at: index)
+
+                (shownCells[index] as! DayHeaderCell).isSelected = (shownCells[yearHeaderIndex] as! YearHeaderCell).isSelected
 
                 yearHeader.days = yearHeader.days + 1
 
@@ -319,8 +330,11 @@ extension TableViewDataSource {
                 break
             }
 
-            // TODO: Should insert on top of the day section instead
-            shownCells.insert(ContentCell(indexOfSource: i, indexOfDayHeader: dayHeaderIndex), at: dayHeaderIndex+1+dayHeader.entries)
+            let index = dayHeaderIndex + 1 + dayHeader.entries
+
+            shownCells.insert(ContentCell(indexOfSource: i, indexOfDayHeader: dayHeaderIndex), at: index)
+
+            (shownCells[index] as! ContentCell).isSelected = (shownCells[dayHeaderIndex] as! DayHeaderCell).isSelected
 
             dayHeader.entries = dayHeader.entries + 1
         }
@@ -529,6 +543,20 @@ extension TableViewDataSource {
             }
         }
     }
+
+    fileprivate func adjustButtonTagsFrom(row: Int, by cellCount: Int) {
+
+        var row = row
+
+        print("row \(row), by \(cellCount)")
+
+        while let cell = tableView.cellForRow(at: IndexPath(row: row - max(cellCount, 0), section: 0)) as? CustomTableViewCell {
+
+            print("row \(row), by \(cellCount)")
+            cell.setCheckButtonTag(tag: row + min(cellCount, 0))
+            row += 1
+        }
+    }
 }
 
 extension TableViewDataSource {
@@ -654,6 +682,122 @@ extension TableViewDataSource {
 
     func checkButtonPressed(selected: Bool, tag: Int) {
 
+        if let yearHeader = shownCells[tag] as? YearHeaderCell {
+
+            yearHeader.isSelected = selected
+            changeCheckButtonStates(atIndex: tag + 1, for: [.dayHeader, .content], selected)
+
+        } else if let dayHeader = shownCells[tag] as? DayHeaderCell {
+
+            dayHeader.isSelected = selected
+            changeCheckButtonStates(atIndex: tag + 1, for: [.content], selected)
+
+        } else if let contentCell = shownCells[tag] as? ContentCell {
+
+            contentCell.isSelected = selected
+        }
+
+        correctCheckButtonStates()
+
         print("Button \(tag), Pressed: \(selected)")
+    }
+
+    func changeCheckButtonStates(atIndex: Int, for cellTypes: [VisibleCellEnum],_ isSelected: Bool) {
+
+        for (i, shownCell) in shownCells.enumerated().dropFirst(atIndex){
+
+            if let contentCell = shownCell as? ContentCell {
+
+                contentCell.isSelected = isSelected
+
+                let customCell = tableView.cellForRow(at: IndexPath(row: i, section: 0)) as! CustomTableViewCell
+
+                customCell.setSelected(selected: isSelected)
+
+            } else if cellTypes.contains(.dayHeader), let dayHeader = shownCell as? DayHeaderCell {
+
+                dayHeader.isSelected = isSelected
+
+                let customCell = tableView.cellForRow(at: IndexPath(row: i, section: 0)) as! CustomTableViewCell
+
+                customCell.setSelected(selected: isSelected)
+
+            } else {
+
+                break
+            }
+        }
+    }
+
+    func correctCheckButtonStates() {
+
+        for i in (0..<shownCells.count).reversed() {
+
+            print("i: \(i)")
+            let parentCell = shownCells[i] as! VisibleCell
+            let previousSelectedState = parentCell.isSelected
+            var noChildCellShown = true
+
+            if shownCells[i] is YearHeaderCell {
+
+                parentCell.isSelected = true
+
+                for j in (i+1)..<shownCells.count {
+
+                    print("j: \(j)")
+                    guard !(shownCells[j] is YearHeaderCell) else {
+
+                        break
+                    }
+
+                    noChildCellShown = false
+
+                    if (shownCells[j] as! VisibleCell).isSelected == false {
+
+                        parentCell.isSelected = false
+                        break
+                    }
+                }
+
+                if noChildCellShown {
+
+                    parentCell.isSelected = previousSelectedState
+
+                } else {
+
+                    (tableView.cellForRow(at: IndexPath(row: i, section: 0)) as! CustomTableViewCell).setSelected(selected: parentCell.isSelected)
+                }
+
+            } else if shownCells[i] is DayHeaderCell {
+
+                parentCell.isSelected = true
+
+                for j in (i+1)..<shownCells.count {
+
+                    guard !(shownCells[j] is YearHeaderCell),
+                          !(shownCells[j] is DayHeaderCell) else {
+
+                        break
+                    }
+
+                    noChildCellShown = false
+
+                    if (shownCells[j] as! VisibleCell).isSelected == false {
+
+                        parentCell.isSelected = false
+                        break
+                    }
+                }
+
+                if noChildCellShown {
+
+                    parentCell.isSelected = previousSelectedState
+
+                } else {
+
+                    (tableView.cellForRow(at: IndexPath(row: i, section: 0)) as! CustomTableViewCell).setSelected(selected: parentCell.isSelected)
+                }
+            }
+        }
     }
 }

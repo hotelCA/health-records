@@ -29,8 +29,8 @@ class HeaderViewCell: CustomTableViewCell {
         // Configure the view for the selected state
     }
 
-    override func loadPrintMode(row: Int, delegate: TableViewDataSource) {
-        super.loadPrintMode(row: row, delegate: delegate)
+    override func loadPrintMode(row: Int, delegate: TableViewDataSource, selected: Bool) {
+        super.loadPrintMode(row: row, delegate: delegate, selected: selected)
 
         adjustLeadingConstraint(constant: 50.0)
     }

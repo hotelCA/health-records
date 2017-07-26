@@ -29,10 +29,12 @@ class CustomTableViewCell: UITableViewCell {
         loadDefaultMode()
     }
 
-    func loadPrintMode(row: Int, delegate: TableViewDataSource) {
+    func loadPrintMode(row: Int, delegate: TableViewDataSource, selected: Bool) {
 
         createCheckButton()
         checkButton.tag = row
+        checkButton.isSelected = selected
+        print("isSelected: \(selected)")
         self.delegate = delegate
     }
 
@@ -66,6 +68,16 @@ class CustomTableViewCell: UITableViewCell {
         }
 
         delegate.checkButtonPressed(selected: checkButton.isSelected, tag: checkButton.tag)
+    }
+
+    func setCheckButtonTag(tag: Int) {
+
+        checkButton.tag = tag
+    }
+
+    func setSelected(selected: Bool) {
+
+        checkButton.isSelected = selected
     }
 
     func removeCheckButton() {

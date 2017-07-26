@@ -67,3 +67,10 @@ class ContentCell: VisibleCell {
         self.indexOfDayHeader = indexOfDayHeader
     }
 }
+
+enum VisibleCellEnum {
+
+    case yearHeader
+    case dayHeader
+    case content
+}
