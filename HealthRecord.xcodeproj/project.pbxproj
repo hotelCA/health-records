@@ -18,6 +18,7 @@
 		3C23F4F81F23EF9B00CE4B4F /* check_mark.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C23F4F71F23EF9B00CE4B4F /* check_mark.png */; };
 		3C23F4FA1F23EFA400CE4B4F /* uncheck_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C23F4F91F23EFA400CE4B4F /* uncheck_circle.png */; };
 		3C23F5001F24679900CE4B4F /* pdf_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C23F4FF1F24679900CE4B4F /* pdf_button.png */; };
+		3C23F5021F2AE9CF00CE4B4F /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C23F5011F2AE9CF00CE4B4F /* Utilities.swift */; };
 		3C4EB5231EF76BA800B64804 /* ViewDataDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4EB5221EF76BA800B64804 /* ViewDataDefinitions.swift */; };
 		3C4EB5271EF9766B00B64804 /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4EB5261EF9766B00B64804 /* ImageTableViewCell.swift */; };
 		3C4EB5291EF9769900B64804 /* DescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4EB5281EF9769900B64804 /* DescriptionTableViewCell.swift */; };
@@ -69,6 +70,7 @@
 		3C23F4F71F23EF9B00CE4B4F /* check_mark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check_mark.png; sourceTree = SOURCE_ROOT; };
 		3C23F4F91F23EFA400CE4B4F /* uncheck_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uncheck_circle.png; sourceTree = SOURCE_ROOT; };
 		3C23F4FF1F24679900CE4B4F /* pdf_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pdf_button.png; sourceTree = SOURCE_ROOT; };
+		3C23F5011F2AE9CF00CE4B4F /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		3C4EB5221EF76BA800B64804 /* ViewDataDefinitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewDataDefinitions.swift; sourceTree = "<group>"; };
 		3C4EB5261EF9766B00B64804 /* ImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
 		3C4EB5281EF9769900B64804 /* DescriptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionTableViewCell.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				3C4EB5211EF76B7A00B64804 /* Models */,
 				3C4EB5201EF76B1F00B64804 /* View Controllers */,
 				3CDF60711EF3189200E077E5 /* Main.storyboard */,
+				3C23F5011F2AE9CF00CE4B4F /* Utilities.swift */,
 				3CDF60771EF3189200E077E5 /* Assets.xcassets */,
 				3CDF60791EF3189200E077E5 /* LaunchScreen.storyboard */,
 				3CDF607C1EF3189200E077E5 /* Info.plist */,
@@ -379,6 +382,7 @@
 				3C5C3DCF1EF70DA800ACDC5E /* AddConditionViewController.swift in Sources */,
 				3C4EB5231EF76BA800B64804 /* ViewDataDefinitions.swift in Sources */,
 				3C02D0091F09ACB100BC6ACB /* HeaderViewCell.swift in Sources */,
+				3C23F5021F2AE9CF00CE4B4F /* Utilities.swift in Sources */,
 				3CDF60761EF3189200E077E5 /* HealthRecord.xcdatamodeld in Sources */,
 				3C02D0041F0746D900BC6ACB /* ImageHandler.swift in Sources */,
 				3CDF60701EF3189200E077E5 /* ImageViewController.swift in Sources */,

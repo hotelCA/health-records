@@ -153,9 +153,15 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
                 let pdfController = PdfController()
 
                 destination.url = URL(string: htmlController.pathToHTMLTemplate!)
-                destination.webContent = htmlController.renderHealthRecord(tableViewDataSource.shownCells as! [VisibleCell], stateController.healthRecords)
-                
-                pdfController.exportHTMLContentToPDF(htmlContent: destination.webContent)
+
+                let printRows = tableViewDataSource.getDataForPrinting()
+
+                if printRows.count > 0 {
+
+                    destination.webContent = htmlController.renderHealthRecord(printRows, stateController.healthRecords)
+                    
+                    pdfController.exportHTMLContentToPDF(htmlContent: destination.webContent)
+                }
             }
         }
     }

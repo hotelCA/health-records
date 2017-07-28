@@ -22,6 +22,14 @@ class VisibleCell {
         self.indexOfSource = indexOfSource
     }
 
+    init(visibleCell: VisibleCell) {
+
+        print("VisibleCell copy constructor")
+        self.isExpanded = visibleCell.isExpanded
+        self.isSelected = visibleCell.isSelected
+        self.indexOfSource = visibleCell.indexOfSource
+    }
+
     func showExtraContent() {
 
         // Override this
@@ -42,6 +50,13 @@ class YearHeaderCell: VisibleCell {
 
         self.days = 0
     }
+
+    init(yearHeader: YearHeaderCell) {
+        super.init(visibleCell: yearHeader)
+
+        print("YearHeaderCell copy constructor")
+        self.days = yearHeader.days
+    }
 }
 
 class DayHeaderCell: VisibleCell {
@@ -55,6 +70,13 @@ class DayHeaderCell: VisibleCell {
         self.indexOfYearHeader = indexOfYearHeader
         self.entries = 0
     }
+
+    init(dayHeader: DayHeaderCell) {
+        super.init(visibleCell: dayHeader)
+
+        self.indexOfYearHeader = dayHeader.indexOfYearHeader
+        self.entries = dayHeader.entries
+    }
 }
 
 class ContentCell: VisibleCell {
@@ -65,6 +87,12 @@ class ContentCell: VisibleCell {
         super.init(indexOfSource: indexOfSource)
 
         self.indexOfDayHeader = indexOfDayHeader
+    }
+
+    init(contentCell: ContentCell) {
+        super.init(visibleCell: contentCell)
+
+        self.indexOfDayHeader = contentCell.indexOfDayHeader
     }
 }
 

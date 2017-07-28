@@ -21,7 +21,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
         self.stateController = stateController
         initShownCells()
-        printShownCells()
+        Utilities.printShownCells(shownCells: shownCells as! [VisibleCell], healthRecords: stateController.healthRecords)
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -227,6 +227,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
     }
 }
 
+// Helper functions
 extension TableViewDataSource {
 
     fileprivate func initShownCells() {
@@ -235,8 +236,8 @@ extension TableViewDataSource {
         let indexOfLatestDayHeader = 1
 
         showYearHeaders()
-        _ = expandYearHeader(atIndex: indexOfLatestYearHeader)
-        _ = expandDayHeader(atIndex: indexOfLatestDayHeader)
+        _ = expandYearHeader(atIndex: indexOfLatestYearHeader, visibleCells: &shownCells)
+        _ = expandDayHeader(atIndex: indexOfLatestDayHeader, visibleCells: &shownCells)
     }
 
     fileprivate func showYearHeaders() {
@@ -253,10 +254,10 @@ extension TableViewDataSource {
         }
     }
 
-    fileprivate func expandYearHeader(atIndex yearHeaderIndex: Int) -> Int {
+    fileprivate func expandYearHeader(atIndex yearHeaderIndex: Int, visibleCells: inout [Any]) -> Int {
 
-        guard yearHeaderIndex < shownCells.count,
-            let yearHeader = shownCells[yearHeaderIndex] as? YearHeaderCell,
+        guard yearHeaderIndex < visibleCells.count,
+            let yearHeader = visibleCells[yearHeaderIndex] as? YearHeaderCell,
             !yearHeader.isExpanded else {
 
                 return 0
@@ -276,9 +277,9 @@ extension TableViewDataSource {
 
                 let index = yearHeaderIndex + 1 + yearHeader.days
 
-                shownCells.insert(DayHeaderCell(indexOfSource: i, indexOfYearHeader: yearHeaderIndex), at: index)
+                visibleCells.insert(DayHeaderCell(indexOfSource: i, indexOfYearHeader: yearHeaderIndex), at: index)
 
-                (shownCells[index] as! DayHeaderCell).isSelected = (shownCells[yearHeaderIndex] as! YearHeaderCell).isSelected
+                (visibleCells[index] as! DayHeaderCell).isSelected = (visibleCells[yearHeaderIndex] as! YearHeaderCell).isSelected
 
                 yearHeader.days = yearHeader.days + 1
 
@@ -312,10 +313,10 @@ extension TableViewDataSource {
         return rowsCollapsed
     }
 
-    fileprivate func expandDayHeader(atIndex dayHeaderIndex: Int) -> Int {
+    fileprivate func expandDayHeader(atIndex dayHeaderIndex: Int, visibleCells: inout [Any]) -> Int {
 
-        guard   dayHeaderIndex < shownCells.count,
-            let dayHeader = shownCells[dayHeaderIndex] as? DayHeaderCell,
+        guard   dayHeaderIndex < visibleCells.count,
+            let dayHeader = visibleCells[dayHeaderIndex] as? DayHeaderCell,
             !dayHeader.isExpanded else {
 
                 return 0
@@ -332,9 +333,9 @@ extension TableViewDataSource {
 
             let index = dayHeaderIndex + 1 + dayHeader.entries
 
-            shownCells.insert(ContentCell(indexOfSource: i, indexOfDayHeader: dayHeaderIndex), at: index)
+            visibleCells.insert(ContentCell(indexOfSource: i, indexOfDayHeader: dayHeaderIndex), at: index)
 
-            (shownCells[index] as! ContentCell).isSelected = (shownCells[dayHeaderIndex] as! DayHeaderCell).isSelected
+            (visibleCells[index] as! ContentCell).isSelected = (visibleCells[dayHeaderIndex] as! DayHeaderCell).isSelected
 
             dayHeader.entries = dayHeader.entries + 1
         }
@@ -389,7 +390,7 @@ extension TableViewDataSource {
 
         if !yearHeader.isExpanded {
 
-            return expandYearHeader(atIndex: yearHeaderIndex)
+            return expandYearHeader(atIndex: yearHeaderIndex, visibleCells: &shownCells)
 
         } else {
 
@@ -403,7 +404,7 @@ extension TableViewDataSource {
 
         if !dayHeader.isExpanded {
 
-            return expandDayHeader(atIndex: dayHeaderIndex)
+            return expandDayHeader(atIndex: dayHeaderIndex, visibleCells: &shownCells)
 
         } else {
 
@@ -559,6 +560,7 @@ extension TableViewDataSource {
     }
 }
 
+// Functions that can be called from outside
 extension TableViewDataSource {
 
     func showNewCondition(newCondition: HealthCondition) {
@@ -581,8 +583,8 @@ extension TableViewDataSource {
 
                 shownCells.insert(YearHeaderCell(indexOfSource: indexOfSource), at: latestYearHeader)
 
-                _ = expandYearHeader(atIndex: latestYearHeader)
-                _ = expandDayHeader(atIndex: latestDayHeader)
+                _ = expandYearHeader(atIndex: latestYearHeader, visibleCells: &shownCells)
+                _ = expandDayHeader(atIndex: latestDayHeader, visibleCells: &shownCells)
 
                 // 1 year header + 1 day header + 1 content cell
                 cellsAdded = 3
@@ -593,7 +595,7 @@ extension TableViewDataSource {
                 yearHeader.indexOfSource = indexOfSource
 
                 // num of day headers + 1 content cell
-                cellsAdded = expandYearHeader(atIndex: latestYearHeader) + 1
+                cellsAdded = expandYearHeader(atIndex: latestYearHeader, visibleCells: &shownCells) + 1
 
                 if cellsAdded <= 1 {
 
@@ -601,33 +603,33 @@ extension TableViewDataSource {
 
                     yearHeader.days = yearHeader.days + 1
                     shownCells.insert(DayHeaderCell(indexOfSource: indexOfSource, indexOfYearHeader: latestYearHeader), at: latestDayHeader)
-                    _ = expandDayHeader(atIndex: latestDayHeader)
+                    _ = expandDayHeader(atIndex: latestDayHeader, visibleCells: &shownCells)
 
                     // 1 day header + 1 content cell
                     cellsAdded = 2
                 }
 
-                _ = expandDayHeader(atIndex: latestDayHeader)
+                _ = expandDayHeader(atIndex: latestDayHeader, visibleCells: &shownCells)
 
             } else {
 
                 (shownCells[latestYearHeader] as! YearHeaderCell).indexOfSource = indexOfSource
 
                 // num of day headers + 1 content cell
-                cellsAdded = expandYearHeader(atIndex: latestYearHeader) + 1
+                cellsAdded = expandYearHeader(atIndex: latestYearHeader, visibleCells: &shownCells) + 1
 
                 if cellsAdded > 1 {
 
                     // year header wasn't expanded yet
 
-                    cellsAdded += expandDayHeader(atIndex: latestDayHeader)
+                    cellsAdded += expandDayHeader(atIndex: latestDayHeader, visibleCells: &shownCells)
 
                 } else {
 
                     let dayHeader = shownCells[latestDayHeader] as! DayHeaderCell
                     dayHeader.indexOfSource = indexOfSource
 
-                    let contentCellsAdded = expandDayHeader(atIndex: latestDayHeader)
+                    let contentCellsAdded = expandDayHeader(atIndex: latestDayHeader, visibleCells: &shownCells)
 
                     // add num of content cells
                     cellsAdded += contentCellsAdded
@@ -654,84 +656,50 @@ extension TableViewDataSource {
     }
 }
 
-// Helper functions, not essential to the app
 
+// Functions used in print mode
 extension TableViewDataSource {
 
-    fileprivate func printShownCells() {
-
-        for i in 0..<shownCells.count {
-
-            if let yearHeaderCell = shownCells[i] as? YearHeaderCell {
-
-                print("Year: \(HealthCondition.generateStringFromDateInLocalTimezone(date: stateController.healthRecords[yearHeaderCell.indexOfSource!].date))")
-
-            } else if let dayHeaderCell = shownCells[i] as? DayHeaderCell {
-
-                print("Day: \(HealthCondition.generateStringFromDateInLocalTimezone(date: stateController.healthRecords[dayHeaderCell.indexOfSource!].date))")
-
-            } else if let contentCell = shownCells[i] as? ContentCell {
-
-                print("Content: \(HealthCondition.generateStringFromDateInLocalTimezone(date: stateController.healthRecords[contentCell.indexOfSource!].date))")
-            }
-        }
-    }
-}
-
-extension TableViewDataSource {
-
+    // This is CustomTableViewCellProtocol
     func checkButtonPressed(selected: Bool, tag: Int) {
 
         (shownCells[tag] as! VisibleCell).isSelected = selected
 
         if shownCells[tag] is YearHeaderCell {
 
-            changeCheckButtonStates(atIndex: tag + 1, for: [.dayHeader, .content], selected)
+            changeChildCheckButtonStates(atIndex: tag + 1, for: [.dayHeader, .content], selected)
 
         } else if shownCells[tag] is DayHeaderCell {
 
-            changeCheckButtonStates(atIndex: tag + 1, for: [.content], selected)
+            changeChildCheckButtonStates(atIndex: tag + 1, for: [.content], selected)
 
         }
 
-        correctCheckButtonStates()
+        correctParentCheckButtonStates()
 
         print("Button \(tag), Pressed: \(selected)")
     }
 
-    func changeCheckButtonStates(atIndex: Int, for cellTypes: [VisibleCellEnum],_ isSelected: Bool) {
+    func changeChildCheckButtonStates(atIndex: Int, for cellTypes: [VisibleCellEnum],_ isSelected: Bool) {
 
         for (i, shownCell) in shownCells.enumerated().dropFirst(atIndex){
 
-            if let contentCell = shownCell as? ContentCell {
-
-                contentCell.isSelected = isSelected
-
-                // Cells might not be in the view, so the function might return nil
-                if let customCell = tableView.cellForRow(at: IndexPath(row: i, section: 0)) as? CustomTableViewCell {
-
-                    customCell.setSelected(selected: isSelected)
-                }
-
-            } else if cellTypes.contains(.dayHeader), let dayHeader = shownCell as? DayHeaderCell {
-
-                dayHeader.isSelected = isSelected
-
-                // Cells might not be in the view, so the function might return nil
-
-                if let customCell = tableView.cellForRow(at: IndexPath(row: i, section: 0)) as? CustomTableViewCell {
-
-                    customCell.setSelected(selected: isSelected)
-                }
-
-            } else {
+            if (shownCell is YearHeaderCell) || ((shownCell is DayHeaderCell) && !cellTypes.contains(.dayHeader)){
 
                 break
+            }
+
+            (shownCell as! VisibleCell).isSelected = isSelected
+
+            // Cells might not be in the view, so the function might return nil
+            if let customCell = tableView.cellForRow(at: IndexPath(row: i, section: 0)) as? CustomTableViewCell {
+
+                customCell.setSelected(selected: isSelected)
             }
         }
     }
 
-    func correctCheckButtonStates() {
+    func correctParentCheckButtonStates() {
 
         for i in (0..<shownCells.count).reversed() {
 
@@ -805,5 +773,88 @@ extension TableViewDataSource {
                 }
             }
         }
+    }
+
+    func getDataForPrinting() -> [VisibleCell] {
+
+        var printCells = [Any]()
+
+        for cell in shownCells as! [VisibleCell] {
+
+            if cell.isSelected {
+
+                if let yearHeader = cell as? YearHeaderCell {
+
+                    printCells.append(YearHeaderCell(yearHeader: yearHeader) as Any)
+
+                } else if let dayHeader = cell as? DayHeaderCell {
+
+                    let yearHeader = shownCells[dayHeader.indexOfYearHeader] as! YearHeaderCell
+
+                    if !yearHeader.isSelected {
+
+                        printCells.append(YearHeaderCell(yearHeader: yearHeader) as Any)
+                        yearHeader.isSelected = true
+                    }
+
+                    printCells.append(DayHeaderCell(dayHeader: dayHeader) as Any)
+
+                } else if let content = cell as? ContentCell {
+
+                    let dayHeader = shownCells[content.indexOfDayHeader] as! DayHeaderCell
+                    let yearHeader = shownCells[dayHeader.indexOfYearHeader] as! YearHeaderCell
+
+                    if !yearHeader.isSelected {
+
+                        printCells.append(YearHeaderCell(yearHeader: yearHeader) as Any)
+                        yearHeader.isSelected = true
+                    }
+
+                    if !dayHeader.isSelected {
+
+                        printCells.append(DayHeaderCell(dayHeader: dayHeader) as Any)
+                        dayHeader.isSelected = true
+                    }
+
+                    printCells.append(ContentCell(contentCell: content) as Any)
+                }
+            }
+        }
+
+        // Reset back to unselected state
+        shownCells = shownCells.map({ (visibleCell: Any) -> Any in
+
+            (visibleCell as! VisibleCell).isSelected = false
+            return visibleCell
+        })
+
+        return expandSelectedHeaders(printCells: &printCells) as! [VisibleCell]
+    }
+
+    func expandSelectedHeaders(printCells: inout [Any]) -> [Any] {
+
+        var i = 0
+
+        while i < printCells.count {
+
+            if let yearHeader = printCells[i] as? YearHeaderCell {
+
+                if yearHeader.isSelected {
+
+                    _ = expandYearHeader(atIndex: i, visibleCells: &printCells)
+                }
+
+            } else if let dayHeader = printCells[i] as? DayHeaderCell {
+
+                if dayHeader.isSelected {
+
+                    _ = expandDayHeader(atIndex: i, visibleCells: &printCells)
+                }
+            }
+
+            i += 1
+        }
+
+        return printCells
     }
 }
