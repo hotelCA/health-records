@@ -77,7 +77,7 @@
 		3C23F4F91F23EFA400CE4B4F /* uncheck_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uncheck_circle.png; sourceTree = SOURCE_ROOT; };
 		3C23F4FF1F24679900CE4B4F /* pdf_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pdf_button.png; sourceTree = SOURCE_ROOT; };
 		3C23F5011F2AE9CF00CE4B4F /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
-		3C43AF021F4FF3B900D7C9E0 /* collapse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = collapse.png; sourceTree = SOURCE_ROOT; };
+		3C43AF031F4FF8EA00D7C9E0 /* collapse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = collapse.png; sourceTree = SOURCE_ROOT; };
 		3C4EB5221EF76BA800B64804 /* ViewDataDefinitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewDataDefinitions.swift; sourceTree = "<group>"; };
 		3C4EB5261EF9766B00B64804 /* ImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
 		3C4EB5281EF9769900B64804 /* DescriptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionTableViewCell.swift; sourceTree = "<group>"; };
@@ -219,7 +219,7 @@
 				3CDF607C1EF3189200E077E5 /* Info.plist */,
 				3CDF60741EF3189200E077E5 /* HealthRecord.xcdatamodeld */,
 				3CFAC1991F1918780045FE76 /* PrintTemplate.html */,
-				3C43AF021F4FF3B900D7C9E0 /* collapse.png */,
+				3C43AF031F4FF8EA00D7C9E0 /* collapse.png */,
 				3C06E6F61F2E6C39004AAC23 /* description.png */,
 				3C23F4FF1F24679900CE4B4F /* pdf_button.png */,
 				3C23F4F71F23EF9B00CE4B4F /* check_mark.png */,

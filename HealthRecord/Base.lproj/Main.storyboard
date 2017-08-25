@@ -210,7 +210,7 @@
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
+                                                    <color key="highlightedColor" red="0.011764705882352941" green="0.38431372549019605" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="collapse.png" translatesAutoresizingMaskIntoConstraints="NO" id="9t9-oZ-10u">
                                                     <rect key="frame" x="337" y="14" width="30" height="30"/>
@@ -323,6 +323,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Health Records" id="Rh9-yI-9CB">
                         <barButtonItem key="leftBarButtonItem" title="PDF" id="TUp-8K-R7m">
+                            <color key="tintColor" red="0.0" green="0.47843137254901957" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <segue destination="grA-ej-JAn" kind="show" identifier="toWebView" id="Qcb-3A-qe4"/>
                             </connections>
