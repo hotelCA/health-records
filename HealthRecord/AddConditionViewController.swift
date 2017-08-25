@@ -23,9 +23,7 @@ class AddConditionViewController: UIViewController {
     var delegate: AddConditionViewControllerDelegate!
 
     @IBAction func submitConditionButtonPressed(_ sender: UIButton) {
-
         
-        // Nothing to do here so far
     }
 
     func getNewCondition() -> HealthDescription {
@@ -36,7 +34,6 @@ class AddConditionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {

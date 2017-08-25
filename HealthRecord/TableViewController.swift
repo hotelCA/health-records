@@ -12,7 +12,6 @@ let ONE_DAY = 3600 * 24
 let OneMonth = ONE_DAY * 30
 let OneYear = OneMonth * 12
 
-
 class TableViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     @IBOutlet var tableView: UITableView!
@@ -57,12 +56,10 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // Nothing yet
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     @IBAction func unwindToTableViewController(unwindSegue: UIStoryboardSegue) {

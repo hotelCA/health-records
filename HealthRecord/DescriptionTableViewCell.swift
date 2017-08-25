@@ -16,6 +16,18 @@ class DescriptionTableViewCell: CustomTableViewCell {
 
     @IBOutlet var stackViewWidth: NSLayoutConstraint!
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        //        let contentViewBound = self.contentView.bounds
+
+        var imageViewFrame = self.imageView?.frame
+
+        imageViewFrame?.origin.y = 15
+
+        self.imageView?.frame = imageViewFrame!
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -40,7 +52,10 @@ class DescriptionTableViewCell: CustomTableViewCell {
         tagsHorizontalStack.distribution = .fillProportionally
         tagsHorizontalStack.alignment = .fill
 
-        adjustLeadingConstraint(constant: 0.0)
+        adjustLeadingConstraint(constant: 50.0)
+
+        setAvatar()
+
         hideExtraContent()
     }
 
@@ -70,12 +85,15 @@ class DescriptionTableViewCell: CustomTableViewCell {
         super.loadPrintMode(row: row, delegate: delegate, selected: selected)
 
         adjustLeadingConstraint(constant: 50.0)
+        clearAvatar()
     }
 
     override func loadDefaultMode() {
         super.loadDefaultMode()
 
-        adjustLeadingConstraint(constant: 0.0)
+        adjustLeadingConstraint(constant: 50.0)
+
+        setAvatar()
     }
 
     func adjustLeadingConstraint(constant: CGFloat) {
@@ -87,5 +105,16 @@ class DescriptionTableViewCell: CustomTableViewCell {
 
         labelLeadingConstr = MedicalDescriptionLabel.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor, constant: constant)
         labelLeadingConstr.isActive = true
+    }
+
+    func setAvatar() {
+
+        let image = UIImage(named: "description.png")
+        self.imageView?.image = image?.resizeImage(targetSize: CGSize(width: 30.0, height: 30.0))
+    }
+
+    func clearAvatar() {
+
+        self.imageView?.image = nil
     }
 }

@@ -36,7 +36,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-        var height = CGFloat(50)
+        var height = CGFloat(40)
 
         if let contentCell = shownCells[indexPath.row] as? ContentCell {
 
@@ -45,6 +45,10 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
                 if contentCell.isExpanded {
 
                     height = 220
+
+                } else {
+
+                    height = 60
                 }
 
             } else if stateController.healthRecords[contentCell.indexOfSource!] is HealthDescription {
@@ -52,6 +56,10 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
                 if contentCell.isExpanded {
 
                     height = 120
+
+                } else {
+
+                    height = 60
                 }
             }
         }
@@ -779,45 +787,44 @@ extension TableViewDataSource {
 
         var printCells = [Any]()
 
-        for cell in shownCells as! [VisibleCell] {
+        let selectedCells = shownCells.filter { ($0 as! VisibleCell).isSelected }
 
-            if cell.isSelected {
+        for cell in selectedCells as! [VisibleCell] {
 
-                if let yearHeader = cell as? YearHeaderCell {
+            if let yearHeader = cell as? YearHeaderCell {
+
+                printCells.append(YearHeaderCell(yearHeader: yearHeader) as Any)
+
+            } else if let dayHeader = cell as? DayHeaderCell {
+
+                let yearHeader = shownCells[dayHeader.indexOfYearHeader] as! YearHeaderCell
+
+                if !yearHeader.isSelected {
 
                     printCells.append(YearHeaderCell(yearHeader: yearHeader) as Any)
+                    yearHeader.isSelected = true
+                }
 
-                } else if let dayHeader = cell as? DayHeaderCell {
+                printCells.append(DayHeaderCell(dayHeader: dayHeader) as Any)
 
-                    let yearHeader = shownCells[dayHeader.indexOfYearHeader] as! YearHeaderCell
+            } else if let content = cell as? ContentCell {
 
-                    if !yearHeader.isSelected {
+                let dayHeader = shownCells[content.indexOfDayHeader] as! DayHeaderCell
+                let yearHeader = shownCells[dayHeader.indexOfYearHeader] as! YearHeaderCell
 
-                        printCells.append(YearHeaderCell(yearHeader: yearHeader) as Any)
-                        yearHeader.isSelected = true
-                    }
+                if !yearHeader.isSelected {
+
+                    printCells.append(YearHeaderCell(yearHeader: yearHeader) as Any)
+                    yearHeader.isSelected = true
+                }
+
+                if !dayHeader.isSelected {
 
                     printCells.append(DayHeaderCell(dayHeader: dayHeader) as Any)
-
-                } else if let content = cell as? ContentCell {
-
-                    let dayHeader = shownCells[content.indexOfDayHeader] as! DayHeaderCell
-                    let yearHeader = shownCells[dayHeader.indexOfYearHeader] as! YearHeaderCell
-
-                    if !yearHeader.isSelected {
-
-                        printCells.append(YearHeaderCell(yearHeader: yearHeader) as Any)
-                        yearHeader.isSelected = true
-                    }
-
-                    if !dayHeader.isSelected {
-
-                        printCells.append(DayHeaderCell(dayHeader: dayHeader) as Any)
-                        dayHeader.isSelected = true
-                    }
-
-                    printCells.append(ContentCell(contentCell: content) as Any)
+                    dayHeader.isSelected = true
                 }
+
+                printCells.append(ContentCell(contentCell: content) as Any)
             }
         }
 

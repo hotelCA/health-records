@@ -12,6 +12,9 @@
 		3C02D0041F0746D900BC6ACB /* ImageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C02D0031F0746D900BC6ACB /* ImageHandler.swift */; };
 		3C02D0061F07520A00BC6ACB /* DescriptionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C02D0051F07520A00BC6ACB /* DescriptionHandler.swift */; };
 		3C02D0091F09ACB100BC6ACB /* HeaderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C02D0081F09ACB100BC6ACB /* HeaderViewCell.swift */; };
+		3C06E6F81F2E6C39004AAC23 /* description.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C06E6F61F2E6C39004AAC23 /* description.png */; };
+		3C06E6FA1F2E7105004AAC23 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C06E6F91F2E7105004AAC23 /* Image.swift */; };
+		3C06E7001F2E9CA7004AAC23 /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C06E6FF1F2E9CA7004AAC23 /* image.png */; };
 		3C1579841F12AB3C0051F092 /* HealthRecordUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1579831F12AB3C0051F092 /* HealthRecordUITests.swift */; };
 		3C1579901F17108D0051F092 /* StorageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C15798F1F17108D0051F092 /* StorageController.swift */; };
 		3C1579921F172C8C0051F092 /* ModelDataDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1579911F172C8C0051F092 /* ModelDataDefinitions.swift */; };
@@ -62,6 +65,9 @@
 		3C02D0031F0746D900BC6ACB /* ImageHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHandler.swift; sourceTree = "<group>"; };
 		3C02D0051F07520A00BC6ACB /* DescriptionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionHandler.swift; sourceTree = "<group>"; };
 		3C02D0081F09ACB100BC6ACB /* HeaderViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderViewCell.swift; sourceTree = "<group>"; };
+		3C06E6F61F2E6C39004AAC23 /* description.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = description.png; sourceTree = SOURCE_ROOT; };
+		3C06E6F91F2E7105004AAC23 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		3C06E6FF1F2E9CA7004AAC23 /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = SOURCE_ROOT; };
 		3C1579811F12AB3C0051F092 /* HealthRecordUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HealthRecordUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C1579831F12AB3C0051F092 /* HealthRecordUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthRecordUITests.swift; sourceTree = "<group>"; };
 		3C1579851F12AB3C0051F092 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -71,6 +77,7 @@
 		3C23F4F91F23EFA400CE4B4F /* uncheck_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uncheck_circle.png; sourceTree = SOURCE_ROOT; };
 		3C23F4FF1F24679900CE4B4F /* pdf_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pdf_button.png; sourceTree = SOURCE_ROOT; };
 		3C23F5011F2AE9CF00CE4B4F /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		3C43AF021F4FF3B900D7C9E0 /* collapse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = collapse.png; sourceTree = SOURCE_ROOT; };
 		3C4EB5221EF76BA800B64804 /* ViewDataDefinitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewDataDefinitions.swift; sourceTree = "<group>"; };
 		3C4EB5261EF9766B00B64804 /* ImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
 		3C4EB5281EF9769900B64804 /* DescriptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionTableViewCell.swift; sourceTree = "<group>"; };
@@ -138,6 +145,7 @@
 				3C4EB5261EF9766B00B64804 /* ImageTableViewCell.swift */,
 				3C02D0081F09ACB100BC6ACB /* HeaderViewCell.swift */,
 				3C72A9151F0D522800E5E0D3 /* CustomTableViewCell.swift */,
+				3C06E6F91F2E7105004AAC23 /* Image.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -154,6 +162,7 @@
 		3C4EB5201EF76B1F00B64804 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				3CFAC19B1F1922170045FE76 /* PrintTemplate.swift */,
 				3C5C3DCE1EF70DA800ACDC5E /* AddConditionViewController.swift */,
 				3CDF606D1EF3189200E077E5 /* AppDelegate.swift */,
 				3CDF606F1EF3189200E077E5 /* ImageViewController.swift */,
@@ -171,7 +180,6 @@
 			children = (
 				3C4EB5221EF76BA800B64804 /* ViewDataDefinitions.swift */,
 				3C1579911F172C8C0051F092 /* ModelDataDefinitions.swift */,
-				3CFAC19B1F1922170045FE76 /* PrintTemplate.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -207,9 +215,12 @@
 				3C23F5011F2AE9CF00CE4B4F /* Utilities.swift */,
 				3CDF60771EF3189200E077E5 /* Assets.xcassets */,
 				3CDF60791EF3189200E077E5 /* LaunchScreen.storyboard */,
+				3C06E6FF1F2E9CA7004AAC23 /* image.png */,
 				3CDF607C1EF3189200E077E5 /* Info.plist */,
 				3CDF60741EF3189200E077E5 /* HealthRecord.xcdatamodeld */,
 				3CFAC1991F1918780045FE76 /* PrintTemplate.html */,
+				3C43AF021F4FF3B900D7C9E0 /* collapse.png */,
+				3C06E6F61F2E6C39004AAC23 /* description.png */,
 				3C23F4FF1F24679900CE4B4F /* pdf_button.png */,
 				3C23F4F71F23EF9B00CE4B4F /* check_mark.png */,
 				3C23F4F91F23EFA400CE4B4F /* uncheck_circle.png */,
@@ -304,6 +315,7 @@
 					};
 					3CDF60801EF3189200E077E5 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = J9GL3W7SYU;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 3CDF60691EF3189200E077E5;
 					};
@@ -348,6 +360,8 @@
 				3CFAC19A1F1918780045FE76 /* PrintTemplate.html in Resources */,
 				3CDF60731EF3189200E077E5 /* Main.storyboard in Resources */,
 				3C23F5001F24679900CE4B4F /* pdf_button.png in Resources */,
+				3C06E6F81F2E6C39004AAC23 /* description.png in Resources */,
+				3C06E7001F2E9CA7004AAC23 /* image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,6 +396,7 @@
 				3C5C3DCF1EF70DA800ACDC5E /* AddConditionViewController.swift in Sources */,
 				3C4EB5231EF76BA800B64804 /* ViewDataDefinitions.swift in Sources */,
 				3C02D0091F09ACB100BC6ACB /* HeaderViewCell.swift in Sources */,
+				3C06E6FA1F2E7105004AAC23 /* Image.swift in Sources */,
 				3C23F5021F2AE9CF00CE4B4F /* Utilities.swift in Sources */,
 				3CDF60761EF3189200E077E5 /* HealthRecord.xcdatamodeld in Sources */,
 				3C02D0041F0746D900BC6ACB /* ImageHandler.swift in Sources */,
@@ -592,6 +607,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = J9GL3W7SYU;
 				INFOPLIST_FILE = HealthRecordTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.hotelca.HealthRecordTests;
@@ -606,6 +622,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = J9GL3W7SYU;
 				INFOPLIST_FILE = HealthRecordTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.hotelca.HealthRecordTests;

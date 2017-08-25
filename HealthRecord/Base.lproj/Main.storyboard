@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lpC-48-2kX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13178.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lpC-48-2kX">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13156.2"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -137,11 +137,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KiA-ri-Pog">
-                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="0.0" green="0.47843137254901957" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="KiA-ri-Pog" secondAttribute="trailing" id="SBe-cC-Snd"/>
                             <constraint firstItem="YEC-Zz-547" firstAttribute="top" secondItem="KiA-ri-Pog" secondAttribute="bottom" id="ULL-gl-ouI"/>
@@ -163,7 +164,7 @@
                 <navigationController id="lpC-48-2kX" sceneMemberID="viewController">
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Xu8-Nl-jBJ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -203,18 +204,28 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cHi-3d-xvO">
-                                                    <rect key="frame" x="8" y="8" width="359" height="30"/>
+                                                    <rect key="frame" x="8" y="14" width="321" height="30"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="PvV-6e-FHg"/>
+                                                        <constraint firstAttribute="height" constant="30" id="hwZ-DI-fCZ"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="collapse.png" translatesAutoresizingMaskIntoConstraints="NO" id="9t9-oZ-10u">
+                                                    <rect key="frame" x="337" y="14" width="30" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="30" id="eeY-TQ-dRJ"/>
+                                                        <constraint firstAttribute="height" constant="30" id="oQq-h4-N7v"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="cHi-3d-xvO" firstAttribute="top" secondItem="DAX-L4-bT8" secondAttribute="topMargin" id="a1g-Ah-IFc"/>
-                                                <constraint firstItem="cHi-3d-xvO" firstAttribute="trailing" secondItem="DAX-L4-bT8" secondAttribute="trailingMargin" id="dD5-rB-8RT"/>
+                                                <constraint firstItem="9t9-oZ-10u" firstAttribute="centerY" secondItem="DAX-L4-bT8" secondAttribute="centerY" id="C24-Md-Yc8"/>
+                                                <constraint firstItem="cHi-3d-xvO" firstAttribute="centerY" secondItem="DAX-L4-bT8" secondAttribute="centerY" id="DpA-f8-YsV"/>
+                                                <constraint firstItem="9t9-oZ-10u" firstAttribute="trailing" secondItem="DAX-L4-bT8" secondAttribute="trailingMargin" id="X0t-OM-BBU"/>
+                                                <constraint firstItem="9t9-oZ-10u" firstAttribute="trailing" secondItem="DAX-L4-bT8" secondAttribute="trailingMargin" id="shW-dS-RUC"/>
+                                                <constraint firstItem="9t9-oZ-10u" firstAttribute="leading" secondItem="cHi-3d-xvO" secondAttribute="trailing" constant="8" id="tue-tx-EjV"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -252,7 +263,6 @@
                                                 <constraint firstItem="Rci-g6-VbI" firstAttribute="top" secondItem="uoi-FN-Jab" secondAttribute="topMargin" id="hvB-BT-tTI"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.87536384633748843" green="1" blue="0.93864563087907116" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <outlet property="MedicalDescriptionLabel" destination="Rci-g6-VbI" id="eqO-tl-gwe"/>
                                             <outlet property="stackViewWidth" destination="FnY-UV-doU" id="Md0-Uv-3MZ"/>
@@ -290,7 +300,6 @@
                                                 <constraint firstItem="peW-7e-MWD" firstAttribute="top" secondItem="cd8-QQ-UwM" secondAttribute="topMargin" constant="71" id="fft-dR-1rT"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="1" green="0.94073433669999995" blue="0.7550243163" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <outlet property="medicalImage" destination="peW-7e-MWD" id="d0O-0g-VQy"/>
                                             <outlet property="testLabel" destination="BmP-dl-kgD" id="J1U-W8-9hq"/>
@@ -342,4 +351,7 @@
             <point key="canvasLocation" x="1725.5999999999999" y="135.38230884557723"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="collapse.png" width="50" height="50"/>
+    </resources>
 </document>
