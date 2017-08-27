@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewDataSource.swift"
-            timestampString = "525512050.954942"
+            timestampString = "525547985.583524"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "657"
-            endingLineNumber = "657"
-            landmarkName = "showNewCondition(newCondition:)"
+            startingLineNumber = "593"
+            endingLineNumber = "593"
+            landmarkName = "changeChildCheckButtonStates(atIndex:for:_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,12 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewDataSource.swift"
-            timestampString = "525512050.95506"
+            timestampString = "525547985.584239"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "516"
-            endingLineNumber = "516"
-            landmarkName = "deleteContentRow(atIndex:)"
+            startingLineNumber = "452"
+            endingLineNumber = "452"
+            landmarkName = "adjustIndicesOfHeaders(startingAt:by:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewDataSource.swift"
-            timestampString = "525512050.955153"
+            timestampString = "525547985.584734"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "692"
-            endingLineNumber = "692"
-            landmarkName = "showNewCondition(newCondition:)"
+            startingLineNumber = "626"
+            endingLineNumber = "626"
+            landmarkName = "correctParentCheckButtonStates()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -138,12 +138,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewDataSource.swift"
-            timestampString = "525512050.955289"
+            timestampString = "525547985.585313"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "376"
-            endingLineNumber = "376"
-            landmarkName = "expandDayHeader(atIndex:visibleCells:)"
+            startingLineNumber = "330"
+            endingLineNumber = "330"
+            landmarkName = "collapseDayHeader(atIndex:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -154,13 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewDataSource.swift"
-            timestampString = "525512050.955372"
+            timestampString = "525547985.585834"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "894"
-            endingLineNumber = "894"
-            landmarkName = "expandSelectedHeaders(printCells:)"
-            landmarkType = "7">
+            startingLineNumber = "828"
+            endingLineNumber = "828">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -170,13 +168,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewDataSource.swift"
-            timestampString = "525512050.955451"
+            timestampString = "525547985.586243"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "872"
-            endingLineNumber = "872"
-            landmarkName = "expandSelectedHeaders(printCells:)"
-            landmarkType = "7">
+            startingLineNumber = "806"
+            endingLineNumber = "806">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

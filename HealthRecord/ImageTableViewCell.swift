@@ -10,9 +10,9 @@ import UIKit
 
 class ImageTableViewCell: CustomTableViewCell {
 
-    @IBOutlet var medicalImage: UIImageView!
     @IBOutlet var testLabel: UILabel!
-
+    @IBOutlet var arrowImage: UIImageView!
+    
     override func layoutSubviews() {
         super.layoutSubviews()
 
@@ -29,32 +29,19 @@ class ImageTableViewCell: CustomTableViewCell {
         super.awakeFromNib()
 
         setAvatar()
+        rotateArrow(duration: 0, angle: Double.pi/2)
 
         adjustLeadingConstraint(constant: 50.0)
-
-        hideExtraContent()
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        
-        hideExtraContent()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-    }
-
-    override func showExtraContent() {
-
-        medicalImage.isHidden = false
-    }
-
-    override func hideExtraContent() {
-
-        medicalImage.isHidden = true
     }
 
     override func loadPrintMode(row: Int, delegate: TableViewDataSource, selected: Bool) {
@@ -92,5 +79,14 @@ class ImageTableViewCell: CustomTableViewCell {
     func clearAvatar() {
 
         self.imageView?.image = nil
+    }
+}
+
+extension ImageTableViewCell {
+    fileprivate func rotateArrow(duration: TimeInterval, angle: Double) {
+
+        UIView.animate(withDuration: duration, animations: {
+            self.arrowImage.transform = CGAffineTransform(rotationAngle: (180.0 * CGFloat(angle)) / 180.0)
+        })
     }
 }

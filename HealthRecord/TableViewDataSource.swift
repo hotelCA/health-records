@@ -38,30 +38,9 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
         var height = CGFloat(40)
 
-        if let contentCell = shownCells[indexPath.row] as? ContentCell {
+        if shownCells[indexPath.row] is ContentCell {
 
-            if stateController.healthRecords[contentCell.indexOfSource!] is HealthImage {
-
-                if contentCell.isExpanded {
-
-                    height = 220
-
-                } else {
-
-                    height = 60
-                }
-
-            } else if stateController.healthRecords[contentCell.indexOfSource!] is HealthDescription {
-
-                if contentCell.isExpanded {
-
-                    height = 120
-
-                } else {
-
-                    height = 60
-                }
-            }
+            height = 60
         }
 
         return height
@@ -120,22 +99,16 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
                     descriptionCell.loadPrintMode(row: indexPath.row, delegate: self, selected: contentCell.isSelected)
                 }
 
-                contentCell.isExpanded ? descriptionCell.showExtraContent() : descriptionCell.hideExtraContent()
-
                 return descriptionCell
 
             } else if let healthImage = healthCondition as? HealthImage {
 
                 let imageCell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
 
-                imageCell.medicalImage?.image = healthImage.image
-                
                 if stateController.mode == .printing {
 
                     imageCell.loadPrintMode(row: indexPath.row, delegate: self, selected: contentCell.isSelected)
                 }
-
-                contentCell.isExpanded ? imageCell.showExtraContent() : imageCell.hideExtraContent()
 
                 return imageCell
             }
@@ -160,24 +133,6 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
             rowsToAddOrRemove = expandOrCollapseDayHeader(dayHeaderIndex: indexPath.row)
             
-        } else if shownCells[indexPath.row] is ContentCell {
-
-            let expandContent = expandOrCollapseContent(contentIndex: indexPath.row)
-            let visibleCell = tableView.cellForRow(at: indexPath)!
-
-            if expandContent == false {
-
-                // Hide the content AFTER animation has completed
-                CATransaction.setCompletionBlock({
-
-                    visibleCell.hideExtraContent()
-                })
-
-            } else {
-
-                // Show the content BEFORE the expansion of the cell reveals the content
-                visibleCell.showExtraContent()
-            }
         }
 
         var indexPaths: [IndexPath] = [IndexPath]()
@@ -218,7 +173,6 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
         if let content = shownCells[indexPath.row] as? ContentCell {
             
             if !content.isExpanded && stateController.mode == .normal {
-
                 return true
             }
         }
@@ -450,24 +404,6 @@ extension TableViewDataSource {
         }
     }
 
-    fileprivate func expandOrCollapseContent(contentIndex: Int) -> Bool {
-
-        let content = shownCells[contentIndex] as! ContentCell
-
-        if content.isExpanded == true {
-
-            content.isExpanded = false
-
-            return false
-
-        } else {
-
-            content.isExpanded = true
-
-            return true
-        }
-    }
-
     // TODO: Write test case for this
     fileprivate func areDatesDifferent(prevDate: Date, currentDate: Date, forComponents targetComponents: [DateComponent]) -> Bool {
 
@@ -683,8 +619,6 @@ extension TableViewDataSource {
             }
         }
         
-        _ = expandOrCollapseContent(contentIndex: latestContent)
-
         if cellsAdded > 0 {
 
             let indexOfNewContentCell = latestYearHeader + cellsAdded - 1

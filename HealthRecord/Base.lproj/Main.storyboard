@@ -191,7 +191,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="Rv5-ee-vsW">
-                                    <rect key="frame" x="0.0" y="408" width="375" height="0.0"/>
+                                    <rect key="frame" x="0.0" y="208" width="375" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
@@ -233,14 +233,14 @@
                                             <outlet property="headerLabel" destination="cHi-3d-xvO" id="CRh-lU-pu6"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="descriptionCell" rowHeight="120" id="II3-eq-Ss2" customClass="DescriptionTableViewCell" customModule="HealthRecord" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="88" width="375" height="120"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="descriptionCell" rowHeight="60" id="II3-eq-Ss2" customClass="DescriptionTableViewCell" customModule="HealthRecord" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="88" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="II3-eq-Ss2" id="uoi-FN-Jab">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rci-g6-VbI">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Description Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rci-g6-VbI">
                                                     <rect key="frame" x="8" y="8" width="321" height="31"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="31" id="3qa-Ol-wIu"/>
@@ -249,13 +249,6 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wmg-0c-iPC">
-                                                    <rect key="frame" x="8" y="73" width="359" height="38"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="359" id="FnY-UV-doU"/>
-                                                        <constraint firstAttribute="height" constant="38" id="pry-rV-oWX"/>
-                                                    </constraints>
-                                                </stackView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="nyY-4G-nfh">
                                                     <rect key="frame" x="352" y="16" width="15" height="15"/>
                                                     <constraints>
@@ -267,10 +260,8 @@
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Wmg-0c-iPC" firstAttribute="leading" secondItem="uoi-FN-Jab" secondAttribute="leadingMargin" id="YWS-rj-qhc"/>
                                                 <constraint firstItem="nyY-4G-nfh" firstAttribute="bottom" secondItem="Rci-g6-VbI" secondAttribute="bottom" constant="-8" id="Zhb-V6-Wy0"/>
-                                                <constraint firstItem="Rci-g6-VbI" firstAttribute="trailing" secondItem="uoi-FN-Jab" secondAttribute="trailingMargin" id="bVX-rP-f3K"/>
-                                                <constraint firstItem="Wmg-0c-iPC" firstAttribute="top" secondItem="Rci-g6-VbI" secondAttribute="bottom" constant="34" id="dQ3-lK-ypL"/>
+                                                <constraint firstItem="Rci-g6-VbI" firstAttribute="trailing" secondItem="uoi-FN-Jab" secondAttribute="trailingMargin" constant="-38" id="bVX-rP-f3K"/>
                                                 <constraint firstItem="Rci-g6-VbI" firstAttribute="top" secondItem="uoi-FN-Jab" secondAttribute="topMargin" id="hvB-BT-tTI"/>
                                                 <constraint firstItem="nyY-4G-nfh" firstAttribute="trailing" secondItem="uoi-FN-Jab" secondAttribute="trailingMargin" id="t0H-6w-ySH"/>
                                             </constraints>
@@ -278,26 +269,17 @@
                                         <connections>
                                             <outlet property="MedicalDescriptionLabel" destination="Rci-g6-VbI" id="eqO-tl-gwe"/>
                                             <outlet property="arrowImage" destination="nyY-4G-nfh" id="Gpl-6d-Iok"/>
-                                            <outlet property="stackViewWidth" destination="FnY-UV-doU" id="Md0-Uv-3MZ"/>
-                                            <outlet property="tagsHorizontalStack" destination="Wmg-0c-iPC" id="WPz-a7-qKr"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="imageCell" rowHeight="200" id="mJN-fp-n6j" customClass="ImageTableViewCell" customModule="HealthRecord" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="208" width="375" height="200"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="imageCell" rowHeight="60" id="mJN-fp-n6j" customClass="ImageTableViewCell" customModule="HealthRecord" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="148" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mJN-fp-n6j" id="cd8-QQ-UwM">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="199.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="peW-7e-MWD">
-                                                    <rect key="frame" x="145" y="79" width="84" height="112"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="112" id="BnU-uB-wVF"/>
-                                                        <constraint firstAttribute="width" constant="84" id="ImZ-A2-mdi"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Test Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BmP-dl-kgD">
-                                                    <rect key="frame" x="8" y="8" width="359" height="30"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Image Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BmP-dl-kgD">
+                                                    <rect key="frame" x="8" y="8" width="321" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="T8S-Pa-d20"/>
                                                     </constraints>
@@ -305,16 +287,27 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="3Qn-Nl-ZEp">
+                                                    <rect key="frame" x="352" y="16" width="15" height="15"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="15" id="9AV-kc-0dh"/>
+                                                        <constraint firstAttribute="height" constant="15" id="CFQ-dF-NB9"/>
+                                                        <constraint firstAttribute="width" constant="15" id="OM0-V1-N7N"/>
+                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="15" id="Vie-5w-fkD"/>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="15" id="nFU-Pq-T4h"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="15" id="xJ3-mU-Mb0"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="BmP-dl-kgD" firstAttribute="trailing" secondItem="cd8-QQ-UwM" secondAttribute="trailingMargin" id="0Mr-pz-loY"/>
-                                                <constraint firstItem="peW-7e-MWD" firstAttribute="leading" secondItem="cd8-QQ-UwM" secondAttribute="leadingMargin" constant="137" id="4re-8C-Fmf"/>
+                                                <constraint firstItem="BmP-dl-kgD" firstAttribute="trailing" secondItem="cd8-QQ-UwM" secondAttribute="trailingMargin" constant="-38" id="0Mr-pz-loY"/>
+                                                <constraint firstItem="3Qn-Nl-ZEp" firstAttribute="centerY" secondItem="BmP-dl-kgD" secondAttribute="centerY" id="HJE-24-j4w"/>
+                                                <constraint firstItem="3Qn-Nl-ZEp" firstAttribute="trailing" secondItem="cd8-QQ-UwM" secondAttribute="trailingMargin" id="RAO-HG-SSF"/>
                                                 <constraint firstItem="BmP-dl-kgD" firstAttribute="top" secondItem="cd8-QQ-UwM" secondAttribute="topMargin" id="V8M-h0-QJp"/>
-                                                <constraint firstItem="peW-7e-MWD" firstAttribute="top" secondItem="cd8-QQ-UwM" secondAttribute="topMargin" constant="71" id="fft-dR-1rT"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="medicalImage" destination="peW-7e-MWD" id="d0O-0g-VQy"/>
+                                            <outlet property="arrowImage" destination="3Qn-Nl-ZEp" id="fox-Ef-qnr"/>
                                             <outlet property="testLabel" destination="BmP-dl-kgD" id="J1U-W8-9hq"/>
                                         </connections>
                                     </tableViewCell>
