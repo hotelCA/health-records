@@ -11,9 +11,8 @@ import UIKit
 class DescriptionTableViewCell: CustomTableViewCell {
 
     @IBOutlet var MedicalDescriptionLabel: UILabel!
-
+    @IBOutlet var arrowImage: UIImageView!
     @IBOutlet var tagsHorizontalStack: UIStackView!
-
     @IBOutlet var stackViewWidth: NSLayoutConstraint!
 
     override func layoutSubviews() {
@@ -55,6 +54,7 @@ class DescriptionTableViewCell: CustomTableViewCell {
         adjustLeadingConstraint(constant: 50.0)
 
         setAvatar()
+        rotateArrow(duration: 0.2, angle: Double.pi/2)
 
         hideExtraContent()
     }
@@ -116,5 +116,14 @@ class DescriptionTableViewCell: CustomTableViewCell {
     func clearAvatar() {
 
         self.imageView?.image = nil
+    }
+}
+
+extension DescriptionTableViewCell {
+    fileprivate func rotateArrow(duration: TimeInterval, angle: Double) {
+
+        UIView.animate(withDuration: duration, animations: {
+            self.arrowImage.transform = CGAffineTransform(rotationAngle: (180.0 * CGFloat(angle)) / 180.0)
+        })
     }
 }

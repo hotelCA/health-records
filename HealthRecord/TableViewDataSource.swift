@@ -80,6 +80,11 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
                 yearCell.loadPrintMode(row: indexPath.row, delegate: self, selected: yearHeaderCell.isSelected)
             }
 
+            if yearHeaderCell.isExpanded {
+
+                yearCell.expand()
+            }
+
             return yearCell
 
         } else if let dayHeaderCell = shownCells[indexPath.row] as? DayHeaderCell {
@@ -91,6 +96,11 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
             if stateController.mode == .printing {
 
                 dayCell.loadPrintMode(row: indexPath.row, delegate: self, selected: dayHeaderCell.isSelected)
+            }
+
+            if dayHeaderCell.isExpanded {
+
+                dayCell.expand()
             }
 
             return dayCell
@@ -149,7 +159,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
         } else if shownCells[indexPath.row] is DayHeaderCell {
 
             rowsToAddOrRemove = expandOrCollapseDayHeader(dayHeaderIndex: indexPath.row)
-
+            
         } else if shownCells[indexPath.row] is ContentCell {
 
             let expandContent = expandOrCollapseContent(contentIndex: indexPath.row)
@@ -235,7 +245,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
     }
 }
 
-// Helper functions
+// MARK: Helper functions, used by this files only
 extension TableViewDataSource {
 
     fileprivate func initShownCells() {
@@ -269,6 +279,11 @@ extension TableViewDataSource {
             !yearHeader.isExpanded else {
 
                 return 0
+        }
+
+        if let headerViewCell = tableView?.cellForRow(at: IndexPath(row: yearHeaderIndex, section: 0)) as? HeaderViewCell {
+
+            headerViewCell.expand()
         }
 
         let targetDate = stateController.healthRecords[yearHeader.indexOfSource!].date!
@@ -309,6 +324,11 @@ extension TableViewDataSource {
             return 0
         }
 
+        if let headerViewCell = tableView?.cellForRow(at: IndexPath(row: yearHeaderIndex, section: 0)) as? HeaderViewCell {
+
+            headerViewCell.collapse()
+        }
+
         let rowsCollapsed = yearHeader.days! + collapseDayHeaders(forYearHeader: yearHeaderIndex)
 
         let firstDayHeaderIndex = yearHeaderIndex + 1
@@ -328,6 +348,11 @@ extension TableViewDataSource {
             !dayHeader.isExpanded else {
 
                 return 0
+        }
+
+        if let headerViewCell = tableView?.cellForRow(at: IndexPath(row: dayHeaderIndex, section: 0)) as? HeaderViewCell {
+
+            headerViewCell.expand()
         }
 
         let targetDate = stateController.healthRecords[dayHeader.indexOfSource].date!
@@ -382,6 +407,11 @@ extension TableViewDataSource {
             return 0
         }
 
+        if let headerViewCell = tableView?.cellForRow(at: IndexPath(row: dayHeaderIndex, section: 0)) as? HeaderViewCell {
+
+            headerViewCell.collapse()
+        }
+        
         let rowsCollapsed = dayHeader.entries!
 
         shownCells.removeSubrange(dayHeaderIndex+1..<dayHeaderIndex+1+rowsCollapsed)
@@ -568,7 +598,7 @@ extension TableViewDataSource {
     }
 }
 
-// Functions that can be called from outside
+// MARK: Functions that can be called from outside
 extension TableViewDataSource {
 
     func showNewCondition(newCondition: HealthCondition) {
@@ -665,7 +695,7 @@ extension TableViewDataSource {
 }
 
 
-// Functions used in print mode
+// MARK: Functions used in print mode
 extension TableViewDataSource {
 
     // This is CustomTableViewCellProtocol

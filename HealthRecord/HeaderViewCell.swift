@@ -11,6 +11,7 @@ import UIKit
 class HeaderViewCell: CustomTableViewCell {
 
     @IBOutlet var headerLabel: UILabel!
+    @IBOutlet var expandArrow: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,6 +22,8 @@ class HeaderViewCell: CustomTableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+
+        collapse()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -50,5 +53,25 @@ class HeaderViewCell: CustomTableViewCell {
 
         labelLeadingConstr = headerLabel.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor, constant: constant)
         labelLeadingConstr.isActive = true
+    }
+
+    func collapse() {
+
+        rotateArrow(duration: 0.2, angle: 0.0001)
+    }
+
+    func expand() {
+
+        rotateArrow(duration: 0.2, angle: Double.pi)
+    }
+}
+
+extension HeaderViewCell {
+
+    fileprivate func rotateArrow(duration: TimeInterval, angle: Double) {
+
+        UIView.animate(withDuration: duration, animations: {
+            self.expandArrow.transform = CGAffineTransform(rotationAngle: (180.0 * CGFloat(angle)) / 180.0)
+        })
     }
 }

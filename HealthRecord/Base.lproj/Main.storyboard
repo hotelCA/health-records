@@ -212,11 +212,11 @@
                                                     <nil key="textColor"/>
                                                     <color key="highlightedColor" red="0.011764705882352941" green="0.38431372549019605" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="collapse.png" translatesAutoresizingMaskIntoConstraints="NO" id="9t9-oZ-10u">
-                                                    <rect key="frame" x="337" y="14" width="30" height="30"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="9t9-oZ-10u">
+                                                    <rect key="frame" x="352" y="22" width="15" height="15"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="30" id="eeY-TQ-dRJ"/>
-                                                        <constraint firstAttribute="height" constant="30" id="oQq-h4-N7v"/>
+                                                        <constraint firstAttribute="width" constant="15" id="eeY-TQ-dRJ"/>
+                                                        <constraint firstAttribute="height" constant="15" id="oQq-h4-N7v"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
@@ -225,10 +225,11 @@
                                                 <constraint firstItem="cHi-3d-xvO" firstAttribute="centerY" secondItem="DAX-L4-bT8" secondAttribute="centerY" id="DpA-f8-YsV"/>
                                                 <constraint firstItem="9t9-oZ-10u" firstAttribute="trailing" secondItem="DAX-L4-bT8" secondAttribute="trailingMargin" id="X0t-OM-BBU"/>
                                                 <constraint firstItem="9t9-oZ-10u" firstAttribute="trailing" secondItem="DAX-L4-bT8" secondAttribute="trailingMargin" id="shW-dS-RUC"/>
-                                                <constraint firstItem="9t9-oZ-10u" firstAttribute="leading" secondItem="cHi-3d-xvO" secondAttribute="trailing" constant="8" id="tue-tx-EjV"/>
+                                                <constraint firstItem="9t9-oZ-10u" firstAttribute="leading" secondItem="cHi-3d-xvO" secondAttribute="trailing" constant="23" id="tue-tx-EjV"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="expandArrow" destination="9t9-oZ-10u" id="iwg-yu-hyl"/>
                                             <outlet property="headerLabel" destination="cHi-3d-xvO" id="CRh-lU-pu6"/>
                                         </connections>
                                     </tableViewCell>
@@ -240,7 +241,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rci-g6-VbI">
-                                                    <rect key="frame" x="8" y="8" width="359" height="31"/>
+                                                    <rect key="frame" x="8" y="8" width="321" height="31"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="31" id="3qa-Ol-wIu"/>
                                                     </constraints>
@@ -255,16 +256,28 @@
                                                         <constraint firstAttribute="height" constant="38" id="pry-rV-oWX"/>
                                                     </constraints>
                                                 </stackView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="nyY-4G-nfh">
+                                                    <rect key="frame" x="352" y="16" width="15" height="15"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="15" id="j3R-IV-J0g"/>
+                                                        <constraint firstAttribute="width" constant="15" id="myU-Lu-njh"/>
+                                                        <constraint firstAttribute="height" constant="15" id="uiS-Db-snw"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="15" id="vQ6-9Z-IJ0"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="Wmg-0c-iPC" firstAttribute="leading" secondItem="uoi-FN-Jab" secondAttribute="leadingMargin" id="YWS-rj-qhc"/>
+                                                <constraint firstItem="nyY-4G-nfh" firstAttribute="bottom" secondItem="Rci-g6-VbI" secondAttribute="bottom" constant="-8" id="Zhb-V6-Wy0"/>
                                                 <constraint firstItem="Rci-g6-VbI" firstAttribute="trailing" secondItem="uoi-FN-Jab" secondAttribute="trailingMargin" id="bVX-rP-f3K"/>
                                                 <constraint firstItem="Wmg-0c-iPC" firstAttribute="top" secondItem="Rci-g6-VbI" secondAttribute="bottom" constant="34" id="dQ3-lK-ypL"/>
                                                 <constraint firstItem="Rci-g6-VbI" firstAttribute="top" secondItem="uoi-FN-Jab" secondAttribute="topMargin" id="hvB-BT-tTI"/>
+                                                <constraint firstItem="nyY-4G-nfh" firstAttribute="trailing" secondItem="uoi-FN-Jab" secondAttribute="trailingMargin" id="t0H-6w-ySH"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="MedicalDescriptionLabel" destination="Rci-g6-VbI" id="eqO-tl-gwe"/>
+                                            <outlet property="arrowImage" destination="nyY-4G-nfh" id="Gpl-6d-Iok"/>
                                             <outlet property="stackViewWidth" destination="FnY-UV-doU" id="Md0-Uv-3MZ"/>
                                             <outlet property="tagsHorizontalStack" destination="Wmg-0c-iPC" id="WPz-a7-qKr"/>
                                         </connections>
@@ -353,6 +366,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="collapse.png" width="50" height="50"/>
+        <image name="arrow.png" width="50" height="50"/>
     </resources>
 </document>
