@@ -56,7 +56,7 @@ class CustomTableViewCell: UITableViewCell {
         self.addSubview(checkButton)
     }
 
-    func checkButtonPressed() {
+    @objc func checkButtonPressed() {
 
         if checkButton.isSelected {
 
