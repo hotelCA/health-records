@@ -14,12 +14,16 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
     var shownCells = [Any]()
 
+    var tableViewController: TableViewController!
     var tableView: UITableView!
 
-    init(stateController: StateController) {
+    init(stateController: StateController, tableViewController: TableViewController) {
         super.init()
 
         self.stateController = stateController
+        self.tableViewController = tableViewController
+        self.tableView = tableViewController.tableView
+
         initShownCells()
         Utilities.printShownCells(shownCells: shownCells as! [VisibleCell], healthRecords: stateController.healthRecords)
     }
@@ -36,11 +40,11 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-        var height = CGFloat(40)
+        var height = CGFloat(51)
 
         if shownCells[indexPath.row] is ContentCell {
 
-            height = 60
+            height = CGFloat(60)
         }
 
         return height
@@ -52,7 +56,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
             let yearCell = tableView.dequeueReusableCell(withIdentifier: "headerCell", for: indexPath) as! HeaderViewCell
 
-            yearCell.headerLabel?.text = "Year: \(HealthCondition.generateStringFromDateInLocalTimezone(date: stateController.healthRecords[yearHeaderCell.indexOfSource!].date))"
+            yearCell.headerLabel?.text = "Year: \(HealthCondition.generateStringFromDateInLocalTimezone(date: stateController.healthRecords[yearHeaderCell.indexOfSource].date))"
 
             if stateController.mode == .printing {
 
@@ -70,7 +74,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
             let dayCell = tableView.dequeueReusableCell(withIdentifier: "headerCell", for: indexPath) as! HeaderViewCell
 
-            dayCell.headerLabel?.text = "Day: \(HealthCondition.generateStringFromDateInLocalTimezone(date: stateController.healthRecords[dayHeaderCell.indexOfSource!].date))"
+            dayCell.headerLabel?.text = "Day: \(HealthCondition.generateStringFromDateInLocalTimezone(date: stateController.healthRecords[dayHeaderCell.indexOfSource].date))"
 
             if stateController.mode == .printing {
 
@@ -86,7 +90,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
         } else if let contentCell = shownCells[indexPath.row] as? ContentCell {
 
-            let healthCondition = stateController.healthRecords[contentCell.indexOfSource!]
+            let healthCondition = stateController.healthRecords[contentCell.indexOfSource]
 
             if let healthDescription = healthCondition as? HealthDescription {
 
@@ -101,7 +105,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
                 return descriptionCell
 
-            } else if let healthImage = healthCondition as? HealthImage {
+            } else if healthCondition is HealthImage {
 
                 let imageCell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
 
@@ -121,51 +125,64 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        CATransaction.begin()
+        if let visibleCell = shownCells[indexPath.row] as? ContentCell {
 
-        var rowsToAddOrRemove = 0
+            if tableView.cellForRow(at: indexPath) is DescriptionTableViewCell {
 
-        if shownCells[indexPath.row] is YearHeaderCell {
+                let index = visibleCell.indexOfSource
+                let healthDescription = stateController.healthRecords[index] as! HealthDescription
 
-            rowsToAddOrRemove = expandOrCollapseYearHeader(yearHeaderIndex: indexPath.row)
-
-        } else if shownCells[indexPath.row] is DayHeaderCell {
-
-            rowsToAddOrRemove = expandOrCollapseDayHeader(dayHeaderIndex: indexPath.row)
-            
-        }
-
-        var indexPaths: [IndexPath] = [IndexPath]()
-
-        if rowsToAddOrRemove != 0 {
-
-            let lastModifiedRow = indexPath.row + 1 + abs(rowsToAddOrRemove)
-
-            for i in indexPath.row+1..<lastModifiedRow {
-
-                indexPaths.append(IndexPath(row: i, section: 0))
+                tableViewController.updateADescription(healthDescription: healthDescription)
             }
 
-            if stateController.mode == .printing {
+        } else {
 
-                adjustButtonTagsFrom(row: lastModifiedRow, by: rowsToAddOrRemove)
+            CATransaction.begin()
+
+            var rowsToAddOrRemove = 0
+
+            if shownCells[indexPath.row] is YearHeaderCell {
+
+                rowsToAddOrRemove = expandOrCollapseYearHeader(yearHeaderIndex: indexPath.row)
+
+            } else if shownCells[indexPath.row] is DayHeaderCell {
+
+                rowsToAddOrRemove = expandOrCollapseDayHeader(dayHeaderIndex: indexPath.row)
+
             }
+
+            var indexPaths: [IndexPath] = [IndexPath]()
+
+            if rowsToAddOrRemove != 0 {
+
+                let lastModifiedRow = indexPath.row + 1 + abs(rowsToAddOrRemove)
+
+                for i in indexPath.row+1..<lastModifiedRow {
+
+                    indexPaths.append(IndexPath(row: i, section: 0))
+                }
+
+                if stateController.mode == .printing {
+
+                    adjustButtonTagsFrom(row: lastModifiedRow, by: rowsToAddOrRemove)
+                }
+            }
+
+            tableView.beginUpdates()
+
+            if rowsToAddOrRemove > 0 {
+
+                tableView.insertRows(at: indexPaths, with: .fade)
+
+            } else if rowsToAddOrRemove < 0 {
+
+                tableView.deleteRows(at: indexPaths, with: .fade)
+            }
+
+            tableView.endUpdates()
+
+            CATransaction.commit()
         }
-
-        tableView.beginUpdates()
-
-        if rowsToAddOrRemove > 0 {
-
-            tableView.insertRows(at: indexPaths, with: .fade)
-
-        } else if rowsToAddOrRemove < 0 {
-
-            tableView.deleteRows(at: indexPaths, with: .fade)
-        }
-
-        tableView.endUpdates()
-
-        CATransaction.commit()
     }
 
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -235,15 +252,15 @@ extension TableViewDataSource {
                 return 0
         }
 
-        if let headerViewCell = tableView?.cellForRow(at: IndexPath(row: yearHeaderIndex, section: 0)) as? HeaderViewCell {
+        if let headerViewCell = tableViewController.tableView?.cellForRow(at: IndexPath(row: yearHeaderIndex, section: 0)) as? HeaderViewCell {
 
             headerViewCell.expand()
         }
 
-        let targetDate = stateController.healthRecords[yearHeader.indexOfSource!].date!
+        let targetDate = stateController.healthRecords[yearHeader.indexOfSource].date!
         var prevDate = Date(timeIntervalSince1970: 0)
 
-        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - yearHeader.indexOfSource! - 1).reversed() {
+        for (i, healthRecord) in stateController.healthRecords.enumerated().dropLast(stateController.healthRecords.count - yearHeader.indexOfSource - 1).reversed() {
 
             guard !areDatesDifferent(prevDate: targetDate, currentDate: healthRecord.date!, forComponents: [.year]) else {
 
@@ -278,7 +295,7 @@ extension TableViewDataSource {
             return 0
         }
 
-        if let headerViewCell = tableView?.cellForRow(at: IndexPath(row: yearHeaderIndex, section: 0)) as? HeaderViewCell {
+        if let headerViewCell = tableView.cellForRow(at: IndexPath(row: yearHeaderIndex, section: 0)) as? HeaderViewCell {
 
             headerViewCell.collapse()
         }
@@ -304,7 +321,7 @@ extension TableViewDataSource {
                 return 0
         }
 
-        if let headerViewCell = tableView?.cellForRow(at: IndexPath(row: dayHeaderIndex, section: 0)) as? HeaderViewCell {
+        if let headerViewCell = tableView.cellForRow(at: IndexPath(row: dayHeaderIndex, section: 0)) as? HeaderViewCell {
 
             headerViewCell.expand()
         }
@@ -361,7 +378,7 @@ extension TableViewDataSource {
             return 0
         }
 
-        if let headerViewCell = tableView?.cellForRow(at: IndexPath(row: dayHeaderIndex, section: 0)) as? HeaderViewCell {
+        if let headerViewCell = tableView.cellForRow(at: IndexPath(row: dayHeaderIndex, section: 0)) as? HeaderViewCell {
 
             headerViewCell.collapse()
         }
@@ -442,7 +459,7 @@ extension TableViewDataSource {
 
         let removedItem = shownCells.remove(at: row) as! ContentCell
 
-        stateController.deleteARecord(atIndex: removedItem.indexOfSource!)
+        stateController.deleteARecord(atIndex: removedItem.indexOfSource)
         adjustIndicesOfSource(endingAt: row, by: -1)
         var indexPathsToRemove = removeHeadersIfNeeded(startAtDayHeader: removedItem.indexOfDayHeader!)
         indexPathsToRemove.append(IndexPath(row: row, section: 0))
@@ -531,6 +548,12 @@ extension TableViewDataSource {
             cell.setCheckButtonTag(tag: row + min(cellCount, 0))
             row += 1
         }
+    }
+
+    func updateADescription(healthDescription: HealthDescription) {
+
+        let descriptionHandler = DescriptionHandler(viewController: tableViewController)
+        descriptionHandler.updateACondition(healthDescription: healthDescription)
     }
 }
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AddConditionViewControllerDelegate {
+protocol AddConditionViewControllerProtocol {
 
     func createNewHealthDescription(healthDescription: HealthDescription)
 }
@@ -19,21 +19,46 @@ class AddConditionViewController: UIViewController {
     @IBOutlet var degreeSegment: UISegmentedControl!
     @IBOutlet var locationSegment: UISegmentedControl!
     @IBOutlet var descriptionTextField: UITextField!
+    @IBOutlet var saveButton: UIButton!
+    @IBOutlet var cancelButton: UIButton!
 
-    var delegate: AddConditionViewControllerDelegate!
+    var delegate: AddConditionViewControllerProtocol!
+    var updateMode: Bool!
+    var healthDescription: HealthDescription!
 
-    @IBAction func submitConditionButtonPressed(_ sender: UIButton) {
-        
+    @IBAction func cancelPressed(_ sender: Any) {
+
+        self.dismiss(animated: true, completion: nil)
     }
 
-    func getNewCondition() -> HealthDescription {
+    @IBAction func saveConditionPressed(_ sender: Any) {
 
-        return HealthDescription(timeOfDescription: Date(), condition: ConditionEnum(rawValue: conditionSegment.selectedSegmentIndex)!)
+        let healthDescription = HealthDescription(timeOfDescription: Date(), condition: ConditionEnum(rawValue: conditionSegment.selectedSegmentIndex)!)
+
+        delegate.createNewHealthDescription(healthDescription: healthDescription)
+
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    func updateView(healthDescription: HealthDescription) {
+
+        self.healthDescription = healthDescription
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if updateMode {
+
+            saveButton.isHidden = true
+            cancelButton.isHidden = true
+            conditionSegment.selectedSegmentIndex = healthDescription.condition.rawValue
+
+        } else {
+
+            saveButton.isHidden = false
+            saveButton.isHidden = false
+        }
     }
 
     override func didReceiveMemoryWarning() {

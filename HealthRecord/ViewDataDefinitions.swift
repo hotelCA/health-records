@@ -13,7 +13,7 @@ class VisibleCell {
 
     var isExpanded: Bool
     var isSelected: Bool
-    var indexOfSource: Int!
+    var indexOfSource: Int
 
     init(indexOfSource: Int) {
 

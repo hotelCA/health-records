@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewDataSource.swift"
-            timestampString = "525548770.12484"
+            timestampString = "525760113.260077"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "593"
-            endingLineNumber = "593"
-            landmarkName = "changeChildCheckButtonStates(atIndex:for:_:)"
+            startingLineNumber = "616"
+            endingLineNumber = "616"
+            landmarkName = "showNewCondition(newCondition:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,12 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewDataSource.swift"
-            timestampString = "525548770.125026"
+            timestampString = "525760113.260447"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "452"
-            endingLineNumber = "452"
-            landmarkName = "adjustIndicesOfHeaders(startingAt:by:)"
+            startingLineNumber = "469"
+            endingLineNumber = "469"
+            landmarkName = "areDatesDifferent(prevDate:currentDate:forComponents:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewDataSource.swift"
-            timestampString = "525548770.125123"
+            timestampString = "525760113.26076"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "626"
-            endingLineNumber = "626"
-            landmarkName = "correctParentCheckButtonStates()"
+            startingLineNumber = "649"
+            endingLineNumber = "649"
+            landmarkName = "showNewCondition(newCondition:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -138,12 +138,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewDataSource.swift"
-            timestampString = "525548770.125272"
+            timestampString = "525760113.262383"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "330"
-            endingLineNumber = "330"
-            landmarkName = "collapseDayHeader(atIndex:)"
+            startingLineNumber = "347"
+            endingLineNumber = "347"
+            landmarkName = "expandDayHeader(atIndex:visibleCells:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -154,11 +154,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewDataSource.swift"
-            timestampString = "525548770.125366"
+            timestampString = "525760113.263154"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "828"
-            endingLineNumber = "828">
+            startingLineNumber = "851"
+            endingLineNumber = "851"
+            landmarkName = "expandSelectedHeaders(printCells:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -168,11 +170,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HealthRecord/TableViewDataSource.swift"
-            timestampString = "525548770.125478"
+            timestampString = "525760113.263756"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "806"
-            endingLineNumber = "806">
+            startingLineNumber = "829"
+            endingLineNumber = "829"
+            landmarkName = "getDataForPrinting()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

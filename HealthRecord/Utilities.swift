@@ -16,15 +16,15 @@ class Utilities {
 
             if let yearHeaderCell = shownCells[i] as? YearHeaderCell {
 
-                print("Year: \(HealthCondition.generateStringFromDateInLocalTimezone(date: healthRecords[yearHeaderCell.indexOfSource!].date))")
+                print("Year: \(HealthCondition.generateStringFromDateInLocalTimezone(date: healthRecords[yearHeaderCell.indexOfSource].date))")
 
             } else if let dayHeaderCell = shownCells[i] as? DayHeaderCell {
 
-                print("Day: \(HealthCondition.generateStringFromDateInLocalTimezone(date: healthRecords[dayHeaderCell.indexOfSource!].date))")
+                print("Day: \(HealthCondition.generateStringFromDateInLocalTimezone(date: healthRecords[dayHeaderCell.indexOfSource].date))")
 
             } else if let contentCell = shownCells[i] as? ContentCell {
 
-                print("Content: \(HealthCondition.generateStringFromDateInLocalTimezone(date: healthRecords[contentCell.indexOfSource!].date))")
+                print("Content: \(HealthCondition.generateStringFromDateInLocalTimezone(date: healthRecords[contentCell.indexOfSource].date))")
             }
         }
     }

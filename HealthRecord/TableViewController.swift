@@ -12,7 +12,7 @@ let ONE_DAY = 3600 * 24
 let OneMonth = ONE_DAY * 30
 let OneYear = OneMonth * 12
 
-class TableViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class TableViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, AddConditionViewControllerProtocol {
 
     @IBOutlet var tableView: UITableView!
     var tableViewDataSource: TableViewDataSource!
@@ -39,11 +39,10 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
-        tableViewDataSource = TableViewDataSource(stateController: stateController)
+        tableViewDataSource = TableViewDataSource(stateController: stateController, tableViewController: self)
 
         tableView.dataSource = tableViewDataSource
         tableView.delegate = tableViewDataSource
-        tableViewDataSource.tableView = tableView
         tableView.reloadData()
         imageHandler = ImageHandler(viewController: self)
     }
@@ -60,16 +59,6 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-    }
-
-    @IBAction func unwindToTableViewController(unwindSegue: UIStoryboardSegue) {
-
-        if let source = unwindSegue.source as? AddConditionViewController {
-
-            let healthDescription = source.getNewCondition()
-
-            updateStateAndDataSource(healthCondition: healthDescription)
-        }
     }
 
     func updateStateAndDataSource(healthCondition: HealthCondition) {
@@ -133,6 +122,12 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
         descriptionHandler.addNewCondition()
     }
 
+    func updateADescription(healthDescription: HealthDescription) {
+
+        let descriptionHandler = DescriptionHandler(viewController: self)
+        descriptionHandler.updateACondition(healthDescription: healthDescription)
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         if segue.identifier == "toImageView" {
@@ -160,7 +155,36 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
                     pdfController.exportHTMLContentToPDF(htmlContent: destination.webContent)
                 }
             }
+
+        } else if segue.identifier == "toConditionPickerModal" {
+
+            if let destination = segue.destination as? AddConditionViewController {
+
+                destination.updateMode = false
+                destination.delegate = self
+            }
+
+        } else if segue.identifier == "toConditionPickerShow" {
+
+            if let destination = segue.destination as? AddConditionViewController {
+
+                if let healthDescription = sender as? HealthDescription {
+
+                    destination.updateMode = true
+                    destination.delegate = self
+                    destination.updateView(healthDescription: healthDescription)
+                }
+            }
         }
+    }
+}
+
+// MARK: AddConditionViewController protocol
+extension TableViewController {
+
+    func createNewHealthDescription(healthDescription: HealthDescription) {
+
+        updateStateAndDataSource(healthCondition: healthDescription)
     }
 }
     

@@ -19,6 +19,11 @@ class DescriptionHandler {
 
     func addNewCondition() {
 
-        viewController.performSegue(withIdentifier: "toConditionPicker", sender: nil)
+        viewController.performSegue(withIdentifier: "toConditionPickerModal", sender: nil)
+    }
+
+    func updateACondition(healthDescription: HealthDescription) {
+
+        viewController.performSegue(withIdentifier: "toConditionPickerShow", sender: healthDescription)
     }
 }

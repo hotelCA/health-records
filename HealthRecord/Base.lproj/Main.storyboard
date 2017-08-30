@@ -37,6 +37,8 @@
                             <constraint firstItem="Jtc-tm-K9U" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="5" id="IFw-XO-h9r"/>
                         </constraints>
                     </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="ImageView" destination="Jtc-tm-K9U" id="FDo-md-gwO"/>
                         <outlet property="imageView" destination="Jtc-tm-K9U" id="DjV-D3-cg5"/>
@@ -46,7 +48,7 @@
             </objects>
             <point key="canvasLocation" x="1726" y="850"/>
         </scene>
-        <!--Add Condition View Controller-->
+        <!--Add Condition-->
         <scene sceneID="5ct-Rg-Jmj">
             <objects>
                 <viewController id="Ve7-SM-1QG" customClass="AddConditionViewController" customModule="HealthRecord" customModuleProvider="target" sceneMemberID="viewController">
@@ -92,12 +94,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Add">
+                                <state key="normal" title="Save">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="submitConditionButtonPressed:" destination="Ve7-SM-1QG" eventType="touchUpInside" id="QKX-cj-lKQ"/>
-                                    <segue destination="aaj-uO-tyW" kind="unwind" unwindAction="unwindToTableViewControllerWithUnwindSegue:" id="Aa1-q2-hkD"/>
+                                    <action selector="saveConditionPressed:" destination="Ve7-SM-1QG" eventType="touchUpInside" id="Mbh-W9-xWW"/>
                                 </connections>
                             </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="KGx-fP-hDe">
@@ -109,20 +110,34 @@
                                     <segment title="Severe"/>
                                 </segments>
                             </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JVe-7I-Ugk">
+                                <rect key="frame" x="48" y="325" width="279" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="cancelPressed:" destination="Ve7-SM-1QG" eventType="touchUpInside" id="3QF-tO-NfP"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Add Condition" id="RXR-6h-Adt">
+                        <barButtonItem key="rightBarButtonItem" title="Update" id="aiV-aA-4OR"/>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="cancelButton" destination="JVe-7I-Ugk" id="Zat-bd-gjq"/>
                         <outlet property="conditionSegment" destination="7q1-BT-5Gq" id="BYY-IV-OHu"/>
                         <outlet property="degreeSegment" destination="KGx-fP-hDe" id="dvo-Bw-mZa"/>
                         <outlet property="descriptionTextField" destination="y7d-OZ-Bmg" id="FDA-5k-C15"/>
                         <outlet property="locationSegment" destination="TLf-1g-kpq" id="Fg6-kN-URi"/>
+                        <outlet property="saveButton" destination="aum-b1-BDE" id="aOA-tv-HV4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lBK-80-z10" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="aaj-uO-tyW" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2526" y="850"/>
+            <point key="canvasLocation" x="2525.5999999999999" y="849.62518740629696"/>
         </scene>
         <!--Web View Controller-->
         <scene sceneID="ZSF-iD-utI">
@@ -191,16 +206,16 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="Rv5-ee-vsW">
-                                    <rect key="frame" x="0.0" y="208" width="375" height="0.0"/>
+                                    <rect key="frame" x="0.0" y="198" width="375" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="headerCell" rowHeight="60" id="tQX-Sd-I5W" customClass="HeaderViewCell" customModule="HealthRecord" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="60"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="headerCell" rowHeight="50" id="tQX-Sd-I5W" customClass="HeaderViewCell" customModule="HealthRecord" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tQX-Sd-I5W" id="DAX-L4-bT8">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cHi-3d-xvO">
@@ -213,7 +228,7 @@
                                                     <color key="highlightedColor" red="0.011764705882352941" green="0.38431372549019605" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="9t9-oZ-10u">
-                                                    <rect key="frame" x="352" y="22" width="15" height="15"/>
+                                                    <rect key="frame" x="352" y="17" width="15" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="15" id="eeY-TQ-dRJ"/>
                                                         <constraint firstAttribute="height" constant="15" id="oQq-h4-N7v"/>
@@ -234,7 +249,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="descriptionCell" rowHeight="60" id="II3-eq-Ss2" customClass="DescriptionTableViewCell" customModule="HealthRecord" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="88" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="78" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="II3-eq-Ss2" id="uoi-FN-Jab">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
@@ -272,7 +287,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="imageCell" rowHeight="60" id="mJN-fp-n6j" customClass="ImageTableViewCell" customModule="HealthRecord" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="148" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="138" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mJN-fp-n6j" id="cd8-QQ-UwM">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
@@ -349,8 +364,9 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="J3z-63-MfT" id="gJW-If-TDz"/>
-                        <segue destination="Ve7-SM-1QG" kind="presentation" identifier="toConditionPicker" id="UDd-Hr-zhX"/>
+                        <segue destination="Ve7-SM-1QG" kind="presentation" identifier="toConditionPickerModal" id="UDd-Hr-zhX"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="toImageView" id="7K3-2d-eEK"/>
+                        <segue destination="Ve7-SM-1QG" kind="show" identifier="toConditionPickerShow" id="BA0-O2-b6I"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rsK-31-wg9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -361,4 +377,7 @@
     <resources>
         <image name="arrow.png" width="50" height="50"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="UDd-Hr-zhX"/>
+    </inferredMetricsTieBreakers>
 </document>

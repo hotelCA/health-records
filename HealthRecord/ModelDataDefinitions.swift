@@ -29,7 +29,7 @@ class HealthCondition {
     class func generateStringFromDateInUTC(date: Date) -> String {
 
         let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC") as! TimeZone
+        dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")! as TimeZone
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
         return dateFormatter.string(from: date)
     }
