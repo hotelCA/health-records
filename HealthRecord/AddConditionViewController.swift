@@ -11,6 +11,8 @@ import UIKit
 protocol AddConditionViewControllerProtocol {
 
     func createNewHealthDescription(healthDescription: HealthDescription)
+    func updateAHealthDescription(healthDescription: HealthDescription)
+
 }
 
 class AddConditionViewController: UIViewController {
@@ -21,10 +23,10 @@ class AddConditionViewController: UIViewController {
     @IBOutlet var descriptionTextField: UITextField!
     @IBOutlet var saveButton: UIButton!
     @IBOutlet var cancelButton: UIButton!
-
+    
     var delegate: AddConditionViewControllerProtocol!
     var updateMode: Bool!
-    var healthDescription: HealthDescription!
+    var healthDescription: HealthDescription?
 
     @IBAction func cancelPressed(_ sender: Any) {
 
@@ -40,6 +42,20 @@ class AddConditionViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
 
+    @IBAction func updatePressed(_ sender: Any) {
+
+        if healthDescription != nil {
+
+            let date = healthDescription!.date
+
+            let updatedHealthDescription = HealthDescription(timeOfDescription: date!, condition: ConditionEnum(rawValue: conditionSegment.selectedSegmentIndex)!)
+
+            delegate.updateAHealthDescription(healthDescription: updatedHealthDescription)
+        }
+
+        _ = navigationController?.popViewController(animated: true)
+    }
+
     func updateView(healthDescription: HealthDescription) {
 
         self.healthDescription = healthDescription
@@ -52,7 +68,10 @@ class AddConditionViewController: UIViewController {
 
             saveButton.isHidden = true
             cancelButton.isHidden = true
-            conditionSegment.selectedSegmentIndex = healthDescription.condition.rawValue
+
+            if healthDescription != nil {
+                conditionSegment.selectedSegmentIndex = healthDescription!.condition.rawValue
+            }
 
         } else {
 

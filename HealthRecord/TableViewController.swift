@@ -33,6 +33,11 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
         tableView.reloadData()
     }
 
+    @IBAction func AddButtonPressed(_ sender: UIBarButtonItem) {
+
+        createAndPresentActionSheet()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -61,15 +66,19 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
         super.didReceiveMemoryWarning()
     }
 
-    func updateStateAndDataSource(healthCondition: HealthCondition) {
+    func updateStateAndDataSource(healthCondition: HealthCondition, atIndex index: Int?) {
 
-        stateController.saveARecord(healthCondition: healthCondition)
-        tableViewDataSource.showNewCondition(newCondition: healthCondition)
-    }
+        if (index == nil) {
 
-    @IBAction func AddButtonPressed(_ sender: UIBarButtonItem) {
+            stateController.saveARecord(healthCondition: healthCondition)
+            tableViewDataSource.addContentCell(healthCondition: healthCondition)
 
-        createAndPresentActionSheet()
+        } else {
+
+            let sourceIndex = (tableViewDataSource.shownCells[index!] as! ContentCell).indexOfSource
+            stateController.updateARecord(healthCondition: healthCondition, atIndex: sourceIndex)
+            tableViewDataSource.updateContentCell(atIndex: index!)
+        }
     }
 
     func createAndPresentActionSheet() {
@@ -184,7 +193,12 @@ extension TableViewController {
 
     func createNewHealthDescription(healthDescription: HealthDescription) {
 
-        updateStateAndDataSource(healthCondition: healthDescription)
+        updateStateAndDataSource(healthCondition: healthDescription, atIndex: nil)
+    }
+
+    func updateAHealthDescription(healthDescription: HealthDescription) {
+
+        updateStateAndDataSource(healthCondition: healthDescription, atIndex: tableViewDataSource.lastSelectedCell)
     }
 }
     

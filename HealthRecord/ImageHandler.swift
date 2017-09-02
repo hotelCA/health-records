@@ -50,7 +50,7 @@ class ImageHandler: NSObject, UINavigationControllerDelegate, UIImagePickerContr
 
             let healthImage: HealthImage = HealthImage(timeOfImage: Date(), image: resizedImage!)
 
-            viewController.updateStateAndDataSource(healthCondition: healthImage)
+            viewController.updateStateAndDataSource(healthCondition: healthImage, atIndex: nil)
 //            viewController.performSegue(withIdentifier: "toImageView", sender: healthImage)
         }
 

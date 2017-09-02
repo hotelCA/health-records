@@ -21,23 +21,7 @@ class StorageController {
 
         let newHealthCondition = NSEntityDescription.insertNewObject(forEntityName: "HealthRecord", into: context)
 
-        newHealthCondition.setValue(healthCondition.date, forKey: "date")
-
-        if let healthDescription = healthCondition as? HealthDescription {
-
-            newHealthCondition.setValue(healthDescription.condition.rawValue, forKey: "condition")
-
-        } else if let healthImage = healthCondition as? HealthImage {
-
-            let fullPathToFile = getFullPathToFile(name: HealthImage.generateFileNameFrom(date: healthImage.date))
-
-            newHealthCondition.setValue(HealthImage.generateFileNameFrom(date: healthImage.date), forKey: "imagePath")
-
-            // Use this value to disqualify this as a HealthDescription when fetching request
-            newHealthCondition.setValue(imageFlag, forKey: "condition")
-
-            saveImageToFile(fileName: fullPathToFile, image: healthImage.image)
-        }
+        set(managedObject: newHealthCondition, healthCondition: healthCondition)
 
         do {
 
@@ -50,6 +34,72 @@ class StorageController {
             print("error during saving core data")
         }
 
+    }
+
+    func update(_ healthCondition: HealthCondition) {
+
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "HealthRecord")
+        request.returnsObjectsAsFaults = false
+
+        request.predicate = NSPredicate(format: "date = %@", argumentArray: [healthCondition.date!])
+
+        do {
+
+            var results = try context.fetch(request) as! [NSManagedObject]
+
+            if results.count == 1 {
+
+                print("Record updated.")
+
+                set(managedObject: results[0], healthCondition: healthCondition)
+
+                do {
+
+                    try context.save()
+
+                    // TODO: remove file
+
+                } catch {
+
+                    print("Updating a record failed!")
+                }
+
+            } else if results.count > 1 {
+
+                print("Found more than one record matching target.")
+
+            } else {
+
+                print("Didn't find any matching record.")
+            }
+
+        } catch {
+
+            print("Couldn't fetch results from updating a record.")
+        }
+    }
+
+    private func set(managedObject: NSManagedObject, healthCondition: HealthCondition) {
+
+        managedObject.setValue(healthCondition.date, forKey: "date")
+
+        if let healthDescription = healthCondition as? HealthDescription {
+
+            managedObject.setValue(healthDescription.condition.rawValue, forKey: "condition")
+
+        } else if let healthImage = healthCondition as? HealthImage {
+
+            let fullPathToFile = getFullPathToFile(name: HealthImage.generateFileNameFrom(date: healthImage.date))
+
+            managedObject.setValue(HealthImage.generateFileNameFrom(date: healthImage.date), forKey: "imagePath")
+
+            // Use this value to disqualify this as a HealthDescription when fetching request
+            managedObject.setValue(imageFlag, forKey: "condition")
+
+            saveImageToFile(fileName: fullPathToFile, image: healthImage.image)
+        }
     }
 
     func remove(_ healthCondition: HealthCondition) {

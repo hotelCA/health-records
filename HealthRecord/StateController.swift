@@ -47,6 +47,12 @@ class StateController {
         storageController.add(healthCondition)
     }
 
+    func updateARecord(healthCondition: HealthCondition, atIndex index: Int) {
+
+        healthRecords[index] = healthCondition
+        storageController.update(healthCondition)
+    }
+
     func deleteARecord(atIndex index: Int) {
 
         let removedRecord = healthRecords.remove(at: index)

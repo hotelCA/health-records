@@ -16,6 +16,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
     var tableViewController: TableViewController!
     var tableView: UITableView!
+    var lastSelectedCell: Int!
 
     init(stateController: StateController, tableViewController: TableViewController) {
         super.init()
@@ -132,6 +133,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
                 let index = visibleCell.indexOfSource
                 let healthDescription = stateController.healthRecords[index] as! HealthDescription
 
+                lastSelectedCell = indexPath.row
                 tableViewController.updateADescription(healthDescription: healthDescription)
             }
 
@@ -560,7 +562,7 @@ extension TableViewDataSource {
 // MARK: Functions that can be called from outside
 extension TableViewDataSource {
 
-    func showNewCondition(newCondition: HealthCondition) {
+    func addContentCell(healthCondition: HealthCondition) {
 
         let latestYearHeader = 0
         let latestDayHeader = 1
@@ -576,7 +578,7 @@ extension TableViewDataSource {
             let mostRecentDate = stateController.healthRecords[(shownCells[latestYearHeader] as! YearHeaderCell).indexOfSource].date!
             let indexOfSource = stateController.healthRecords.count - 1
 
-            if areDatesDifferent(prevDate: mostRecentDate, currentDate: newCondition.date!, forComponents: [.year]) {
+            if areDatesDifferent(prevDate: mostRecentDate, currentDate: healthCondition.date!, forComponents: [.year]) {
 
                 shownCells.insert(YearHeaderCell(indexOfSource: indexOfSource), at: latestYearHeader)
 
@@ -586,7 +588,7 @@ extension TableViewDataSource {
                 // 1 year header + 1 day header + 1 content cell
                 cellsAdded = 3
                 
-            } else if areDatesDifferent(prevDate: mostRecentDate, currentDate: newCondition.date!, forComponents: [.year, .month, .day]) {
+            } else if areDatesDifferent(prevDate: mostRecentDate, currentDate: healthCondition.date!, forComponents: [.year, .month, .day]) {
 
                 let yearHeader = shownCells[latestYearHeader] as! YearHeaderCell
                 yearHeader.indexOfSource = indexOfSource
@@ -648,6 +650,11 @@ extension TableViewDataSource {
 
             adjustIndicesOfHeaders(startingAt: indexOfNewContentCell + 1, by: cellsAdded)
         }
+    }
+
+    func updateContentCell(atIndex index: Int) {
+
+        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: UITableViewRowAnimation.automatic)
     }
 }
 
