@@ -12,7 +12,7 @@ let ONE_DAY = 3600 * 24
 let OneMonth = ONE_DAY * 30
 let OneYear = OneMonth * 12
 
-class TableViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, AddConditionViewControllerProtocol {
+class TableViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, AddConditionViewControllerProtocol, ImageViewControllerProtocol {
 
     @IBOutlet var tableView: UITableView!
     var tableViewDataSource: TableViewDataSource!
@@ -137,12 +137,18 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
         descriptionHandler.updateACondition(healthDescription: healthDescription)
     }
 
+    func updateAnImage(healthImage: HealthImage) {
+
+        performSegue(withIdentifier: "toImageView", sender: healthImage)
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         if segue.identifier == "toImageView" {
 
             if let destination = segue.destination as? ImageViewController {
 
+                destination.delegate = self
                 destination.healthImage = sender as! HealthImage?
             }
 
@@ -199,6 +205,15 @@ extension TableViewController {
     func updateAHealthDescription(healthDescription: HealthDescription) {
 
         updateStateAndDataSource(healthCondition: healthDescription, atIndex: tableViewDataSource.lastSelectedCell)
+    }
+}
+
+// MARK: ImageViewController protocol
+extension TableViewController {
+
+    func deleteAHealthImage() {
+
+        tableViewDataSource.deleteContentCell(atIndex: tableViewDataSource.lastSelectedCell)
     }
 }
     

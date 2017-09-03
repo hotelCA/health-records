@@ -14,7 +14,7 @@
         <!--Image View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" userLabel="Image View Controller" customClass="ViewController" customModule="HealthRecord" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" userLabel="Image View Controller" customClass="ImageViewController" customModule="HealthRecord" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -38,6 +38,13 @@
                         </constraints>
                     </view>
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Health image" id="C6z-rq-ipz">
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="NVw-n6-ZqF">
+                            <connections>
+                                <action selector="deletePressed:" destination="BYZ-38-t0r" id="8Qx-aX-b76"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="ImageView" destination="Jtc-tm-K9U" id="FDo-md-gwO"/>

@@ -135,6 +135,14 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 
                 lastSelectedCell = indexPath.row
                 tableViewController.updateADescription(healthDescription: healthDescription)
+
+            } else if tableView.cellForRow(at: indexPath) is ImageTableViewCell {
+
+                let index = visibleCell.indexOfSource
+                let healthImage = stateController.healthRecords[index] as! HealthImage
+
+                lastSelectedCell = indexPath.row
+                tableViewController.updateAnImage(healthImage: healthImage)
             }
 
         } else {
@@ -207,11 +215,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
         
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { action, index in
             
-            let indexPaths = self.deleteContentRow(atIndex: indexPath.row)
-            
-            tableView.beginUpdates()
-            tableView.deleteRows(at: indexPaths, with: .fade)
-            tableView.endUpdates()
+            self.deleteContentCell(atIndex: indexPath.row)
         }
         
         return [delete, update]
@@ -457,21 +461,6 @@ extension TableViewDataSource {
         return false
     }
 
-    fileprivate func deleteContentRow(atIndex row: Int) -> [IndexPath] {
-
-        let removedItem = shownCells.remove(at: row) as! ContentCell
-
-        stateController.deleteARecord(atIndex: removedItem.indexOfSource)
-        adjustIndicesOfSource(endingAt: row, by: -1)
-        var indexPathsToRemove = removeHeadersIfNeeded(startAtDayHeader: removedItem.indexOfDayHeader!)
-        indexPathsToRemove.append(IndexPath(row: row, section: 0))
-
-        let indexOfRowAfterDeletedRow = row + 1 - indexPathsToRemove.count
-        adjustIndicesOfHeaders(startingAt: indexOfRowAfterDeletedRow, by: -indexPathsToRemove.count)
-
-        return indexPathsToRemove
-    }
-
     fileprivate func removeHeadersIfNeeded(startAtDayHeader indexOfDayHeader: Int) -> [IndexPath] {
 
         var indexPathsToRemove = [IndexPath]()
@@ -655,6 +644,23 @@ extension TableViewDataSource {
     func updateContentCell(atIndex index: Int) {
 
         tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: UITableViewRowAnimation.automatic)
+    }
+
+    func deleteContentCell(atIndex row: Int) {
+
+        let removedItem = shownCells.remove(at: row) as! ContentCell
+
+        stateController.deleteARecord(atIndex: removedItem.indexOfSource)
+        adjustIndicesOfSource(endingAt: row, by: -1)
+        var indexPathsToRemove = removeHeadersIfNeeded(startAtDayHeader: removedItem.indexOfDayHeader!)
+        indexPathsToRemove.append(IndexPath(row: row, section: 0))
+
+        let indexOfRowAfterDeletedRow = row + 1 - indexPathsToRemove.count
+        adjustIndicesOfHeaders(startingAt: indexOfRowAfterDeletedRow, by: -indexPathsToRemove.count)
+
+        tableView.beginUpdates()
+        tableView.deleteRows(at: indexPathsToRemove, with: .fade)
+        tableView.endUpdates()
     }
 }
 
