@@ -81,7 +81,7 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
         }
     }
 
-    func createAndPresentActionSheet() {
+    private func createAndPresentActionSheet() {
 
         let actionSheet = UIAlertController(title: nil, message: "Pick an action", preferredStyle: .actionSheet)
 
@@ -90,7 +90,7 @@ class TableViewController: UIViewController, UINavigationControllerDelegate, UII
         present(actionSheet, animated: true, completion: nil)
     }
 
-    func createAndAddActionsToActionSheet(actionSheet: UIAlertController) {
+    private func createAndAddActionsToActionSheet(actionSheet: UIAlertController) {
 
         let takePhotoAction = UIAlertAction(title: "Camera", style: .default) { _ in
 

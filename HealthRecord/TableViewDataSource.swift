@@ -225,7 +225,7 @@ class TableViewDataSource: NSObject, UITableViewDataSource, UITableViewDelegate,
 // MARK: Helper functions, used by this files only
 extension TableViewDataSource {
 
-    fileprivate func initShownCells() {
+    private func initShownCells() {
 
         let indexOfLatestYearHeader = 0
         let indexOfLatestDayHeader = 1
@@ -235,7 +235,7 @@ extension TableViewDataSource {
         _ = expandDayHeader(atIndex: indexOfLatestDayHeader, visibleCells: &shownCells)
     }
 
-    fileprivate func showYearHeaders() {
+    private func showYearHeaders() {
 
         var prevDate = Date(timeIntervalSince1970: 0)
 
@@ -249,7 +249,7 @@ extension TableViewDataSource {
         }
     }
 
-    fileprivate func expandYearHeader(atIndex yearHeaderIndex: Int, visibleCells: inout [Any]) -> Int {
+    private func expandYearHeader(atIndex yearHeaderIndex: Int, visibleCells: inout [Any]) -> Int {
 
         guard yearHeaderIndex < visibleCells.count,
             let yearHeader = visibleCells[yearHeaderIndex] as? YearHeaderCell,
@@ -292,7 +292,7 @@ extension TableViewDataSource {
         return yearHeader.days
     }
 
-    fileprivate func collapseYearHeader(atIndex yearHeaderIndex: Int) -> Int {
+    private func collapseYearHeader(atIndex yearHeaderIndex: Int) -> Int {
 
         let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
 
@@ -318,7 +318,7 @@ extension TableViewDataSource {
         return rowsCollapsed
     }
 
-    fileprivate func expandDayHeader(atIndex dayHeaderIndex: Int, visibleCells: inout [Any]) -> Int {
+    private func expandDayHeader(atIndex dayHeaderIndex: Int, visibleCells: inout [Any]) -> Int {
 
         guard   dayHeaderIndex < visibleCells.count,
             let dayHeader = visibleCells[dayHeaderIndex] as? DayHeaderCell,
@@ -355,7 +355,7 @@ extension TableViewDataSource {
         return dayHeader.entries
     }
 
-    fileprivate func collapseDayHeaders(forYearHeader yearHeaderIndex: Int) -> Int {
+    private func collapseDayHeaders(forYearHeader yearHeaderIndex: Int) -> Int {
 
         let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
 
@@ -375,7 +375,7 @@ extension TableViewDataSource {
         return rowsCollapsed
     }
 
-    fileprivate func collapseDayHeader(atIndex dayHeaderIndex: Int) -> Int {
+    private func collapseDayHeader(atIndex dayHeaderIndex: Int) -> Int {
 
         let dayHeader = shownCells[dayHeaderIndex] as! DayHeaderCell
 
@@ -399,7 +399,7 @@ extension TableViewDataSource {
         return rowsCollapsed
     }
 
-    fileprivate func expandOrCollapseYearHeader(yearHeaderIndex: Int) -> Int {
+    private func expandOrCollapseYearHeader(yearHeaderIndex: Int) -> Int {
 
         let yearHeader = shownCells[yearHeaderIndex] as! YearHeaderCell
 
@@ -413,7 +413,7 @@ extension TableViewDataSource {
         }
     }
 
-    fileprivate func expandOrCollapseDayHeader(dayHeaderIndex: Int) -> Int {
+    private func expandOrCollapseDayHeader(dayHeaderIndex: Int) -> Int {
 
         let dayHeader = shownCells[dayHeaderIndex] as! DayHeaderCell
 
@@ -427,8 +427,7 @@ extension TableViewDataSource {
         }
     }
 
-    // TODO: Write test case for this
-    fileprivate func areDatesDifferent(prevDate: Date, currentDate: Date, forComponents targetComponents: [DateComponent]) -> Bool {
+    private func areDatesDifferent(prevDate: Date, currentDate: Date, forComponents targetComponents: [DateComponent]) -> Bool {
 
         let components: Set<Calendar.Component> = [.year, .month, .day, .hour]
         let prevDateComponents = Calendar.current.dateComponents(components, from: prevDate)
@@ -461,7 +460,7 @@ extension TableViewDataSource {
         return false
     }
 
-    fileprivate func removeHeadersIfNeeded(startAtDayHeader indexOfDayHeader: Int) -> [IndexPath] {
+    private func removeHeadersIfNeeded(startAtDayHeader indexOfDayHeader: Int) -> [IndexPath] {
 
         var indexPathsToRemove = [IndexPath]()
 
@@ -487,7 +486,7 @@ extension TableViewDataSource {
         return indexPathsToRemove
     }
     
-    fileprivate func adjustIndicesOfSource(endingAt endRow: Int, by amount: Int) {
+    private func adjustIndicesOfSource(endingAt endRow: Int, by amount: Int) {
         
         for i in 0..<endRow {
             
@@ -497,7 +496,7 @@ extension TableViewDataSource {
         }
     }
 
-    fileprivate func adjustIndicesOfHeaders(startingAt startRow: Int, by amount: Int) {
+    private func adjustIndicesOfHeaders(startingAt startRow: Int, by amount: Int) {
 
         var yearHeaderFound = false
         var dayHeaderFound = false
@@ -527,7 +526,7 @@ extension TableViewDataSource {
         }
     }
 
-    fileprivate func adjustButtonTagsFrom(row: Int, by cellCount: Int) {
+    private func adjustButtonTagsFrom(row: Int, by cellCount: Int) {
 
         var row = row
 
@@ -541,7 +540,7 @@ extension TableViewDataSource {
         }
     }
 
-    func updateADescription(healthDescription: HealthDescription) {
+    private func updateADescription(healthDescription: HealthDescription) {
 
         let descriptionHandler = DescriptionHandler(viewController: tableViewController)
         descriptionHandler.updateACondition(healthDescription: healthDescription)
@@ -688,7 +687,7 @@ extension TableViewDataSource {
         print("Button \(tag), Pressed: \(selected)")
     }
 
-    func changeChildCheckButtonStates(atIndex: Int, for cellTypes: [VisibleCellEnum],_ isSelected: Bool) {
+    private func changeChildCheckButtonStates(atIndex: Int, for cellTypes: [VisibleCellEnum],_ isSelected: Bool) {
 
         for (i, shownCell) in shownCells.enumerated().dropFirst(atIndex){
 
@@ -707,7 +706,7 @@ extension TableViewDataSource {
         }
     }
 
-    func correctParentCheckButtonStates() {
+    private func correctParentCheckButtonStates() {
 
         for i in (0..<shownCells.count).reversed() {
 
@@ -838,7 +837,7 @@ extension TableViewDataSource {
         return expandSelectedHeaders(printCells: &printCells) as! [VisibleCell]
     }
 
-    func expandSelectedHeaders(printCells: inout [Any]) -> [Any] {
+    private func expandSelectedHeaders(printCells: inout [Any]) -> [Any] {
 
         var i = 0
 
