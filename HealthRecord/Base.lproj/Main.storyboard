@@ -30,6 +30,11 @@
                                     <constraint firstAttribute="width" constant="240" id="g1O-j2-s1q"/>
                                 </constraints>
                             </imageView>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FIj-4u-C5W">
+                                <rect key="frame" x="67" y="420" width="240" height="169"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.057561383930000001" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -48,12 +53,13 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="ImageView" destination="Jtc-tm-K9U" id="FDo-md-gwO"/>
+                        <outlet property="canvas" destination="FIj-4u-C5W" id="5S1-it-sRr"/>
                         <outlet property="imageView" destination="Jtc-tm-K9U" id="DjV-D3-cg5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1726" y="850"/>
+            <point key="canvasLocation" x="1725.5999999999999" y="849.62518740629696"/>
         </scene>
         <!--Add Condition-->
         <scene sceneID="5ct-Rg-Jmj">
